@@ -1,6 +1,8 @@
 ---
 title: 'PCFL: Week 3 wrap-up'
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -35,12 +37,12 @@ standing_raw<-GET(url_match)
 StandingRaw <- rawToChar(standing_raw$content)
 standings <- jsonlite::fromJSON(StandingRaw)
 
-url_standing<-paste("https://fantasy.espn.com/apis/v3/games/ffl/seasons/",
-          year,"/segments/0/leagues/",league,"?view=mSchedule",sep="")
-standing_raw<-GET(url_match)
-
-StandingRaw <- rawToChar(standing_raw$content)
-standings <- jsonlite::fromJSON(StandingRaw)
+# url_sched<-paste("https://fantasy.espn.com/apis/v3/games/ffl/seasons/",
+#           year,"/segments/0/leagues/",league,"?view=mSchedule",sep="")
+# sched_raw<-GET(url_sched)
+# 
+# SchedRaw <- rawToChar(sched_raw$content)
+# sched <- jsonlite::fromJSON(SchedRaw)
 
 # schedule<-tibble(
 #   week=Match$schedule$matchupPeriodId,
@@ -59,13 +61,17 @@ schedule<-read_csv("data/league_schedule.csv")
 #             select(-owners),"league_roster.csv")
 team_list<-read_csv("data/league_roster.csv")
 
-away<-standings$schedule$away %>%
+away<-tibble(
+  teamId=standings$schedule$away$teamId,
+  totalPoints=standings$schedule$away$totalPoints) %>%
   filter(totalPoints>0) %>%
-  select(-gamesPlayed) %>%
+  #select(-gamesPlayed) %>%
   rename(awayteam=teamId,awaypoints=totalPoints)
-home<-standings$schedule$home %>%
+home<-tibble(
+  teamId=standings$schedule$home$teamId,
+  totalPoints=standings$schedule$home$totalPoints)  %>%
   filter(totalPoints>0) %>%
-  select(-gamesPlayed) %>%
+  #select(-gamesPlayed) %>%
   rename(hometeam=teamId,homepoints=totalPoints)
 results<-bind_cols(away,home) %>%
   mutate(away_result=if_else(awaypoints>homepoints,"W","L"),
@@ -152,40 +158,29 @@ nextweek<-nextweek_long %>%
   mutate(range=abs(away_points-home_points)) %>%
   select(-gameid,-awayhome) 
 
+#Last week's games
+last_week<-results %>%
+  filter(week==max(week)) %>%
+  select(-away_result:-week) %>%
+  left_join(team_list %>%
+              select(teamId,fullname) %>%
+              rename(awayteam=teamId)) %>%
+  rename(away_team=fullname) %>%
+  left_join(team_list %>%
+              select(teamId,fullname) %>%
+              rename(hometeam=teamId)) %>%
+    rename(home_team=fullname) %>%
+  select(away_team,awaypoints,home_team,homepoints)
 ```
-
-Text about the week.
-
-### League standings and season stats
-Here's a look at our current standings
-
-```{r, echo=FALSE}
-kable(stand_tbl)
-```
-
-Here's our current awards leaders from these standings:
-
-* Yellow shirt (most points): 
-* D-FENCE (least points allowed): 
-* Tough luck (points rank - playoff rank):
-* First round bye (playoff rank - points rank):
-
-Here's a list of the **top five scoring performances** so far this season.
-
-```{r, include=FALSE}
-toppoints<-bind_rows(away_sel,home_sel) %>%
-  left_join(team_list) %>%
-  select(fullname,week,points_scored,result) %>%
-  top_n(5,points_scored) %>%
-  arrange(-points_scored) 
-```
-```{r, echo=FALSE}
-kable(toppoints)
-```
-
-Erin and Trav retain the top spot here, a good 30 points over Jacob's G.O.A.T.
 
 ### Last week's games
+
+```{r, echo=FALSE}
+kable(last_week)
+```
+
+Last week's games were mostly comfortable wins, with one exception. The Southern Sharks choked on the G.O.A.T., coming up just two points short. The Jumpin Jaheims were our hard luck case for their week, as Evan's 121 points would have beat five other teams. Unfortunately he was up against our current points leader (Captain Clairvoyant), who scored the second highest one week total thus far.
+
 
 Here's last week's **10 best performing players.** The bench variable shows whether they got left on the bench or not.
 
@@ -194,6 +189,8 @@ kable(top_n(players %>%
               select(name,points,fullname,bench),10,points) %>%
         arrange(-points))
 ```
+
+Patrick Mahomes had another monster week, justifying his first round draft status. Two other quarterbacks--Russell Wilson and Josh Allen--also had excellent showings. Justin Jefferson had a breakout week (on the bench) and I should have played James Robinson.
 
 There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
 
@@ -212,12 +209,67 @@ kable(top_n(players %>%
         arrange(points))
 ```
 
+Time for a new defense for me (and also maybe for the Hobbits). 
 
 Who won the **best scoring bench** award last week?
 
 ```{r,echo=FALSE}
 kable(benchpoints %>% arrange(-points))
 ```
+
+The FT's and Sharks definitely showing some depth!
+
+### League standings and season stats
+Here's a look at our current standings
+
+```{r, echo=FALSE}
+kable(stand_tbl)
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): Captain Clairvoyant
+* D-FENCE (least points allowed): Captain Clairvoyant
+* Tough luck (points rank - playoff rank): Jumpin’ Jaheims
+* Lucky ducks (playoff rank - points rank): KC Gophers
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, include=FALSE}
+toppoints<-bind_rows(away_sel,home_sel) %>%
+  left_join(team_list) %>%
+  select(fullname,week,points_scored,result) %>%
+  top_n(5,points_scored) %>%
+  arrange(-points_scored) 
+```
+```{r, echo=FALSE}
+kable(toppoints)
+```
+
+Erin and Trav retain the top spot here, but Brian moved into second place.
+
+Lastly, here's a look at the **points trendline** for each team.
+
+```{r, echo=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=as.character(week)) %>%
+  left_join(team_list %>%
+              select(teamId,fullname))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  #geom_smooth()+
+  facet_wrap(~fullname)
+```
+
 
 ## Next week's games
 
@@ -227,6 +279,4 @@ Here's a quick summary of next week's matchups:
 kable(nextweek)
 ```
 
-The closest matchup is {x}, and the biggest mismatch is {y}
-
-Remember to check for bye weeks!
+Huge showdown next week between Captain Clairvoyant and the FT's, our #1 and #2 teams so far. Evan tries to notch his first win against me. Our mismatch of the week is the G.O.A.T. vs. the KC Gophers, where Jacob would appear to be heavily favored. We'll see how it all plays out!
