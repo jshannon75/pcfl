@@ -250,7 +250,7 @@ Erin and Trav retain the top spot here, but Brian moved into second place.
 
 Lastly, here's a look at the **points trendline** for each team.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 teamtrend<-results %>%
   select(awayteam,awaypoints,week) %>%
   rename(teamId=awayteam,
