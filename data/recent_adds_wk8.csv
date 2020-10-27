@@ -1,0 +1,26 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division,stay
+2020-10-21,Justin Jackson,8,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-10-21,Eagles D/ST,9,16,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-10-22,Justin Herbert,38.480000000000004,0,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,5
+2020-10-23,Zack Moss,8.7,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,4
+2020-10-22,Wil Lutz,11,17,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish,5
+2020-10-22,Seahawks D/ST,-5,16,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish,5
+2020-10-25,Mike Williams,0.9,4,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish,2
+2020-10-25,Daniel Carlson,9,17,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish,2
+2020-10-21,Giants D/ST,2,16,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-10-22,Randy Bullock,10,17,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,5
+2020-10-21,D'Andre Swift,12.799999999999999,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,6
+2020-10-21,Bears D/ST,10,16,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,6
+2020-10-22,Leonard Fournette,12.7,23,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,5
+2020-10-21,Teddy Bridgewater,19.16,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,6
+2020-10-23,Chiefs D/ST,21,16,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,4
+2020-10-23,Giovani Bernard,19.3,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,4
+2020-10-25,Jamaal Williams,19.4,23,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,2
+2020-10-21,Bills D/ST,16,16,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits,6
+2020-10-23,Keelan Cole Sr.,1.7000000000000002,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits,4
+2020-10-21,Jerick McKinnon,-0.1,2,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,6
+2020-10-21,DJ Chark Jr.,3.1,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,6
+2020-10-22,Chase Edmonds,19.050000000000004,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,5
+2020-10-22,Mike Davis,6.1000000000000005,2,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,5
+2020-10-22,Gardner Minshew II,19.02,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,5
+2020-10-25,Cole Beasley,16.700000000000003,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,2

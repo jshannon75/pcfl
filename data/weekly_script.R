@@ -8,12 +8,7 @@ library(knitr)
 #ReadData
 year<-2020
 league<-1403922
-
-weeks<-read_csv("data/week_dates.csv") %>%
-  filter(mdy(Date) > today()) %>%
-  filter(mdy(Date)==min(mdy(Date)))
-
-week_sel<-weeks$Week
+week_sel<-6
 
 url_match<-paste("https://fantasy.espn.com/apis/v3/games/ffl/seasons/",
                  year,"/segments/0/leagues/",league,"?view=mMatchup",sep="")
