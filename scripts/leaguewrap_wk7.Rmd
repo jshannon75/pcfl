@@ -1,5 +1,5 @@
 ---
-title: 'PCFL: Week 6 wrap-up'
+title: 'PCFL: Week 7 wrap-up'
 output: html_document
 editor_options: 
   chunk_output_type: console
