@@ -1,0 +1,15 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division,stay
+2020-11-04,Justin Jackson,0,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-11-04,Giants D/ST,9,16,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-11-08,Eric Ebron,9.7,6,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish,2
+2020-11-04,Damien Harris,7.1000000000000005,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-11-04,Marvin Jones Jr.,11.8,4,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-11-08,J.K. Dobbins,4.5,2,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,2
+2020-11-05,Nyheim Hines,5.85,2,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish,5
+2020-11-06,Antonio Brown,4.6,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,4
+2020-11-04,JaMycal Hasty,3.35,23,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,6
+2020-11-07,DeeJay Dallas,10.9,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,3
+2020-11-04,Washington D/ST,4,16,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits,6
+2020-11-05,Bears D/ST,5,16,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,5
+2020-11-05,Teddy Bridgewater,28.3,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,5
+2020-11-05,Corey Davis,0,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,5

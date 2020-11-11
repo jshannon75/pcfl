@@ -1,0 +1,175 @@
+---
+title: 'PCFL: Week 8 wrap-up'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+
+weeks<-read_csv("data/week_dates.csv") %>%
+  filter(mdy(Date) > today()) %>%
+  filter(mdy(Date)==min(mdy(Date)))
+week_sel<-weeks$Week
+
+
+#knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
+schedule<-read_csv("data/league_schedule.csv")
+team_list<-read_csv("data/league_roster.csv")
+players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
+recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
+last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
+benchpoints<-read_csv(paste("data/benchpoints_wk",week_sel,".csv",sep=""))
+stand_tbl<-read_csv(paste("data/stand_tbl_wk",week_sel,".csv",sep=""))
+toppoints<-read_csv(paste("data/toppoints_wk",week_sel,".csv",sep=""))
+results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
+
+nextweek_long<-schedule %>%
+  filter(week==week_sel) %>%
+  mutate(gameid=row_number()) %>%
+  pivot_longer(away_id:home_id,
+               names_to="awayhome",
+               values_to="teamId") %>%
+  left_join(team_list %>% 
+              select(teamId,fullname)) %>%
+  left_join(stand_tbl %>%
+              select(fullname,points_scored)) %>%
+  select(-teamId) 
+
+nextweek<-nextweek_long %>%
+  filter(awayhome=="away_id") %>%
+  rename(away_team=fullname,
+         away_points=points_scored) %>%
+  left_join(nextweek_long %>%
+              filter(awayhome=="home_id") %>%
+              select(-awayhome) %>%
+              rename(home_team=fullname,
+                     home_points=points_scored)) %>%
+  mutate(range=abs(away_points-home_points)) %>%
+  select(-gameid,-awayhome) 
+
+```
+
+### Last week's games
+
+```{r, echo=FALSE}
+kable(last_week %>%
+        rename(Away=away_team,
+               `Away points`=awaypoints,
+               Home=home_team,
+               `Home points`=homepoints))
+```
+
+We continued a trend of relatively close games--only one contest was decided by more than 10 points (sorry, Christine!). The First Timers and Team Sasquatch had the two lowest point totals of the week, but they were playing each other, so Robbie came away with a lucky victory. On the other side, Christine had the second highest scoring this week, but she ended up playing the top team and ended up with a tough luck loss (sorry!). The Page family had a good week, with both Richard and Jacob winning over Evan and Scott respectively. Brian also won a close victory over Sarah. 
+
+Obligatory reminder: you should make sure to check your bye weeks and also whether your stars are active at gametime.
+
+#### Best performing players
+
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(players %>% 
+              select(name,points,fullname),10,points) %>%
+        rename(Player=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Another good week for Dalvin Cook. Christian McCaffrey had a nice week in a return to action. As is usual, multiple quarterbacks also racked up points this week--Kyler Murray and Josh Allen particularly.
+
+#### Best addition and worst starters
+There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
+
+```{r,echo=FALSE}
+kable(recent_adds %>% 
+        select(add_date,name,points,fullname) %>%
+        rename(`Date added`=add_date,
+               Name=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Teddy Bridgewater was the clear leader this week, scoring nearly 30 points. Nice pickup for Evan.
+
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(benchpoints %>% arrange(-points)%>%
+  rename(Team=fullname,Points=points)) 
+```
+
+Brian's bench took the prize this week, but both Christine and I had solid benches in addition to our starters.
+
+### League standings and season stats
+Here's a look at our current standings
+
+```{r, echo=FALSE}
+kable(stand_tbl %>%
+        rename(Team=fullname,
+               Division=division,
+               `Points scored`=points_scored,
+               `Points allowed`=points_allowed,
+               `Points rank`=points_rank,
+               `Playoff rank`=playoff_rank))
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): Georgia Peanuts
+* D-FENCE (least points allowed): Southern Sharks (*new*)
+* Tough luck (points rank - playoff rank): First Timers (3rd and 8th)
+* Lucky ducks (playoff rank - points rank): Sasquatch, GOAT, and Gophers
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        rename(Team=fullname,
+               Week=week,
+               `Points scored`=points_scored,
+               Result=result))
+```
+
+
+Lastly, here's a look at the **points trendline** for each team.
+
+```{r, echo=FALSE, message=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=as.character(week)) %>%
+  left_join(team_list %>%
+              select(teamId,fullname))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  #geom_smooth()+
+  facet_wrap(~fullname)
+```
+
+### Playoff picture
+
+There's now five weeks left in the season. If it ended today, our division leaders would be me and Brian (tied with Robbie, but winner on points). The wildcards would be Robbie and Sarah (the latter tied with Jacob but winner on points). No one is more than three games out of a playoff spot yet, though, so still plenty of time for things to change.
+
+## Next week's games
+
+Here's a quick summary of next week's matchups:
+
+```{r,echo=FALSE}
+kable(nextweek)
+```
+
+Brian and Richard face off in a battle of past champions. Christine tries to bury Scott's hopes for a playoff comeback. The First Timers have been slumping, but they'll try to tie up Jacob's GOAT. Evan's also hoping for a leap in the standings by capturing Robbie's Sasquatch. It'll be a tense week in the Shannon household as Sarah fights to hold onto her playoff spot. Good luck all!
