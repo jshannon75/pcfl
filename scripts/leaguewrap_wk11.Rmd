@@ -64,9 +64,9 @@ kable(last_week %>%
                `Home points`=homepoints))
 ```
 
-Except for three teams (Brian, Christine, and Robbie), everyone scored 90 or less points this week. Injuries + bye weeks will take their toll! Brian and Robbie are the two league leaders at this point, and they both came out victorious against Richard and Evan respectively. Christine's had multiple high scoring week's recently, this week with a win over Scott. I won the Shannon household rivalry game against Sarah, and Jacob managed to hold out for win against Erin and Trav.
+A couple of teams in need of a win came through this week. The Jumpin' Jaheims took down the league leading Captian Clairvoyant, and The Hangry Hobbits ate up the Sharks. The First Timers broke a long losing streak as Christine's Gophers had an unexpectedly down week. The other league leader, Robbie, also lost to Jacob's G.O.A.T. Lastly, my Peanuts came through against Richard's team.
 
-Obligatory reminder: you should make sure to check your bye weeks and also whether your starters are active at gametime.
+We're almost done with bye weeks--none this week and just two (Carolina and Tampa Bay) next week. But as always, keep an eye on COVID and injury related news.
 
 #### Best performing players
 
@@ -81,7 +81,7 @@ kable(top_n(players %>%
         arrange(-Points))
 ```
 
-Tom Brady is 43 years old and (frustratingly) good at football. Kyler Murray came up with a miracle against Josh Allen, but both of those young quarterbacks had nice weeks. From a team perspective, Jacob (the GOAT) had two players in the top five this week.
+Not a breakout week for anyone, with only Deshaun Watson breaking 30 points. But Watson and Keenan Allen helped power Scott's win. Among non-QBs, Adam Thielen also had a very nice week. 
 
 #### Best addition and worst starters
 There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
@@ -96,7 +96,7 @@ kable(recent_adds %>%
         arrange(-Points))
 ```
 
-No breakout scorers this week, but McKissic and Meyers were both nice pickups.
+Several nice adds this week by Evan (Kirk Cousins and the Browns D/ST) and Sarah (Michael Pittman,James Connor, and the Chargers D/ST). Certainly an argument for the value of the streaming defense--going just based on matchup.
 
 Who won the **best scoring bench** award last week?
 
@@ -105,7 +105,7 @@ kable(benchpoints %>% arrange(-points)%>%
   rename(Team=fullname,Points=points)) 
 ```
 
-Evan's bench easily outscored his starters this week. If you haven't noticed, Sarah's bench is now more or less empty.
+The G.O.A.T. won their game, but also had plenty left on the bench.
 
 ### League standings and season stats
 Here's a look at our current standings
@@ -123,9 +123,9 @@ kable(stand_tbl %>%
 Here's our current awards leaders from these standings:
 
 * Yellow shirt (most points): Georgia Peanuts
-* D-FENCE (least points allowed): Southern Sharks
-* Tough luck (points rank - playoff rank): Hibbits (4th and 9th) (*new*)
-* Lucky ducks (playoff rank - points rank): The GOAT (7th in points, 4th in the standings)
+* D-FENCE (least points allowed): Team Sasquatch (*new*)
+* Tough luck (points rank - playoff rank): Hobbits (4th in points and 9th in the standings)
+* Lucky ducks (playoff rank - points rank): The GOAT, Sharks, and Gophers are all tied here.
 
 Here's a list of the **top five scoring performances** so far this season.
 
@@ -163,7 +163,7 @@ ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
 
 ### Playoff picture
 
-There's now four weeks left in the season. If it ended today, our division leaders would be me and Brian (tied with Robbie, but winner on points). The wildcards would be Robbie and Jacob.  Time is starting to run out on the Hobbits and Jumpin' Jaheims, but no one is eliminated yet.
+There's now three weeks left in the season. If it ended today, our division leaders would be me and Brian (tied with Robbie, but winner on points). The wildcards would be Robbie and Jacob. Sarah and Christine are two games back for that last wild card spot, so it's still a possibility. Erin & Trav and Richard are still technically alive, but they'd need some really lucky breaks. If I'm reading these right, I think Evan and Scott are now technically eliminated. But there are always the consolation brackets!
 
 ## Next week's games
 
@@ -173,4 +173,4 @@ Here's a quick summary of next week's matchups:
 kable(nextweek)
 ```
 
-At the top of the standings, Brian goes up against Evan and Robbie faces down the GOAT. It's a crucial week for Scott, as the Hobbits swim with the Sharks, as well as for Evan to stay alive for the playoffs. Christine looks to continue her hot streak against the First Timers, and I match up with Richard. Good luck all!
+Many teams' playoff hopes hinge on the GOAT losing, and he's matched up with Brian this week, making it the key game of the week. Among the other leaders, I play Evan and Robbie plays Christine (another important matchup). Sarah needs a win against Richard to stay in the playoff hunt. The Hobbits have racked up points this season, even if their record doesn't show it, and they face the First Timers this week. Good luck all!
