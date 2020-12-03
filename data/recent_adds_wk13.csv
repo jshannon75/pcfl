@@ -1,0 +1,9 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division,stay
+2020-12-03,James Conner,0,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,0
+2020-12-03,Salvon Ahmed,0,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,0
+2020-11-28,Zack Moss,7.800000000000001,23,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,5
+2020-12-03,Matt Ryan,13.9,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,0
+2020-12-03,Myles Gaskin,0,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,0
+2020-11-29,Ryan Fitzpatrick,19.28,0,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,4
+2020-11-29,Tyler Bass,11,17,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits,4
+2020-11-29,Jordan Wilkins,7.2,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,4
