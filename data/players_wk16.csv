@@ -1,0 +1,164 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division
+2020-09-08,Dalvin Cook,24.400000000000002,2,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-09-08,Davante Adams,7.7,4,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-09-08,Allen Robinson II,10.3,4,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-09-08,Darren Waller,25.5,6,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-09-16,James Robinson,12.8,2,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-09-30,Tee Higgins,4.6,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-10-15,Younghoe Koo,11,17,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-10-22,Justin Herbert,27.96,0,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-10-28,Justin Jefferson,14.4,23,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-11-18,Rams D/ST,4,16,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-11-18,Damien Harris,0,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-12-03,James Conner,0,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-12-04,Allen Lazard,8.100000000000001,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-12-10,Jalen Hurts,37.82,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-12-10,Cam Akers,6.700000000000001,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-12-16,Baker Mayfield,20.98,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish
+2020-09-08,Michael Thomas,0,20,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Austin Ekeler,9.9,2,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,George Kittle,0,21,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,DJ Moore,16.200000000000003,4,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Kareem Hunt,4.3,2,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Deshaun Watson,23.42,0,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Keenan Allen,2.1,4,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Antonio Gibson,0,20,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Marquise Brown,12.8,20,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Phillip Lindsay,6.000000000000001,23,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Ryan Tannehill,37.02,20,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Ravens D/ST,12,16,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Henry Ruggs III,0,20,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-19,Jonnu Smith,7.7,20,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-10-22,Wil Lutz,3,17,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-10-28,Saints D/ST,4,20,1,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-12-06,Noah Fant,16.8,6,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish
+2020-09-08,Patrick Mahomes,25.86,0,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Aaron Jones,23.3,23,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,David Johnson,18.8,20,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Tyler Higbee,14.7,20,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Stefon Diggs,20.200000000000003,4,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Justin Tucker,8,20,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Carson Wentz,0,20,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Darrell Henderson Jr.,0.8,2,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Duke Johnson,0,2,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-20,Adrian Peterson,2.3000000000000003,20,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-10-25,Mike Williams,3.2,20,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-10-25,Daniel Carlson,9,17,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-10-27,Adam Thielen,8.1,4,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-11-08,Eric Ebron,0,6,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-11-22,Vikings D/ST,1,16,0,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-11-22,DJ Chark Jr.,7.300000000000001,20,1,3,TFT,3,First Timers,The FTs,First Timers The FTs,Hot Dish
+2020-09-08,Rodrigo Blankenship,11,17,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Clyde Edwards-Helaire,8.8,2,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Kenny Golladay,0,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Chris Carson,7.9,2,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Zach Ertz,7.9,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Terry McLaurin,11.2,4,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Russell Wilson,12.04,0,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Tyler Boyd,0,23,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Hayden Hurst,10.1,6,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-11-04,Marvin Jones Jr.,22.200000000000003,4,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-11-18,Michael Pittman Jr.,2.9000000000000004,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-11-25,Dalton Schultz,8.4,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-11-28,Zack Moss,8.1,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-12-03,Matt Ryan,27.84,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-12-03,Myles Gaskin,0,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-12-16,Bills D/ST,13,16,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish
+2020-09-08,Ezekiel Elliott,0,23,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Josh Jacobs,18.900000000000002,2,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Chris Godwin,11.6,4,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Jonathan Taylor,17.5,2,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Kyler Murray,33.14,0,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Jarvis Landry,15.600000000000001,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Will Fuller V,0,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Brandin Cooks,8.9,4,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Colts D/ST,6,16,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Broncos D/ST,-6,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Tony Pollard,29.2,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-10-02,Jared Goff,15.26,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-11-14,Curtis Samuel,6.800000000000001,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-11-21,Dallas Goedert,5.9,6,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-12-04,Jason Myers,10,17,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-12-06,Keke Coutee,11.8,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits
+2020-09-08,Travis Kelce,18.8,6,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,Tyreek Hill,14.4,4,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,JuJu Smith-Schuster,1,20,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,A.J. Brown,12.9,4,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,Raheem Mostert,6.800000000000001,2,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,Sterling Shepard,6.800000000000001,20,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,Ben Roethlisberger,6.7,20,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,Buccaneers D/ST,2,16,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,Matt Prater,7,20,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-10-08,Stephen Gostkowski,8,17,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-10-29,Brandon Aiyuk,17.8,23,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-11-05,Nyheim Hines,7.050000000000001,20,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-11-12,Austin Hooper,12.600000000000001,20,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-11-25,Derek Carr,2.12,0,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-11-25,Wayne Gallman,2.9000000000000004,2,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-12-05,Chiefs D/ST,4,20,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish
+2020-09-08,Derrick Henry,24.200000000000003,2,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,Nick Chubb,13.6,2,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,DeAndre Hopkins,25.5,4,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,Amari Cooper,1.2999999999999998,23,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,Melvin Gordon III,22.1,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,Hunter Henry,15,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,DK Metcalf,6.8,4,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,Aaron Rodgers,18.32,0,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,John Brown,0,21,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,Mecole Hardman,9.100000000000001,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-10-15,Rob Gronkowski,4.4,6,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-10-21,D'Andre Swift,20.2,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-10-22,Leonard Fournette,20,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-10-31,Jason Sanders,1,17,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-11-06,Antonio Brown,18.8,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-11-11,Dolphins D/ST,8,20,1,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-12-11,Washington D/ST,2,16,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits
+2020-09-08,Lamar Jackson,29.22,0,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,Alvin Kamara,16.9,2,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,Calvin Ridley,27.3,4,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,Mark Andrews,15.100000000000001,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,David Montgomery,28.700000000000003,23,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,Steelers D/ST,4,16,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,Harrison Butker,6,17,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,Robby Anderson,3,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-11-25,Robert Tonyan,9.3,6,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-12-04,J.K. Dobbins,14.600000000000001,2,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-12-10,Corey Davis,20,4,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-12-10,Graham Gano,6,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-12-11,Mike Davis,7.1000000000000005,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-12-16,T.Y. Hilton,9.100000000000001,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-12-16,Cole Beasley,15.200000000000001,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-12-20,Emmanuel Sanders,9.600000000000001,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits
+2020-09-08,Christian McCaffrey,0,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Miles Sanders,9.5,2,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Julio Jones,0,21,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Robert Woods,18.6,4,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Todd Gurley II,2.4,2,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Devin Singletary,15.9,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,DeVante Parker,0,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Tom Brady,23.4,0,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Matthew Stafford,15.280000000000001,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Diontae Johnson,15.9,4,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Boston Scott,5.9,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-10-01,T.J. Hockenson,0.8,6,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-10-04,Brian Hill,1.7000000000000002,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-10-23,Keelan Cole Sr.,3.2,20,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-11-29,Tyler Bass,12,17,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-12-04,Seahawks D/ST,8,16,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-12-19,Jeff Wilson Jr.,12,23,1,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits
+2020-09-08,Kenyan Drake,5,2,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-09-08,Mike Evans,14,23,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-09-08,Tyler Lockett,5.4,4,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-09-08,Cooper Kupp,6.4,4,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-09-08,Evan Engram,6.6000000000000005,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-09-08,Ronald Jones II,0,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-09-08,Josh Allen,37.66,0,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-10-22,Chase Edmonds,14.1,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-11-11,Jakobi Meyers,12.600000000000001,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-11-18,Browns D/ST,7,16,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-11-18,Mike Gesicki,0,6,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-11-29,Jordan Wilkins,0,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-12-07,Deebo Samuel,0,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-12-07,J.D. McKissic,21.200000000000003,2,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-12-07,Robbie Gould,10,17,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
+2020-12-13,Chase Claypool,6.300000000000001,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits
