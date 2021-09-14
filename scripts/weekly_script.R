@@ -6,14 +6,15 @@ library(lubridate)
 library(knitr)
 
 #ReadData
-year<-2020
+year<-2021
 league<-1403922
 
 weeks<-read_csv("data/week_dates.csv") %>%
-  filter(mdy(Date) > today()) %>%
-  filter(mdy(Date)==min(mdy(Date)))
+  filter(mdy(Date) < today()) %>%
+  filter(mdy(Date)==max(mdy(Date)))
 
 week_sel<-weeks$Week
+
 
 url_match<-paste("https://fantasy.espn.com/apis/v3/games/ffl/seasons/",
                  year,"/segments/0/leagues/",league,"?view=mMatchup",sep="")
@@ -49,7 +50,7 @@ standings <- jsonlite::fromJSON(StandingRaw)
 #   home_id=Match$schedule$home$teamId
 # )
 # write_csv(schedule,"data/league_schedule.csv")
-schedule<-read_csv("data/league_schedule.csv")
+schedule<-read_csv("data/leaguesched.csv")
 
 ##Download team list 
 # team_list<-Teams$teams %>%
@@ -57,7 +58,7 @@ schedule<-read_csv("data/league_schedule.csv")
 #          fullname=paste(location,nickname))
 # write_csv(team_list %>%
 #             select(-owners),"league_roster.csv")
-team_list<-read_csv("data/league_roster.csv")
+team_list<-read_csv("data/teaminfo.csv")
 
 
 away<-tibble(
@@ -94,7 +95,8 @@ stand_tbl1<-bind_rows(away_sel,home_sel) %>%
             points_allowed=sum(points_allowed))
 stand_tbl<-bind_rows(away_sel,home_sel) %>%
   count(teamId,result) %>% 
-  left_join(team_list %>% select(teamId,fullname,division)) %>%
+  left_join(team_list %>% 
+              select(teamId,fullname,division)) %>%
   pivot_wider(names_from=result,
               values_from=n,
               values_fill=0) %>%
@@ -114,6 +116,12 @@ toppoints<-bind_rows(away_sel,home_sel) %>%
   arrange(-points_scored) 
 write_csv(toppoints,paste("data/toppoints_wk",week_sel,".csv",sep=""))
 
+bottom_points<-bind_rows(away_sel,home_sel) %>%
+  left_join(team_list) %>%
+  select(fullname,week,points_scored,result) %>%
+  top_n(-5,points_scored) %>%
+  arrange(points_scored) 
+
 #Last week's games
 player_extract<-function(team_slot){
   df<-Match$teams$roster$entries[[team_slot]]
@@ -124,8 +132,9 @@ player_extract<-function(team_slot){
   
   tibble(add_date,name,points,slot) %>%
     mutate(bench=if_else(slot<20,0,1),
-           rowid=team_slot)
+           teamId=team_slot)
 }
+
 players<-map_df(1:10,player_extract) %>%
   left_join(team_list)
 write_csv(players,paste("data/players_wk",week_sel,".csv",sep=""))
@@ -136,7 +145,8 @@ benchpoints<-players %>%
   filter(bench==1) %>%
   left_join(team_list) %>%
   ungroup() %>%
-  select(fullname,points)
+  select(fullname,points) %>%
+  distinct() 
 write_csv(benchpoints,paste("data/benchpoints_wk",week_sel,".csv",sep=""))
 
 
