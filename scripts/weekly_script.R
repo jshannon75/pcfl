@@ -169,3 +169,31 @@ last_week<-results %>%
   rename(home_team=fullname) %>%
   select(away_team,awaypoints,home_team,homepoints)
 write_csv(last_week,paste("data/wk",week_sel,".csv",sep=""))
+
+#Next week's games
+week_next<-week_sel+1
+nextweek_long<-schedule %>%
+  filter(week==week_next) %>%
+  mutate(gameid=row_number()) %>%
+  pivot_longer(hometeam:awayteam,
+               names_to="awayhome",
+               values_to="teamId") %>%
+  left_join(team_list %>% 
+              select(teamId,fullname)) %>%
+  left_join(stand_tbl %>%
+              select(fullname,points_scored)) %>%
+  select(-teamId) 
+
+nextweek<-nextweek_long %>%
+  filter(awayhome=="awayteam") %>%
+  rename(away_team=fullname,
+         away_points=points_scored) %>%
+  left_join(nextweek_long %>%
+              filter(awayhome=="hometeam") %>%
+              select(-awayhome) %>%
+              rename(home_team=fullname,
+                     home_points=points_scored)) %>%
+  mutate(range=abs(away_points-home_points)) %>%
+  select(-gameid,-awayhome) 
+
+write_csv(nextweek,paste("data/nextweek_wk",week_sel,".csv",sep=""))
