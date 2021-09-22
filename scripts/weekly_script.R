@@ -53,12 +53,12 @@ standings <- jsonlite::fromJSON(StandingRaw)
 schedule<-read_csv("data/leaguesched.csv")
 
 ##Download team list 
-# team_list<-Teams$teams %>%
-#   mutate(teamid=row_number(),
-#          fullname=paste(location,nickname))
+team_list<-Teams$teams %>%
+  mutate(teamid=row_number(),
+         fullname=paste(location,nickname))
 # write_csv(team_list %>%
 #             select(-owners),"league_roster.csv")
-team_list<-read_csv("data/teaminfo.csv")
+team_list<-read_csv("data/teaminfo1.csv",lazy = FALSE)
 
 
 away<-tibble(
@@ -136,6 +136,7 @@ player_extract<-function(team_slot){
 }
 
 players<-map_df(1:10,player_extract) %>%
+  rename(teamId1=teamId) %>%
   left_join(team_list)
 write_csv(players,paste("data/players_wk",week_sel,".csv",sep=""))
 
@@ -197,3 +198,7 @@ nextweek<-nextweek_long %>%
   select(-gameid,-awayhome) 
 
 write_csv(nextweek,paste("data/nextweek_wk",week_sel,".csv",sep=""))
+<<<<<<< HEAD
+
+=======
+>>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
