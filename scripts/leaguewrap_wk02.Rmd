@@ -7,15 +7,10 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-<<<<<<< HEAD
 library(readr)
 library(dplyr)
 library(knitr)
 library(ggplot2)
-=======
-library(tidyverse)
-library(knitr)
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
 library(lubridate)
 
 weeks<-read_csv("data/week_dates.csv") %>%
@@ -26,7 +21,7 @@ week_sel<-weeks$Week
 
 #knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
 schedule<-read_csv("data/leaguesched.csv")
-team_list<-read_csv("data/teaminfo.csv")
+team_list<-read_csv("data/teaminfo1.csv")
 players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
 recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
 last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
@@ -47,11 +42,7 @@ kable(last_week %>%
                `Home points`=homepoints))
 ```
 
-<<<<<<< HEAD
 The ownership at Peanuts HQ is definitely showing some concern after two weeks of poor showings. This week my intrepid players were thrown into Mount Doom by a dominant performance from Scott's Hangry Hobbits. That tragic loss in last year's championship still haunts us. In other news, Evan's Jaheim's leaped over the GOAT. In a bitter family faceoff, The Sophomores harpooned the Sharks by just 2 points. Team Sasquatch knocked the Gophers from last year's high scoring performance. Richard was the high scoring team of the week, downing Brian's Captain Clairvoyant.
-=======
-The ownership at Peanuts HQ is definitely showing some concern after two weeks of poor showings. This week my intrepid players were thrown into Mount Doom by a dominant performance from Scott's Hangry Hobbits. That tragic loss in last year's championship still haunts us. In other news, while Jacob is now taller than his father Richard, the Pigskin on the Gridiron showed the wisdom of age, fending off the G.O.A.T. In another family faceoff, The Sophomores harpooned the Sharks by just 2 points. Team Sasquatch knocked the Gophers from last year's high scoring performance. Evan's Jumpin' Jaheims was the high scoring team of the week, downing Brian's Captain Clairvoyant.
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
 
 
 #### Best performing players
@@ -91,11 +82,7 @@ kable(benchpoints %>% arrange(-points)%>%
   rename(Team=fullname,Points=points)) 
 ```
 
-<<<<<<< HEAD
 Richard won his game with points to spare, with the top bench by 15 points. He's looking dominant!
-=======
-Richard won his game with points to spare, with the top bench by 15 points.
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
 
 ### League standings and season stats
 Here's a look at the current standings.
@@ -112,11 +99,7 @@ kable(stand_tbl %>%
 
 Here's our current awards leaders from these standings:
 
-<<<<<<< HEAD
 * Yellow shirt (most points): Pigskin on the Gridiron
-=======
-* Yellow shirt (most points): Jumpin' Jaheims
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
 * D-FENCE (least points allowed): The G.O.A.T.
 * Tough luck (points rank - playoff rank): The Southern Sharks--fifth in points but an 0-2 record to show for it.
 * Lucky ducks (playoff rank - points rank): The Sophomores--seventh in points, but a 2-0 record!
@@ -131,11 +114,7 @@ kable(toppoints %>%
                Result=result))
 ```
 
-<<<<<<< HEAD
 KC Gophers holds onto the top spot this week, but Richard isn't far behind Christine.
-=======
-KC Gophers holds onto the top spot this week, but Evan isn't far behind Christine.
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
 
 ### Here's a look at the **points trendline** for each team.
 
@@ -159,19 +138,11 @@ ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
   facet_wrap(~fullname)
 ```
 
-<<<<<<< HEAD
 A big jump from the Hangry Hobbits and drops from the Gophers, Sharks, and Captain Clairvoyant. Jacob and I are stuck in mediocrity while Richard stays high.
 
 ### If the season ended today...
 
 Our playoff teams would be Richard, Erin/Trav, Christine, and Brian. Our last place finisher would be Jacob. But it's still early!
-=======
-A big jump from the Hangry Hobbits and drops from the Gophers, Sharks, and Captain Clairvoyant. Jacob and I are stuck in mediocrity while Evan stays high.
-
-### If the season ended today...
-
-Our playoff teams would be Evan, Erin/Trav, Christine, and Brian. Our last place finisher would be Jacob. But it's still early!
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
 
 ### Next week's preview
 
@@ -179,10 +150,6 @@ Our playoff teams would be Evan, Erin/Trav, Christine, and Brian. Our last place
 kable(nextweek)
 ```
 
-<<<<<<< HEAD
 It's Shannon vs. Shannon as Sarah tries for her first win (and let's be honest, she's got a good shot given my season thus far). Last year's champion, Robbie, tries to cool down Richard's hot streak as the game of the week. The Sophomores take on the Gophers, and the Jaheims try to leap over the Hobbits. The biggest mismatch of the week on paper is Brian vs. Jacob, with an 88 point spread based on action thus far. But in fantasy, anything can happen!
-=======
-It's Shannon vs. Shannon as Sarah tries for her first win (and let's be honest, she's got a good shot given my season thus far). Last year's champion, Robbie, tries to cool down Evan's hot streak. The Sophomores take on the Gophers, and we have Pigskin vs. Hobbits. The biggest mismatch of the week on paper is Brian vs. Jacob, with an 88 point spread based on action thus far. But in fantasy, anything can happen!
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
 
 Good luck, y'all!

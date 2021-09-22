@@ -198,7 +198,3 @@ nextweek<-nextweek_long %>%
   select(-gameid,-awayhome) 
 
 write_csv(nextweek,paste("data/nextweek_wk",week_sel,".csv",sep=""))
-<<<<<<< HEAD
-
-=======
->>>>>>> 083d9a4af231765e566d8b48eaec6e959305a0bb
