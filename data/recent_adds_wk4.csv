@@ -1,0 +1,12 @@
+add_date,name,points,slot,bench,teamId1,abbrev,teamId,location,nickname,owners,fullname,division,stay
+2021-09-29,Sam Darnold,31.54,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-09-29,Peyton Barber,1.25,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-09-29,Curtis Samuel,3.9000000000000004,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-09-29,Colts D/ST,10,16,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-09-30,Greg Joseph,1,17,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,5
+2021-09-29,Jared Cook,16,6,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-09-29,Chuba Hubbard,8.1,2,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-09-29,Kirk Cousins,10.120000000000001,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-09-29,Daniel Carlson,1,17,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,6
+2021-09-29,Bengals D/ST,1,16,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-10-02,Cole Beasley,2.6,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,3

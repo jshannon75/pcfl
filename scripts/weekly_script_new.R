@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #Weekly file download
 
 library(httr)
@@ -345,6 +344,18 @@ last_week<-results %>%
 write_csv(last_week,paste("data/wk",week_sel,".csv",sep=""))
 
 #Next week's games
+points3wk<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  group_by(teamId) %>% 
+  top_n(3,week) %>%
+  summarise(points3wk=sum(points))
+
 week_next<-week_sel+1
 nextweek_long<-schedule %>%
   filter(week==week_next) %>%
@@ -354,21 +365,19 @@ nextweek_long<-schedule %>%
                values_to="teamId") %>%
   left_join(team_list %>% 
               select(teamId,fullname)) %>%
-  left_join(stand_tbl %>%
-              select(fullname,points_scored)) %>%
+  left_join(points3wk) %>%
   select(-teamId) 
 
 nextweek<-nextweek_long %>%
   filter(awayhome=="awayteam") %>%
   rename(away_team=fullname,
-         away_points=points_scored) %>%
+         away_points=points3wk) %>%
   left_join(nextweek_long %>%
               filter(awayhome=="hometeam") %>%
               select(-awayhome) %>%
               rename(home_team=fullname,
-                     home_points=points_scored)) %>%
+                     home_points=points3wk)) %>%
   mutate(range=abs(away_points-home_points)) %>%
   select(-gameid,-awayhome) 
 
 write_csv(nextweek,paste("data/nextweek_wk",week_sel,".csv",sep=""))
->>>>>>> efcc7702e822f1d1c421aac281f7b2722fdeea07
