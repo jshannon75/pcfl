@@ -32,6 +32,8 @@ results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
 nextweek<-read_csv(paste("data/nextweek_wk",week_sel,".csv",sep=""))
 ```
 
+A reminder at the outset: bye weeks start *_THIS WEEK_*!! Check your lineups and plan ahead.
+
 ### Last week's games
 
 ```{r, echo=FALSE}
