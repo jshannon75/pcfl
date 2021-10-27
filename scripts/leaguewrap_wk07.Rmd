@@ -1,0 +1,167 @@
+---
+title: 'PCFL 2021: Week 7 wrap-up'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+
+weeks<-read_csv("data/week_dates.csv") %>%
+  filter(mdy(Date) < today()) %>%
+  filter(mdy(Date)==max(mdy(Date)))
+week_sel<-weeks$Week
+
+
+#knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
+schedule<-read_csv("data/leaguesched.csv")
+team_list<-read_csv("data/teaminfo1.csv")
+players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
+recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
+last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
+benchpoints<-read_csv(paste("data/benchpoints_wk",week_sel,".csv",sep=""))
+stand_tbl<-read_csv(paste("data/stand_tbl_wk",week_sel,".csv",sep=""))
+toppoints<-read_csv(paste("data/toppoints_wk",week_sel,".csv",sep=""))
+results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
+nextweek<-read_csv(paste("data/nextweek_wk",week_sel,".csv",sep=""))
+```
+
+### Last week's games
+
+```{r, echo=FALSE}
+kable(last_week %>%
+        rename(Away=away_team,
+               `Away points`=awaypoints,
+               Home=home_team,
+               `Home points`=homepoints))
+```
+
+Well, the New Orleans defense came through for Robbie, and so Team Sasquatch came away with the W against the Sophomores. The Southern Sharks had possibly their most impressive week of the season, putting up 144 points (this week's top score) against The Jumpin' Jaheims. The Hangry Hobbits best the GOAT, whose offense continues to struggle, and Captain Clairvoyant best the Gophers. Lastly, Richard handed me my second straight loss.
+
+Last week's spread went 3-2: It got Scott, Sarah, and Brian right as winners, but missed on Richard and Robbie.
+
+Also, as a Bears fan, I hope all of you who won on the back of Tampa's players this week feel a sense of gratitude.
+
+#### Best performing players
+
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(players %>% 
+              select(name,points,fullname),10,points) %>%
+        rename(Player=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Cooper Kupp is having a nice season, and Ja'Marr Chase had a breakout week for the Sharks. 
+
+#### Best addition and top bench
+There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
+
+```{r echo=FALSE}
+kable(recent_adds %>% 
+        select(add_date,name,points,fullname) %>%
+        rename(`Date added`=add_date,
+               Name=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+The bye week brings a many transactions! Tua was a nice fill-in for me this week with Justin Herbert on bye, and D'Ernest Johnson did a nice job filling in for my injured Cleveland backs. The Giants Defense also had a very nice week, but Sam Darnold and the Panthers are good for that.
+
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(benchpoints %>% arrange(-points)%>%
+  rename(Team=fullname,Points=points)) 
+```
+
+Not only did Robbie beat our current points leader. He did so with points to spare! Don't look now, but last year's champ is making a move.
+
+### League standings and season stats
+Here's a look at the current standings.
+
+```{r, echo=FALSE}
+kable(stand_tbl %>%
+        rename(Team=fullname,
+               Division=division,
+               `Points scored`=points_scored,
+               `Points allowed`=points_allowed,
+               `Points rank`=points_rank,
+               `Playoff rank`=playoff_rank))
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): Team Sasquatch (told you they're surging to the top of the standings)
+* D-FENCE (least points allowed): Captain Clairvoyant *new*
+* Tough luck (points rank - playoff rank): Team Sasquatch--first in points but only fourth in the rankings
+* Lucky ducks (playoff rank - points rank): The Georgia Peanuts and Captain Clairvoyant *new*--eighth and sixth in points, but fifth and third in the rankings.
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        rename(Team=fullname,
+               Week=week,
+               `Points scored`=points_scored,
+               Result=result))
+```
+
+No new entries this week.
+
+### Here's a look at the **points trendline** for each team.
+
+```{r echo=FALSE, message=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14))) %>%
+  left_join(team_list %>%
+              select(teamId,fullname))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  geom_smooth(method="glm")+
+  facet_wrap(~fullname)
+```
+
+I mentioned Team Sasquatch, but the Sharks have also been showing some good improvement the last few weeks.
+
+### If the season ended today...
+
+Our playoff teams would be Erin/Trav, Richard, Brian, and Robbie. Our last place finisher would be Jacob.Just about halfway through the season, and things are starting to settle in.
+
+### Next week's preview
+
+```{r,echo=FALSE}
+nextweek1<-nextweek %>% select(away_team:range) %>%
+  mutate(away_points=round(away_points/3,2),home_points=round(home_points/3,2),
+         range=abs(away_points-home_points)) %>%
+  mutate(Favored=if_else(away_points>home_points,
+                         paste(away_team," (+",round(range,2),")",sep=""),
+                         paste(home_team," (+",round(range,2),")",sep=""))) %>%
+  select(-range)
+names(nextweek1)<-c("Away team","Last 3 wks avg (away)","Home team","Last 3 wks avg (home)",
+                   "Line")
+kable(nextweek1)
+```
+
+Sarah's Sharks have been doing better as of late, but Sasquatch has still been a touchdown and field goal better over the last three weeks, so he's favored in their game of the week matchup. The GOAT tries for the upset against the Sophomores, and I try to get back in the win column against Evan. It's been tough going for Christine since her week 1 victory, but I'm rooting for her against Richard this week. Lastly, Brian and Scott face off, with Brian also favored by about 10.
+
+Good luck, y'all! (And remember to check your byes!)
