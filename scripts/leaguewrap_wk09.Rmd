@@ -1,5 +1,5 @@
 ---
-title: 'PCFL 2021: Week 8 wrap-up'
+title: 'PCFL 2021: Week 9 wrap-up'
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -14,6 +14,7 @@ library(dplyr)
 library(knitr)
 library(ggplot2)
 library(lubridate)
+library(purrr)
 
 weeks<-read_csv("data/week_dates.csv") %>%
   filter(mdy(Date) < today()) %>%
@@ -42,7 +43,10 @@ lastweek_line<-read_csv(paste("data/nextweek_wk",week_sel-1,".csv",sep="")) %>%
                          paste(home_team," (+",round(range,2),")",sep=""))) %>%
   select(-range,-away_points,-home_points)
 
-
+benchpoints_files<-paste("data/",list.files(path = "data",pattern="benchpoints"),sep="")
+benchpoints_sum<-map_df(benchpoints_files,read_csv) %>%
+  group_by(fullname) %>%
+  summarise(points=sum(points))
 ```
 
 ### Last week's games
@@ -77,6 +81,8 @@ kable(top_n(players %>%
         arrange(-Points))
 ```
 
+Despite the down points week, a lot of high scorers!
+
 #### Best addition and top bench
 There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
 
@@ -90,7 +96,7 @@ kable(recent_adds %>%
         arrange(-Points))
 ```
 
-Lots of adds, but not a lot of action. Nyheim Hines scored 20 as the new addition on Richard's team, and the Patriots D was a big part of The Sophomore's victory
+Lots of adds, but not a lot of action. Nyheim Hines scored 20 as the new addition on Richard's team, and the Patriots D was a big part of The Sophomore's victory.
 
 Who won the **best scoring bench** award last week?
 
@@ -99,14 +105,18 @@ kable(benchpoints %>% arrange(-points)%>%
   rename(Team=fullname,Points=points)) 
 ```
 
-For the second straight week, Sarah's bench dominated--nearly TWICE as much as the 2nd place Hangry Hobbits. Here's a look at our *_new_* hot bench season point totals:
+For the second straight week, Sarah's bench dominated--nearly TWICE as much as the 2nd place Hangry Hobbits. 
+
+*New this week!!* Who has the most bench points for the _season_? (Now known as the hot bench award...) Here's the current standings:
 
 ```{r,echo=FALSE}
+kable(benchpoints_sum %>% 
+        arrange(-points) %>%
+        rename(`Team name`=fullname,`Total bench points`=points)) 
 
 ```
 
-
-
+Sarah's definitely built a healthy lead. Not good that my team is at the bottom for both starters AND bench points.
 
 ### League standings and season stats
 Here's a look at the current standings.
@@ -123,10 +133,10 @@ kable(stand_tbl %>%
 
 Here's our current awards leaders from these standings:
 
-* Yellow shirt (most points): Team Sasquatch
-* D-FENCE (least points allowed): Georgia Peanuts *new*
-* Tough luck (points rank - playoff rank): Hangry Hobbits *new*--now third in points but only sixth in the rankings
-* Lucky ducks (playoff rank - points rank): We've got a three team tie here this week: Pigskin on the Gridiron (4th in points, 2nd in standings), Captain Clairfoyant (6th and 4th), and Peanuts (7th and 5th).
+* Yellow shirt (most points): The Sophomores *new*
+* D-FENCE (least points allowed): Captain Clairvoyant *new*
+* Tough luck (points rank - playoff rank): Team Sasquatch and Southern Sharks *both new*--second and sixth in points, but fourth and eighth in the rankings
+* Lucky ducks (playoff rank - points rank): Captain Clairvoyant (5th in points and 3rd in rankings).
 
 Here's a list of the **top five scoring performances** so far this season.
 
@@ -162,11 +172,11 @@ ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
   facet_wrap(~fullname)
 ```
 
-Almost everyone besides the Sophomores were either the same or lower this week compared to last. Bye weeks and injuries will do that.
+The lines a trending down for a lot of us! Evan and Brian both had good weeks last week, though.
 
 ### If the season ended today...
 
-Our playoff teams would be Erin/Trav, Richard, Robbie, and Brian. Our last place finisher would be Jacob. On the edge, the Peanuts lose out on the last playoff spot by tiebreaker/points. The Hobbits are one game out, and both the Sharks and Jaheims are two games back.
+Our playoff teams would be Erin/Trav, Richard, Brian and Robbie. Our last place finisher would be Jacob. On the edge, the Peanuts and Hobbits lose out on the last playoff spot by tiebreaker/points. Evan is one game back, and Sarah is two games back.
 
 ### Next week's preview
 
@@ -183,6 +193,6 @@ names(nextweek1)<-c("Away team","Last 3 wks avg (away)","Home team","Last 3 wks 
 kable(nextweek1)
 ```
 
-It's a rematch next week between the Peanuts and Sophomores. I beat Erin and Trav last time around, but the numbers are not looking good this week. Past champions Brian and Robbie face off. The Hobbits and Gophers battle for the below ground title, and Jacob tries to get back on track against Sarah. Lastly, the closest game on paper this week is Richard vs. Evan.
+Richard and Brian should also have a nail-biter in a battle of top teams--this week's game of the week. The tightest matchup of the week looks to be me and Robbie. Scott tries to keep playoff hopes alive vs. Erin and Travis. Sarah also faces Christine, and Evan faces Jacob in a generational battle of Covenent Presbyterian youth.
 
 Good luck, y'all! (And remember to check your byes!)
