@@ -1,0 +1,166 @@
+add_date,name,points,slot,bench,teamId1,abbrev,teamId,location,nickname,owners,fullname,division
+2021-09-07,Davante Adams,11.3,4,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-09-07,Nick Chubb,0,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-09-07,Clyde Edwards-Helaire,0,21,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-09-07,Mark Andrews,15.3,6,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-09-07,Justin Herbert,12,0,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-09-07,Kareem Hunt,0,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-09-15,Elijah Mitchell,9.1,2,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-10-06,Hunter Renfrow,14.100000000000001,4,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-10-27,Cole Beasley,2.5,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-10-27,Greg Joseph,10,17,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-11-03,Tua Tagovailoa,12.32,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-11-03,Kenyan Drake,5.050000000000001,2,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-11-05,Dawson Knox,2.2,23,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-11-10,Titans D/ST,5,16,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-11-11,Chris Carson,0,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-11-11,Elijah Moore,11.9,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-11-11,Jamison Crowder,3.5,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish
+2021-09-07,Derrick Henry,0,21,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,DK Metcalf,4.1,4,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,George Kittle,13.5,6,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Lamar Jackson,15.42,0,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Diontae Johnson,9.8,23,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Chase Edmonds,0,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Matthew Stafford,9.82,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Noah Fant,8.4,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Jarvis Landry,4.6,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Melvin Gordon III,8.8,2,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Zack Moss,8.7,2,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Daniel Jones,0,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-10-16,Jaylen Waddle,8.4,4,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-11-10,Daniel Carlson,2,17,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-11-10,Broncos D/ST,2,16,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-11-11,Devonta Freeman,7.300000000000001,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-11-13,Mark Ingram II,18.8,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish
+2021-09-07,Ezekiel Elliott,19.26,2,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Tyreek Hill,24,4,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Joe Mixon,0,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Robert Woods,0,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Chris Godwin,9.2,4,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Aaron Rodgers,10.48,0,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Mike Davis,1.8,2,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Jerry Jeudy,8.100000000000001,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Buccaneers D/ST,6,16,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Justin Tucker,4,17,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Dallas Goedert,3.8000000000000003,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Marquise Brown,6.7,23,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Mike Gesicki,0,6,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Derek Carr,18.24,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,DeVante Parker,0,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-11-03,Patriots D/ST,12,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish
+2021-09-07,Christian McCaffrey,21.1,2,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Stefon Diggs,26.2,4,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,A.J. Brown,2.8000000000000003,4,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,David Montgomery,0,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Amari Cooper,7.1000000000000005,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Jalen Hurts,18.42,0,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Courtland Sutton,3.9000000000000004,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Ja'Marr Chase,0,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,James Conner,13.9,2,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Antonio Brown,0,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Tony Pollard,14.25,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-29,Kirk Cousins,17.46,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-10-06,Dalton Schultz,1.9000000000000001,6,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-10-31,Michael Carter,16.2,23,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-11-03,Colts D/ST,14,16,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-11-10,Chris Boswell,12,17,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish
+2021-09-07,Saquon Barkley,0,20,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Austin Ekeler,13.4,2,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Terry McLaurin,8.9,4,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,James Robinson,16.4,2,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Julio Jones,0,20,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Dak Prescott,26.34,0,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Brandon Aiyuk,4.1,23,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,JuJu Smith-Schuster,0,21,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Corey Davis,9.8,20,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Devontae Booker,0,20,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-10-22,Sam Darnold,0,20,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-10-28,Christian Kirk,9.3,4,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-10-31,Teddy Bridgewater,9.040000000000001,20,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-11-04,Randy Bullock,11,17,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-11-07,Rondale Moore,2.1,20,1,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-11-07,Tyler Conklin,14.6,6,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-11-14,Panthers D/ST,14,16,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits
+2021-09-07,Patrick Mahomes,36.24,0,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Calvin Ridley,0,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,DeAndre Hopkins,0,23,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Josh Jacobs,6.1,2,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Adam Thielen,9,4,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Javonte Williams,5.9,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,T.J. Hockenson,0,6,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Darrell Henderson Jr.,6.1,2,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Michael Gallup,5.7,21,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,William Fuller V,0,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Marvin Jones Jr.,4.5,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Mike Williams,5.300000000000001,4,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Devin Singletary,11.4,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Browns D/ST,-6,16,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Jason Sanders,10,17,0,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-11-12,Baker Mayfield,4.92,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-11-12,Zach Ertz,6.6000000000000005,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish
+2021-09-07,Travis Kelce,15.9,6,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,Jonathan Taylor,21.6,2,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,Keenan Allen,13.8,4,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,D'Andre Swift,15,2,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,Tee Higgins,0,4,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,Myles Gaskin,5,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,Tom Brady,13,0,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,Tyler Higbee,9.5,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-19,Emmanuel Sanders,6.1000000000000005,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-10-14,Matt Prater,5,17,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-10-20,A.J. Green,0.9,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-10-20,Packers D/ST,14,16,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-11-10,Jordan Howard,8.3,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-11-11,Deonte Harris,14.200000000000001,23,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-11-14,T.Y. Hilton,1,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-11-14,Mac Jones,19.92,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits
+2021-09-07,Josh Allen,20.94,0,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-09-07,Aaron Jones,10.600000000000001,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-09-07,CeeDee Lamb,26.549999999999997,4,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-09-07,Kyle Pitts,8,6,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-09-07,Kyler Murray,0,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-09-07,Deebo Samuel,28.800000000000004,4,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-09-22,Cordarrelle Patterson,4.4,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-10-13,Darrel Williams,24.900000000000002,2,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-10-13,Nick Folk,9,17,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-10-20,Saints D/ST,4,16,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-10-21,Tyler Bass,9,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-10-22,Cowboys D/ST,22,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-11-03,Adrian Peterson,2.5,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-11-03,Steelers D/ST,5,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-11-10,D'Ernest Johnson,19.200000000000003,2,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-11-10,Jamal Agnew,20.450000000000003,23,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits
+2021-09-07,Dalvin Cook,19.299999999999997,2,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Antonio Gibson,20.799999999999997,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Darren Waller,4.4,6,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Mike Evans,14.2,4,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Cooper Kupp,17.700000000000003,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Russell Wilson,5.640000000000001,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Brandin Cooks,0,4,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Leonard Fournette,13.2,2,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Joe Burrow,0,0,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Bills D/ST,11,16,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Michael Pittman Jr.,9.600000000000001,23,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Brandon McManus,6,17,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-10-14,Alexander Mattison,4.5,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-11-03,Latavius Murray,0,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-11-04,Nyheim Hines,4.45,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-11-10,Matt Ryan,0.6799999999999997,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits
+2021-09-07,Alvin Kamara,0,2,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Najee Harris,15.3,2,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Justin Jefferson,18.4,4,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Tyler Lockett,3.3000000000000003,23,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,DJ Moore,4.4,4,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Logan Thomas,0,21,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,DeVonta Smith,20.6,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Damien Harris,0,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Laviska Shenault Jr.,3.6,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Ryan Tannehill,18.619999999999997,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-07,Matt Gay,4,17,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-09-16,Cardinals D/ST,3,16,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-10-17,Jared Cook,1.5,6,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-10-17,Carson Wentz,7.1000000000000005,0,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-11-11,J.D. McKissic,5.9,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-11-11,Rams D/ST,1,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
+2021-11-11,Rob Gronkowski,0,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits
