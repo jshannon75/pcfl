@@ -1,0 +1,19 @@
+add_date,name,points,slot,bench,teamId1,abbrev,teamId,location,nickname,owners,fullname,division,stay
+2021-11-17,Bryan Edwards,0,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-11-17,Justin Fields,3.4600000000000004,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-11-20,Miles Sanders,7.4,2,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,3
+2021-11-21,Rashod Bateman,4.4,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,2
+2021-11-17,Dolphins D/ST,4,16,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish,6
+2021-11-20,Adrian Peterson,5.4,20,1,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish,3
+2021-11-17,49ers D/ST,12,16,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-11-17,AJ Dillon,12.700000000000001,2,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits,6
+2021-11-17,Pat Freiermuth,9.1,6,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits,6
+2021-11-17,Rhamondre Stevenson,8,23,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-11-17,D'Onta Foreman,4.5,2,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-11-18,Cardinals D/ST,9,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,5
+2021-11-20,Jeff Wilson Jr.,6.3,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,3
+2021-11-17,Graham Gano,4,17,0,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,6
+2021-11-20,Chase Claypool,11.9,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,3
+2021-11-17,Ravens D/ST,7,16,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,6
+2021-11-18,Alex Collins,3.6,2,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,5
+2021-11-18,Harrison Butker,8,17,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,5
