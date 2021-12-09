@@ -1,0 +1,14 @@
+add_date,name,points,slot,bench,teamId1,abbrev,teamId,location,nickname,owners,fullname,division,stay
+2021-12-08,Broncos D/ST,6,16,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,0
+2021-12-04,Mike Boone,5.9,2,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish,4
+2021-12-08,Tyler Conklin,9.100000000000001,6,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish,0
+2021-12-08,Saints D/ST,2,16,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,0
+2021-12-08,D'Onta Foreman,0,2,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,0
+2021-12-08,Tevin Coleman,9.200000000000001,2,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,0
+2021-12-08,Chuba Hubbard,0,23,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,0
+2021-12-08,Mason Crosby,0,17,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,0
+2021-12-08,Chargers D/ST,19,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,0
+2021-12-08,Seahawks D/ST,8,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,0
+2021-12-02,Rex Burkhead,5,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,6
+2021-12-02,Taysom Hill,20.660000000000004,0,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,6
+2021-12-08,Ryan Tannehill,0,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,0

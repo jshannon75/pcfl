@@ -152,7 +152,7 @@ write_csv(benchpoints,paste("data/benchpoints_wk",week_sel,".csv",sep=""))
 
 recent_adds<-players %>%
   mutate(stay=time_length(interval(start=add_date,end=today()),"day")) %>%
-  filter(stay<7)
+  filter(stay<7)  
 write_csv(recent_adds,paste("data/recent_adds_wk",week_sel,".csv",sep=""))
 
 #Last week's games
