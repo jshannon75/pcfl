@@ -169,7 +169,7 @@ last_week<-results %>%
   rename(home_team=fullname) %>%
   select(away_team,awaypoints,home_team,homepoints)
 write_csv(last_week,paste("data/wk",week_sel,".csv",sep=""))
-=======
+########
 #Weekly file download
 
 library(httr)

@@ -1,0 +1,214 @@
+---
+title: 'PCFL 2021: Week 14 wrap-up'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Countdown to the playoffs: one week left!
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+library(purrr)
+
+weeks<-read_csv("data/week_dates.csv") %>%
+  filter(mdy(Date) < today()) %>%
+  filter(mdy(Date)==max(mdy(Date)))
+week_sel<-weeks$Week
+
+
+#knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
+schedule<-read_csv("data/leaguesched.csv")
+team_list<-read_csv("data/teaminfo1.csv")
+players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
+recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
+last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
+benchpoints<-read_csv(paste("data/benchpoints_wk",week_sel,".csv",sep=""))
+stand_tbl<-read_csv(paste("data/stand_tbl_wk",week_sel,".csv",sep=""))
+toppoints<-read_csv(paste("data/toppoints_wk",week_sel,".csv",sep=""))
+results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
+nextweek<-read_csv(paste("data/nextweek_wk",week_sel,".csv",sep=""))
+
+lastweek_line<-read_csv(paste("data/nextweek_wk",week_sel-1,".csv",sep="")) %>%
+  select(away_team:range) %>%
+  mutate(away_points=round(away_points/3,2),home_points=round(home_points/3,2),
+         range=abs(away_points-home_points)) %>%
+  mutate(Favored=if_else(away_points>home_points,
+                         paste(away_team," (+",round(range,2),")",sep=""),
+                         paste(home_team," (+",round(range,2),")",sep=""))) %>%
+  select(-range,-away_points,-home_points)
+
+benchpoints_files<-paste("data/",list.files(path = "data",pattern="benchpoints"),sep="")
+benchpoints_sum<-map_df(benchpoints_files,read_csv) %>%
+  group_by(fullname) %>%
+  summarise(points=sum(points))
+```
+
+### Last week's games
+
+```{r, echo=FALSE, message=FALSE}
+kable(last_week %>%
+        left_join(lastweek_line) %>%
+        rename(Away=away_team,
+               `Away points`=awaypoints,
+               Home=home_team,
+               `Home points`=homepoints,
+               `Predicted result`=Favored))
+```
+
+Last week's game of the week was The Sophomores vs. Pigskin on the Gridiron, and Richard came through with the upset in a big way. While still the league leaders, Erin and Trav have now lost two in a row as the playoff run looms. 
+
+It was a high scoring week all around. My Georgia Peanuts set a new record high for the year, outscoring the GOAT nearly 2 to 1. Evan battered the Hangry Hobbits with his own top 5 score. And Team Sasquatch took it to the Gophers, winning by 74 points.
+
+Our other upset of the week was the Sharks vs. Captain Clairvoyant. Brian was already popping the victory champagne, but a late COVID scratch and a big week from James Conner gave Sarah the victory.
+
+#### Best performing players
+
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(players %>% 
+              select(name,points,fullname),10,points) %>%
+        rename(Player=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Josh Allen has had an up and down last few weeks, but he came through for Robbie this week. Dalvin Cook was the top non-QB.
+
+#### Best addition and top bench
+There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
+
+```{r echo=FALSE}
+kable(recent_adds %>% 
+        select(add_date,name,points,fullname) %>%
+        rename(`Date added`=add_date,
+               Name=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+A lot of action last week! Two second tier QBs top the list, but Van Jefferson also had a nice week on my bench.
+
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(benchpoints %>% arrange(-points)%>%
+  rename(Team=fullname,Points=points)) 
+```
+
+Go Sasquatch go!
+
+Who has the most bench points for the _season_? Here's the current standings:
+
+```{r,echo=FALSE}
+kable(benchpoints_sum %>% 
+        arrange(-points) %>%
+        rename(`Team name`=fullname,`Total bench points`=points)) 
+```
+
+The Sharks' lead is down to just 20! We'll have to see if Robbie can catch them.
+
+### League standings and season stats
+Here's a look at the current standings.
+
+```{r, echo=FALSE}
+kable(stand_tbl %>%
+        rename(Team=fullname,
+               Division=division,
+               `Points scored`=points_scored,
+               `Points allowed`=points_allowed,
+               `Points rank`=points_rank,
+               `Playoff rank`=playoff_rank))
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): Team Sasquatch *new*
+* Tough luck (points rank - playoff rank): No clear leader here this week--several teams one rank lower than their points would suggest.
+* Lucky ducks (playoff rank - points rank): The Sophomores and Jumpin' Jaheims *new*--third and eighth in points, but first and sixth in the rankings.
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        rename(Team=fullname,
+               Week=week,
+               `Points scored`=points_scored,
+               Result=result))
+```
+
+With bye weeks wrapping up and rosters getting set, we're starting to see new high scores get added to this list.
+
+### Here's a look at the **points trendline** for each team.
+
+```{r echo=FALSE, message=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14))) %>%
+  left_join(team_list %>%
+              select(teamId,fullname)) %>%
+  group_by(week) %>%
+  mutate(weekmdn=median(points))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  geom_smooth(method="glm")+
+  facet_wrap(~fullname)
+```
+
+Here's the points trend for *_all_* teams by week
+
+```{r, echo=FALSE}
+ggplot(teamtrend)+
+ geom_boxplot(alpha=0.3,aes(x=week,y=points))+
+ geom_point(alpha=0.8,aes(x=week,y=points,color=fullname))+
+ labs(color='Team') 
+```
+
+Continued upswing in points this week. But also our widest spread in points by far.
+
+### The playoff picture!
+
+Usually by this point things are pretty settled. And in a way they are. ESPN gives The Sophomores, Team Sasquatch, and Pigskin on the Gridiron a >98% chance of making the playoffs.
+
+I believe the Sophomores have clinched a spot. They have one more win than everyone else, and while no longer the points leader, the third best record is still enough to win any meaningful tiebreakers. And since I play Brian this week, one of us will lose, meaning there will be only four teams tied at 10 and 5 if the Erin and Trav lose to Evan.
+
+Robbie and Richard can both make the playoffs with wins this week against Scott and Sarah respectively. But an upset in one or both could leave them on the outside looking in. 
+
+It really comes down to the matchup between Brian and me for that last spot. The winner is in, and the loser very possibly out (though that would depend on Robbie and Richard).
+
+Very exciting!
+
+### Next week's preview
+
+```{r,echo=FALSE}
+nextweek1<-nextweek %>% select(away_team:range) %>%
+  mutate(away_points=round(away_points/3,2),home_points=round(home_points/3,2),
+         range=abs(away_points-home_points)) %>%
+  mutate(Favored=if_else(away_points>home_points,
+                         paste(away_team," (+",round(range,2),")",sep=""),
+                         paste(home_team," (+",round(range,2),")",sep=""))) %>%
+  select(-range)
+names(nextweek1)<-c("Away team","Last 3 wks avg (away)","Home team","Last 3 wks avg (home)",
+                   "Line")
+kable(nextweek1)
+```
+
+This week's game of the week is the Peanuts vs. Captain Clairvoyant, as the playoffs are on the line. I'm slightly favored based on the last few weeks, but we all know how fantasy can go. There are several other meaningful matchups. At the other end, The GOAT vs. Gophers is a preview of the consolation round next week and the upcoming battle for the Toilet Trophy.
+
+Good luck, y'all!

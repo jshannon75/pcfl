@@ -1,0 +1,23 @@
+add_date,name,points,slot,bench,teamId1,abbrev,teamId,location,nickname,owners,fullname,division,stay
+2021-12-08,Broncos D/ST,9,16,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-12-10,Van Jefferson,14.8,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,4
+2021-12-12,Jermar Jefferson,0,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,2
+2021-12-09,Titans D/ST,19,16,0,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish,5
+2021-12-09,DeAndre Carter,4.6000000000000005,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish,5
+2021-12-08,Tyler Conklin,3,6,0,3,TS,3,The Sophomores,TSoph,NA,The Sophomores TSoph,Hot Dish,6
+2021-12-08,Saints D/ST,8,16,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-12-10,Taylor Heinicke,7.68,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,4
+2021-12-10,Cole Beasley,10.9,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,4
+2021-12-10,Jimmy Garoppolo,20.14,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,4
+2021-12-10,Tyler Boyd,8.35,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,4
+2021-12-11,Ty Johnson,7.7,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,3
+2021-12-08,D'Onta Foreman,13.2,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,6
+2021-12-09,Sony Michel,7.9,2,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,5
+2021-12-08,Chuba Hubbard,9.3,23,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-12-08,Mason Crosby,9,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-12-08,Chargers D/ST,6,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-12-12,Godwin Igwebuike,0.5,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,2
+2021-12-08,Seahawks D/ST,4,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,6
+2021-12-10,Austin Hooper,11.5,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,4
+2021-12-08,Ryan Tannehill,16.54,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,6
+2021-12-11,Jeff Wilson Jr.,5.6000000000000005,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,3
