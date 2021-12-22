@@ -1,0 +1,206 @@
+---
+title: 'PCFL 2021: Week 15 wrap-up'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Countdown to the playoffs: one week left!
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+library(purrr)
+
+weeks<-read_csv("data/week_dates.csv") %>%
+  filter(mdy(Date) < today()) %>%
+  filter(mdy(Date)==max(mdy(Date)))
+week_sel<-weeks$Week
+
+
+#knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
+schedule<-read_csv("data/leaguesched.csv")
+team_list<-read_csv("data/teaminfo1.csv")
+players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
+recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
+last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
+benchpoints<-read_csv(paste("data/benchpoints_wk",week_sel,".csv",sep=""))
+stand_tbl<-read_csv(paste("data/stand_tbl_wk",week_sel,".csv",sep=""))
+toppoints<-read_csv(paste("data/toppoints_wk",week_sel,".csv",sep=""))
+results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
+nextweek<-read_csv(paste("data/nextweek_wk",week_sel,".csv",sep=""))
+
+lastweek_line<-read_csv(paste("data/nextweek_wk",week_sel-1,".csv",sep="")) %>%
+  select(away_team:range) %>%
+  mutate(away_points=round(away_points/3,2),home_points=round(home_points/3,2),
+         range=abs(away_points-home_points)) %>%
+  mutate(Favored=if_else(away_points>home_points,
+                         paste(away_team," (+",round(range,2),")",sep=""),
+                         paste(home_team," (+",round(range,2),")",sep=""))) %>%
+  select(-range,-away_points,-home_points)
+
+benchpoints_files<-paste("data/",list.files(path = "data",pattern="benchpoints"),sep="")
+benchpoints_sum<-map_df(benchpoints_files,read_csv) %>%
+  group_by(fullname) %>%
+  summarise(points=sum(points))
+```
+
+### Last week's games
+
+```{r, echo=FALSE, message=FALSE}
+kable(last_week %>%
+        left_join(lastweek_line) %>%
+        rename(Away=away_team,
+               `Away points`=awaypoints,
+               Home=home_team,
+               `Home points`=homepoints,
+               `Predicted result`=Favored))
+```
+
+The last week of the regular season had plenty of intrigue! The game of the week was me vs Brian, and the Vikings defense (as well as New Orleans) carried the Peanuts to victory. Team Sasquatch and Pigskin on the Gridiron also got the wins they needed to make the cut. The Sophomores were the underdogs playing against the Jumpin Jaheims, but the finished the season strong with a 56 point victory and the week's highest score. In a preview of this week's road to the toilet bowl, Jacob won over Christine.
+
+#### Best performing players
+
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(players %>% 
+              select(name,points,fullname),10,points) %>%
+        rename(Player=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+I have to admit that my stomach dropped a bit when Travis Kelce scores 36 back on Thursday. Luckily, he wasn't the only tight end to go off this week as Mark Andrews also had an excellent showing. Cooper Kupp continued his fantasy dominance to round out the top 3.
+
+#### Best addition and top bench
+There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
+
+```{r echo=FALSE}
+kable(recent_adds %>% 
+        select(add_date,name,points,fullname) %>%
+        rename(`Date added`=add_date,
+               Name=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+A fairly quiet week and not a lot of action here. The Sharks picked up Tua for a spot start given all the COVID issues (I believe they now have 4 QBs on the roster), and he was the week's top pickup.
+
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(benchpoints %>% arrange(-points)%>%
+  rename(Team=fullname,Points=points)) 
+```
+
+Out of the playoffs and searching for answers, the Sharks have started circling the high scoring bench award. We need a name for the weeks where the bench outscores the starting lineup.
+
+Who has the most bench points for the _season_? Here's the current standings:
+
+```{r,echo=FALSE}
+kable(benchpoints_sum %>% 
+        arrange(-points) %>%
+        rename(`Team name`=fullname,`Total bench points`=points)) 
+```
+
+And just like that the Shark's lead is back up to almost 60. We'll see how the last two weeks go.
+
+### League standings and season stats
+Here's a look at the current standings.
+
+```{r, echo=FALSE}
+kable(stand_tbl %>%
+        rename(Team=fullname,
+               Division=division,
+               `Points scored`=points_scored,
+               `Points allowed`=points_allowed,
+               `Points rank`=points_rank,
+               `Playoff rank`=playoff_rank))
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): The Sophomores **new**. This is a close rase, as the top three teams are all within 13 points.
+* Tough luck (points rank - playoff rank): The Sharks are the technical leader here, as they should be two points higher than their record suggests, but the real winnder on this one is Brian, whose points suggests he deserves the last playoff spot.
+* Lucky ducks (playoff rank - points rank): Jumpin' Jaheims *new*--eighth in points but sixth in the standings
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        rename(Team=fullname,
+               Week=week,
+               `Points scored`=points_scored,
+               Result=result))
+```
+
+No changes this week.
+
+### Here's a look at the **points trendline** for each team.
+
+```{r echo=FALSE, message=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14))) %>%
+  left_join(team_list %>%
+              select(teamId,fullname)) %>%
+  group_by(week) %>%
+  mutate(weekmdn=median(points))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  geom_smooth(method="glm")+
+  facet_wrap(~fullname)
+```
+
+Here's the points trend for *_all_* teams by week
+
+```{r, echo=FALSE}
+ggplot(teamtrend)+
+ geom_boxplot(alpha=0.3,aes(x=week,y=points))+
+ geom_point(alpha=0.8,aes(x=week,y=points,color=fullname))+
+ labs(color='Team') 
+```
+
+Overall, this was our wost scoring week of the season!
+
+### Playoff preview: Week 1
+
+```{r,echo=FALSE}
+# nextweek1<-nextweek %>% select(away_team:range) %>%
+#   mutate(away_points=round(away_points/3,2),home_points=round(home_points/3,2),
+#          range=abs(away_points-home_points)) %>%
+#   mutate(Favored=if_else(away_points>home_points,
+#                          paste(away_team," (+",round(range,2),")",sep=""),
+#                          paste(home_team," (+",round(range,2),")",sep=""))) %>%
+#   select(-range)
+# names(nextweek1)<-c("Away team","Last 3 wks avg (away)","Home team","Last 3 wks avg (home)",
+#                    "Line")
+# kable(nextweek1)
+```
+
+We have a simple two week playoff for the top four teams. In the championship bracket, this week is Erin and Trav (#1) vs. me (#4) and last year's champion, Robbie (#2) vs. Richard (#3). Both look to be good matchups!
+
+In the consolation rounds, it looks like this:
+
+* Brian (#5) vs. Evan (#6)
+* Scott (#7) vs. Sarah (#8)
+* Jacob (#9) vs. Christine (#10)
+
+The losers of the last two games move on to the Toilet Bowl next week.
+
+Good luck, y'all!
