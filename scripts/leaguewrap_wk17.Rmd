@@ -1,0 +1,206 @@
+---
+title: 'PCFL 2021: Week 17 wrap-up'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+library(purrr)
+
+weeks<-read_csv("data/week_dates.csv") %>%
+  filter(mdy(Date) < today()) %>%
+  filter(mdy(Date)==max(mdy(Date)))
+week_sel<-weeks$Week
+
+
+#knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
+schedule<-read_csv("data/leaguesched.csv")
+team_list<-read_csv("data/teaminfo1.csv")
+players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
+recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
+last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
+benchpoints<-read_csv(paste("data/benchpoints_wk",week_sel,".csv",sep=""))
+stand_tbl<-read_csv(paste("data/stand_tbl_wk",week_sel,".csv",sep=""))
+toppoints<-read_csv(paste("data/toppoints_wk",week_sel,".csv",sep=""))
+results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
+nextweek<-read_csv(paste("data/nextweek_wk",week_sel,".csv",sep=""))
+
+# lastweek_line<-read_csv(paste("data/nextweek_wk",week_sel-1,".csv",sep="")) %>%
+#   select(away_team:range) %>%
+#   mutate(away_points=round(away_points/3,2),home_points=round(home_points/3,2),
+#          range=abs(away_points-home_points)) %>%
+#   mutate(Favored=if_else(away_points>home_points,
+#                          paste(away_team," (+",round(range,2),")",sep=""),
+#                          paste(home_team," (+",round(range,2),")",sep=""))) %>%
+#   select(-range,-away_points,-home_points)
+
+benchpoints_files<-paste("data/",list.files(path = "data",pattern="benchpoints"),sep="")
+benchpoints_sum<-map_df(benchpoints_files,read_csv) %>%
+  group_by(fullname) %>%
+  summarise(points=sum(points))
+```
+
+### Last week's games
+
+```{r, echo=FALSE, message=FALSE}
+kable(last_week %>%
+        #left_join(lastweek_line) %>%
+        rename(Away=away_team,
+               `Away points`=awaypoints,
+               Home=home_team,
+               `Home points`=homepoints,
+               #`Predicted result`=Favored
+               ))
+```
+
+Our first round of playoffs is in the books, and the championship game is looking awfully familiar. Just like last year, it's me and Robbie for the title game. Robbie has the edge in regular season points, but we've both been finishing up strong. Erin/Trav and Richard will be playing for third place.
+
+In the consolation bracket, Sarah, Brian, and Jacob were all victors. The Gophers had multiple players with no points and ended up with one of the lowest scores of the season. They're the clear favorite for the toilet trophy at this point.
+
+#### Best performing players
+
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(players %>% 
+              select(name,points,fullname),10,points) %>%
+        rename(Player=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Joe Burrow, Dak Prescott, and Josh Allen were this week's strongest QB options. Tee Higins and Justin Jackson round out the top 5. Jackson is a career backup, but had almost 100 receiving yards last week as a running back to earn his spot in the top 5.
+
+#### Best addition and top bench
+There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
+
+```{r echo=FALSE}
+kable(recent_adds %>% 
+        select(add_date,name,points,fullname) %>%
+        rename(`Date added`=add_date,
+               Name=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Jackson tops this list, and was a good pickup by Robbie, along with A.J. Brown. The Sharks' victory is due in some measure to Rex Burkhead's strong week. I win the "streaming defense with negative points" award this week.
+
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(benchpoints %>% arrange(-points)%>%
+  rename(Team=fullname,Points=points)) 
+```
+
+What a week for Team Sasquatch! 162 bench points has got to be the highest of the season.
+
+Who has the most bench points for the _season_? Here's the current standings:
+
+```{r,echo=FALSE}
+kable(benchpoints_sum %>% 
+        arrange(-points) %>%
+        rename(`Team name`=fullname,`Total bench points`=points)) 
+```
+
+This is coming down to the wire. Our season long leader, Sarah, is now in second place, and Robbie has taken a 12 point lead. It all comes down to whose bench scores more points this weekend.
+
+### League standings and season stats
+Here's a look at the current standings.
+
+```{r, echo=FALSE}
+kable(stand_tbl %>%
+        rename(Team=fullname,
+               Division=division,
+               `Points scored`=points_scored,
+               `Points allowed`=points_allowed,
+               `Points rank`=points_rank,
+               `Playoff rank`=playoff_rank))
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): Team Sasquatch *new*
+* Tough luck (points rank - playoff rank): Jumpin Jaheims
+* Lucky ducks (playoff rank - points rank): I'm still leading on this one, remaining 5th in points but making the championship game. There's been talk amonst the owners about rule changes in the off season.
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        rename(Team=fullname,
+               Week=week,
+               `Points scored`=points_scored,
+               Result=result))
+```
+
+No changes this week.
+
+### Here's a look at the **points trendline** for each team.
+
+```{r echo=FALSE, message=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14,15,16))) %>%
+  left_join(team_list %>%
+              select(teamId,fullname)) %>%
+  group_by(week) %>%
+  mutate(weekmdn=median(points))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  geom_smooth(method="glm")+
+  facet_wrap(~fullname)
+```
+
+Here's the points trend for *_all_* teams by week
+
+```{r, echo=FALSE}
+ggplot(teamtrend)+
+ geom_boxplot(alpha=0.3,aes(x=week,y=points))+
+ geom_point(alpha=0.8,aes(x=week,y=points,color=fullname))+
+ labs(color='Team') 
+```
+
+Another down week league wide last week. We'll see if we can rebound for the finale.
+
+### Playoff preview: Week 2
+
+```{r,echo=FALSE}
+# nextweek1<-nextweek %>% select(away_team:range) %>%
+#   mutate(away_points=round(away_points/3,2),home_points=round(home_points/3,2),
+#          range=abs(away_points-home_points)) %>%
+#   mutate(Favored=if_else(away_points>home_points,
+#                          paste(away_team," (+",round(range,2),")",sep=""),
+#                          paste(home_team," (+",round(range,2),")",sep=""))) %>%
+#   select(-range)
+# names(nextweek1)<-c("Away team","Last 3 wks avg (away)","Home team","Last 3 wks avg (home)",
+#                    "Line")
+# kable(nextweek1)
+```
+
+The championship game is me vs. Robbie.  Last year, I was the clear favorite headed into the championship, but Alvin Kamara had other plans. Robbie's the favorite to repeat this year, but my coaches are scheming hard for the upset. Our teams last met in week 10, and Robbie came away with a decisive victory, 132 to 84.
+
+In the consolation rounds, it looks like this:
+
+* Third place: Richard vs. Erin/Trav. The Sophomores won handily back in week 4.
+* Fifth place: Brian vs. Sarah. Sarah won this matchup just two weeks ago, but Brian won by 30 back in week 5.
+* Seventh place: Evan vs. Jacob. The battle of Covenant Presbyterian kids! Evan won in week 2, but Jacob was the winner in week 10. 
+* The Toilet Bowl: Scott vs. Christine. Scott's 2-0 against the Gophers this season, with wins in week 5 and 9.
+
+Good luck, y'all!
