@@ -1,0 +1,155 @@
+---
+title: 'PCFL 2021: Week 2 wrap-up'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+
+weeks<-read_csv("data/week_dates.csv") %>%
+  filter(mdy(Date) < today()) %>%
+  filter(mdy(Date)==max(mdy(Date)))
+week_sel<-weeks$Week
+
+
+#knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
+schedule<-read_csv("data/leaguesched.csv")
+team_list<-read_csv("data/teaminfo1.csv")
+players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
+recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
+last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
+benchpoints<-read_csv(paste("data/benchpoints_wk",week_sel,".csv",sep=""))
+stand_tbl<-read_csv(paste("data/stand_tbl_wk",week_sel,".csv",sep=""))
+toppoints<-read_csv(paste("data/toppoints_wk",week_sel,".csv",sep=""))
+results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
+nextweek<-read_csv(paste("data/nextweek_wk",week_sel,".csv",sep=""))
+```
+
+### Last week's games
+
+```{r, echo=FALSE}
+kable(last_week %>%
+        rename(Away=away_team,
+               `Away points`=awaypoints,
+               Home=home_team,
+               `Home points`=homepoints))
+```
+
+The ownership at Peanuts HQ is definitely showing some concern after two weeks of poor showings. This week my intrepid players were thrown into Mount Doom by a dominant performance from Scott's Hangry Hobbits. That tragic loss in last year's championship still haunts us. In other news, Evan's Jaheim's leaped over the GOAT. In a bitter family faceoff, The Sophomores harpooned the Sharks by just 2 points. Team Sasquatch knocked the Gophers from last year's high scoring performance. Richard was the high scoring team of the week, downing Brian's Captain Clairvoyant.
+
+
+#### Best performing players
+
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(players %>% 
+              select(name,points,fullname),10,points) %>%
+        rename(Player=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Not a big fan of Alabama players, but Derrick Henry had a week, following by a fellow running back Aaron Jones. Team Sasquatch and the Hangry Hobbits both had some top scorers.
+
+#### Best addition and top bench
+There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
+
+```{r echo=FALSE}
+kable(recent_adds %>% 
+        select(add_date,name,points,fullname) %>%
+        rename(`Date added`=add_date,
+               Name=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Team Sasquatch had some nice pickups, though I honestly had to look up Henry Ruggs III.
+
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(benchpoints %>% arrange(-points)%>%
+  rename(Team=fullname,Points=points)) 
+```
+
+Richard won his game with points to spare, with the top bench by 15 points. He's looking dominant!
+
+### League standings and season stats
+Here's a look at the current standings.
+
+```{r, echo=FALSE}
+kable(stand_tbl %>%
+        rename(Team=fullname,
+               Division=division,
+               `Points scored`=points_scored,
+               `Points allowed`=points_allowed,
+               `Points rank`=points_rank,
+               `Playoff rank`=playoff_rank))
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): Pigskin on the Gridiron
+* D-FENCE (least points allowed): The G.O.A.T.
+* Tough luck (points rank - playoff rank): The Southern Sharks--fifth in points but an 0-2 record to show for it.
+* Lucky ducks (playoff rank - points rank): The Sophomores--seventh in points, but a 2-0 record!
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        rename(Team=fullname,
+               Week=week,
+               `Points scored`=points_scored,
+               Result=result))
+```
+
+KC Gophers holds onto the top spot this week, but Richard isn't far behind Christine.
+
+### Here's a look at the **points trendline** for each team.
+
+```{r echo=FALSE, message=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14))) %>%
+  left_join(team_list %>%
+              select(teamId,fullname))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  #geom_smooth()+
+  facet_wrap(~fullname)
+```
+
+A big jump from the Hangry Hobbits and drops from the Gophers, Sharks, and Captain Clairvoyant. Jacob and I are stuck in mediocrity while Richard stays high.
+
+### If the season ended today...
+
+Our playoff teams would be Richard, Erin/Trav, Christine, and Brian. Our last place finisher would be Jacob. But it's still early!
+
+### Next week's preview
+
+```{r,echo=FALSE}
+kable(nextweek)
+```
+
+It's Shannon vs. Shannon as Sarah tries for her first win (and let's be honest, she's got a good shot given my season thus far). Last year's champion, Robbie, tries to cool down Richard's hot streak as the game of the week. The Sophomores take on the Gophers, and the Jaheims try to leap over the Hobbits. The biggest mismatch of the week on paper is Brian vs. Jacob, with an 88 point spread based on action thus far. But in fantasy, anything can happen!
+
+Good luck, y'all!
