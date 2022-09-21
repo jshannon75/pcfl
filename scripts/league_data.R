@@ -3,7 +3,6 @@
 
 library(ffscrapr)
 library(tidyverse)
-week_sel<-1
 
 pcfl <- espn_connect(season = 2022, league_id = 1403922)
 #league_info<-ff_league(pcfl)
@@ -53,6 +52,29 @@ starter_benchteam <-starters %>%
   filter(week==week_sel & lineup_slot=="BE") %>%
   group_by(franchise_name) %>%
   summarise(`Bench points`=sum(player_score))
+
+starter_benchteam_all <-starters %>%
+  filter(lineup_slot=="BE") %>%
+  group_by(franchise_name) %>%
+  summarise(`Bench points`=sum(player_score))
+
+#New adds
+getlastdate <- function(day,pos) {
+  library(lubridate)
+  dates <- seq((Sys.Date()-10), (Sys.Date()-pos), by="days")
+  dates[wday(dates, label=T)==day]
+}
+
+lastadd_date<-getlastdate("Tue",3)
+
+newadds<-roster %>%
+  filter(acquisition_date<Sys.Date() & acquisition_date>lastadd_date) %>%
+  left_join(starters %>%
+              filter(week==week_sel)) %>%
+  select(franchise_name,player_name,team,pos,player_score) %>%
+    arrange(-player_score)
+
+names(newadds)<-c("PCFL Team","Player","NFL Team","Position","Points")
 
 #Standings
 team_points<-schedule %>%
