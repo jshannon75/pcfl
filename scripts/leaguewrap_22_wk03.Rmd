@@ -1,0 +1,214 @@
+---
+title: '**PCFL 2022: Week 2 wrap-up**'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    theme: united
+  github_document:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(kableExtra)
+library(hrbrthemes)
+library(extrafont)
+library(showtext)
+
+font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+
+
+#extrafont::font_import()
+
+week_sel<-3
+
+source("scripts/league_data.R")
+
+```
+
+Week 3 is in the books. How'd it go?
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Last week's game of the week was The Jaheims against the Hangry Hobbits, and it was a good one. Scott's team was the league points leader, while Evan sported a 4-0 record. In the end, Evan came out on top.
+
+In other action, I wound up with the W against Sarah in a lucky win--both of us were in the bottom 5 in scoring. Jacob continued his hot start against Brian. The Gophers are doing their best to avoid a repeat of the toilet trophy with a solid win over Erin and Trav. And Team Sasquatch pummeled Richard's Pigskin on the Gridiron.
+
+## Best performing players
+
+### Best players overall
+Here's last week's **10 best performing starters.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters_10,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+It's Lamar Jackson at the top again, this time by a whopping 12 points over Jalen Hurts. The interesting story to me here is KC Gophers with 3 players in the top 10.
+
+### Best players per team
+Here's last week's top players **on each team.**
+
+```{r,echo=FALSE}
+kable(starter_team)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+A lotta QBs here. Also a trend that many of this week's losing teams (Scott, Richard, Sarah, and Erin/Trav) had their best players on the bench.
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Crissy took the win this week.
+
+Here's the season's bench standings:
+
+```{r,echo=FALSE}
+kable(starter_benchteam_all %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+Still a tight race with Scott in the lead and both Erin/Trav and Jacob right behind.
+
+### Best optimized lineups
+**New this week!** I compared the actual starting lineups for each team to the hypothetical _best_ starting lineup the owner could have started. The table below shows the actual points the team scored, the top score they could have had, and an "optimization" percentage that compares to the two.
+
+```{r,echo=FALSE}
+kable(actualpoints %>% 
+        filter(Week==week_sel) %>% 
+        select(-Week)) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+The Sharks didn't have a great week, but you can definitely see the benching of Derrick Henry playing a role. Conversely, Brian was the only team over 90%.
+
+For the *whole season*, here's a graph of actual points scored vs. optimized points given the roster. 
+
+```{r,echo=FALSE}
+
+ggplot(actualpoints_season %>% 
+         mutate(`PCFL Team` = fct_reorder(`PCFL Team`, desc(rank))),
+       aes(x=Points,y=`PCFL Team`))+
+  geom_line(aes(x=Points,y=`PCFL Team`,group=`PCFL Team`))+
+  geom_point(aes(color=Type),size=3.1)+
+  theme_minimal()+
+  scale_color_manual(values=c( "#E69F00","#999999"))+
+  theme(text=element_text(family="Source Sans Pro",size = 12))
+
+# actual_rank<-actualpoints %>% 
+#          group_by(Week) %>%
+#          mutate(`Optimization rate`=as.numeric(str_replace(`Optimization rate`,"%","")),
+#                 Week=paste("Week ",as.character(Week),sep=""),
+#                 Rank=row_number()) %>%
+#   arrange(-Rank)
+# 
+# ggplot(actual_rank,
+#        aes(x=Rank,y=`Optimization rate`,fill=`PCFL Team`)) +
+#   geom_bar(stat="identity",position="dodge") + 
+#   xlab("")+
+#   scale_fill_brewer(palette="Paired")+
+#   theme_minimal()+
+#   theme(axis.ticks.x=element_blank(),
+#         axis.text.x=element_blank(),
+#         text=element_text(family="Source Sans Pro"),
+#         strip.text.x = element_text(size = 12,family="Source Sans Pro Semibold"))+
+#   facet_wrap(~`Week`)
+```
+
+Currently, Jacon and Erin/Trav have the biggest gaps here.
+
+### Best additions
+There were `r nrow(newadds)` players added last week. Which was the **best new addition**?
+
+```{r,echo=FALSE}
+kable(newadds) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Not a whole lot here, other than traded players doing well.
+
+
+
+## Looking ahead
+
+### League standings
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+Evan stands atop our leaderboard in both wins (3-0, tied with Robbie) and points (6), with Jacob and Robbie right beind. Sarah has the early lead in the race for the toilet trophy, but don't rule out Richard or Erin and Trav.
+
+```{r, echo=FALSE}
+# Here's a list of the **top five scoring performances** so far this season.
+
+# kable(toppoints %>%
+#         rename(Team=fullname,
+#                Week=week,
+#                `Points scored`=points_scored,
+#                Result=result))
+```
+
+
+```{r eval=FALSE, echo=FALSE, message=FALSE}
+#Lastly, here's a look at the **points trendline** for each team.
+
+# teamtrend<-results %>%
+#   select(awayteam,awaypoints,week) %>%
+#   rename(teamId=awayteam,
+#          points=awaypoints) %>%
+#   bind_rows(results %>%
+#               select(hometeam,homepoints,week) %>%
+#               rename(teamId=hometeam,
+#                      points=homepoints)) %>%
+#   mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14))) %>%
+#   left_join(team_list %>%
+#               select(teamId,fullname))
+# 
+# ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+#   geom_line()+
+#   geom_point(col="red")+
+#   #geom_smooth()+
+#   facet_wrap(~fullname)
+```
+
+### If the season ended today...
+
+Current playoff teams: Evan, Richard, Robbie and either me (based on wins) or Scott (based on team points).
+
+### Next week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+This week's game of the week is a big one: Robbie and Jacob are fighting it out for second place early on, with Jacob's one loss the only separator. On the other side of things, Sarah is currently 10th in points while Scott is 1st. A bit of a mismatch?
+
+Good luck, y'all!
