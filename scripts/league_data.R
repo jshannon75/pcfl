@@ -230,7 +230,14 @@ nextwk1<-nextwk %>%
   ungroup() %>%
   select(-matchup)
 
-
+toppoints<-schedule %>%
+  top_n(5,franchise_score) %>%
+  left_join(teams) %>%
+  select(franchise_name,week,franchise_score,result) %>%
+  rename(`PCFL Team`=franchise_name,
+         Week=week,
+         Score=franchise_score,
+         Result=result)
 
 # starters_nfl<-starters %>%
 #   left_join(nfl,by="player_id")

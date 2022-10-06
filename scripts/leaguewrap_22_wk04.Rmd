@@ -31,7 +31,7 @@ source("scripts/league_data.R")
 
 ```
 
-Week 3 is in the books. How'd it go?
+Another week is in the books. How'd it go?
 
 ## Last week's games
 
