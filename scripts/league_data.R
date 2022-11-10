@@ -129,10 +129,10 @@ getlastdate <- function(day,pos) {
   dates[wday(dates, label=T)==day]
 }
 
-lastadd_date<-getlastdate("Tue",3)
+lastadd_date<-getlastdate("Tue",4)
 
 newadds<-roster %>%
-  filter(acquisition_date<Sys.Date() & acquisition_date>lastadd_date) %>%
+  filter(acquisition_date<Sys.Date()-1 & acquisition_date>lastadd_date) %>%
   left_join(starters %>%
               filter(week==week_sel)) %>%
   select(franchise_name,player_name,team,pos,player_score) %>%
@@ -151,6 +151,11 @@ team_points<-schedule %>%
   group_by(franchise_id) %>%
   summarise(`Team points`=sum(team_points))
 
+last3avg<-standings<-schedule %>%
+  filter(week <= week_sel & week>week_sel-3) %>%
+  group_by(franchise_id) %>%
+  summarise(`Avg last 3`=round(sum(franchise_score)/3,2))
+
 standings<-schedule %>%
   filter(week <= week_sel) %>%
   count(franchise_id,result)%>% 
@@ -160,10 +165,11 @@ standings<-schedule %>%
               filter(week <= week_sel) %>%
               group_by(franchise_id) %>%
               summarise(`Points scored`=sum(franchise_score))) %>%
-  mutate(`Avg points`=`Points scored`/(W+L)) %>%
+  mutate(`Avg points`=round(`Points scored`/(W+L),2)) %>%
+  left_join(last3avg) %>%
   left_join(team_points) %>%
-  arrange(-`Team points`) %>%
-  select(franchise_name,Division,`Points scored`,`Avg points`,W,L,`Team points`) %>%
+  arrange(-`Team points`,-`Points scored`) %>%
+  select(franchise_name,Division,`Points scored`,`Avg points`,`Avg last 3`,W,L,`Team points`) %>%
   rename(`PCFL Team`=franchise_name)
 
 
@@ -223,9 +229,9 @@ nextwk1<-nextwk %>%
   mutate(team=paste("Team",row_number(),sep=" ")) %>%
   left_join(standings %>%
               rename(team_name=`PCFL Team`) %>%
-              select(team_name,`Avg points`)) %>%
-  mutate(team_points=paste(team_name," (Avg. points: ",round(`Avg points`,2),")",sep="")) %>%
-  select(-team_name,-`Avg points`) %>%
+              select(team_name,`Avg last 3`)) %>%
+  mutate(team_points=paste(team_name," (Avg. last 3: ",round(`Avg last 3`,2),")",sep="")) %>%
+  select(-team_name,-`Avg last 3`) %>%
   pivot_wider(names_from=team,values_from=team_points) %>%
   ungroup() %>%
   select(-matchup)
