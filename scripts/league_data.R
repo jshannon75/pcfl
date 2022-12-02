@@ -132,7 +132,7 @@ getlastdate <- function(day,pos) {
 lastadd_date<-getlastdate("Tue",4)
 
 newadds<-roster %>%
-  filter(acquisition_date<Sys.Date()-1 & acquisition_date>lastadd_date) %>%
+  filter(acquisition_date<Sys.Date()-3 & acquisition_date>lastadd_date) %>%
   left_join(starters %>%
               filter(week==week_sel)) %>%
   select(franchise_name,player_name,team,pos,player_score) %>%
