@@ -125,14 +125,14 @@ starter_benchteam_all <-starters %>%
 #New adds
 getlastdate <- function(day,pos) {
   library(lubridate)
-  dates <- seq((Sys.Date()-10), (Sys.Date()-pos), by="days")
+  dates <- seq((Sys.Date()-11), (Sys.Date()-pos), by="days")
   dates[wday(dates, label=T)==day]
 }
 
 lastadd_date<-getlastdate("Tue",4)
 
 newadds<-roster %>%
-  filter(acquisition_date<Sys.Date()-3 & acquisition_date>lastadd_date) %>%
+  filter(acquisition_date<Sys.Date()-5 & acquisition_date>lastadd_date) %>%
   left_join(starters %>%
               filter(week==week_sel)) %>%
   select(franchise_name,player_name,team,pos,player_score) %>%
