@@ -123,9 +123,10 @@ starter_benchteam_all <-starters %>%
   summarise(`Bench points`=sum(player_score))
 
 #New adds
+library(lubridate)
+
 getlastdate <- function(day,pos) {
-  library(lubridate)
-  dates <- seq((Sys.Date()-11), (Sys.Date()-pos), by="days")
+  dates <- seq((Sys.Date()-8), (Sys.Date()-pos), by="days")
   dates[wday(dates, label=T)==day]
 }
 
