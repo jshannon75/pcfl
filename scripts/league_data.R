@@ -4,7 +4,7 @@
 library(ffscrapr)
 library(tidyverse)
 
-pcfl <- espn_connect(season = 2022, league_id = 1403922)
+pcfl <- espn_connect(season = 2023, league_id = 1403922)
 #league_info<-ff_league(pcfl)
 teams<-read_csv("data/teams22.csv")
   
@@ -152,10 +152,12 @@ team_points<-schedule %>%
   group_by(franchise_id) %>%
   summarise(`Team points`=sum(team_points))
 
-last3avg<-standings<-schedule %>%
+last3avg<-schedule %>%
   filter(week <= week_sel & week>week_sel-3) %>%
   group_by(franchise_id) %>%
-  summarise(`Avg last 3`=round(sum(franchise_score)/3,2))
+  summarise(weeks=max(row_number()),
+            `Avg last 3`=round(sum(franchise_score)/weeks,2)) %>%
+  select(-weeks)
 
 standings<-schedule %>%
   filter(week <= week_sel) %>%
