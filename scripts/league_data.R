@@ -25,7 +25,8 @@ lastweek_results<-schedule %>%
   select(Winner,`Winner's score`,Loser,`Loser's score`)
 
 #Best starters
-starters<-ff_starters(pcfl) 
+starters<-ff_starters(pcfl) %>%
+  mutate(franchise_name=if_else(franchise_name=="The Juniors","The Seniors",franchise_name))
 
 starters_10<-starters %>%
   filter(week==week_sel & lineup_slot!="BE") %>%
@@ -126,14 +127,14 @@ starter_benchteam_all <-starters %>%
 library(lubridate)
 
 getlastdate <- function(day,pos) {
-  dates <- seq((Sys.Date()-8), (Sys.Date()-pos), by="days")
+  dates <- seq((Sys.Date()-9), (Sys.Date()-pos), by="days")
   dates[wday(dates, label=T)==day]
 }
 
-lastadd_date<-getlastdate("Tue",4)
+lastadd_date<-getlastdate("Tue",3)
 
 newadds<-roster %>%
-  filter(acquisition_date<Sys.Date()-5 & acquisition_date>lastadd_date) %>%
+  filter(acquisition_date<Sys.Date()-3 & acquisition_date>lastadd_date) %>%
   left_join(starters %>%
               filter(week==week_sel)) %>%
   select(franchise_name,player_name,team,pos,player_score) %>%
