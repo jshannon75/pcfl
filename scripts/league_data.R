@@ -35,6 +35,15 @@ starters_10<-starters %>%
          `NFL Team`=team) %>%
   select(Player,Position,`NFL Team`,Points,`PCFL Team`)
 
+#Points contribution
+starters_pct<-starters %>%
+  filter(!lineup_slot %in% c("BE","IR")) %>%
+  group_by(franchise_name,lineup_slot) %>%
+  summarise(points=sum(player_score)) %>%
+  group_by(franchise_name) %>%
+  mutate(totpoints=sum(points),
+         points_pct=points/totpoints*100)
+
 #Optimal lineups each week
 bestline_qb<-starters %>%
   filter(pos=="QB") %>%

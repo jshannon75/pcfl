@@ -1,0 +1,176 @@
+---
+title: '**PCFL 2023: Week 4 wrap-up**'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    theme: united
+  github_document:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(svglite)
+library(kableExtra)
+library(hrbrthemes)
+library(extrafont)
+library(showtext)
+
+#font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+
+week_sel<-6
+
+source("scripts/league_data.R")
+
+```
+
+Week 6 is a wrap!
+
+The bye weeks have arrived y'all. Check your lineups!!
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Hangry Hobbits has the tough luck loss, while Jumpin' Jaheims had a lucky win.
+
+## Best performances
+
+### Best players overall
+Here's last week's **10 best performing starters.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters_10,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Rahemm Mostert leading the pack, and Adam Thielen among top performaners. Who knew?
+
+### Best players per team
+Here's last week's top players **on each team.**
+
+```{r,echo=FALSE}
+kable(starter_team)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Here's the season's bench standings:
+
+```{r,echo=FALSE}
+kable(starter_benchteam_all %>%
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Not to brag, but I've got a sizable lead built up here.
+
+### Best optimized lineups
+I compared the actual starting lineups for each team to the hypothetical _best_ starting lineup the owner could have started. The table below shows the actual points the team scored, the top score they could have had, and an "optimization" percentage that compares to the two.
+
+```{r,echo=FALSE}
+kable(actualpoints %>% 
+        filter(Week==week_sel) %>% 
+        select(-Week)) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+For the *whole season*, here's a graph of actual points scored vs. optimized points given the roster. 
+
+```{r,echo=FALSE}
+ggplot(actualpoints_season %>%
+         mutate(`PCFL Team` = fct_reorder(`PCFL Team`, desc(rank))),
+       aes(x=Points,y=`PCFL Team`))+
+  geom_line(aes(x=Points,y=`PCFL Team`,group=`PCFL Team`))+
+  geom_point(aes(color=Type),size=3.1)+
+  theme_minimal()+
+  scale_color_manual(values=c( "#E69F00","#999999"))+
+  theme(text=element_text(family="Source Sans Pro",size = 12))
+```
+
+If only I knew how to maximize my lineup.
+
+### Point distribution by position
+
+**NEW THIS WEEK!** Here's a breakdown of point contribution by position by team so far this season. For example, The GOAT has something like 25% of his points from QB, while Team Sasquatch is more like 10%. More on this as we go forward.
+
+```{r}
+ggplot(starters_pct,aes(y=points_pct,
+                        x=franchise_name,
+                        fill=franchise_name))+
+  geom_bar(stat='identity')+
+  ylab("% of points")+xlab("")+
+  facet_wrap(~lineup_slot)+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+   labs(fill = "Franchise name")
+```
+
+
+### Best pick-ups
+There were `r nrow(newadds)` players added last week. Which was the **best pick-ups**?
+
+```{r,echo=FALSE}
+kable(newadds) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+The Hobbits made some good moves last week.
+
+### Best team performances
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(arrange(toppoints,-Score))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Scott still hanging tight at the top.
+
+## Looking ahead
+
+### League standings
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+A lot of parity at the top, but right now, the Stertz sisters are 1 and 2.
+
+### If the season ended today...
+
+Seniors and Sharks are in, with Peanuts and Pigskin as the last two. Team Sasquatch barely loses by points in a tiebreaker.
+
+### Next week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Good luck, y'all!
