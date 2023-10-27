@@ -8,7 +8,9 @@ pcfl <- espn_connect(season = 2023, league_id = 1403922)
 #league_info<-ff_league(pcfl)
 teams<-read_csv("data/teams22.csv")
   
-roster<-ff_rosters(pcfl)
+roster<-ff_rosters(pcfl) %>%
+  select(-franchise_name) %>%
+  left_join(teams)
 schedule<-ff_schedule(pcfl)
 
 lastweek_results<-schedule %>%
@@ -25,8 +27,10 @@ lastweek_results<-schedule %>%
   select(Winner,`Winner's score`,Loser,`Loser's score`)
 
 #Best starters
-starters<-ff_starters(pcfl) %>%
-  mutate(franchise_name=if_else(franchise_name=="The Juniors","The Seniors",franchise_name))
+starters<-ff_starters(pcfl)  %>%
+  select(-franchise_name) %>%
+  left_join(teams)
+  #mutate(franchise_name=if_else(franchise_name=="The Juniors","The Seniors",franchise_name))
 
 starters_10<-starters %>%
   filter(week==week_sel & lineup_slot!="BE") %>%
@@ -136,14 +140,14 @@ starter_benchteam_all <-starters %>%
 library(lubridate)
 
 getlastdate <- function(day,pos) {
-  dates <- seq((Sys.Date()-9), (Sys.Date()-pos), by="days")
+  dates <- seq((Sys.Date()-10), (Sys.Date()-pos), by="days")
   dates[wday(dates, label=T)==day]
 }
 
 lastadd_date<-getlastdate("Tue",3)
 
 newadds<-roster %>%
-  filter(acquisition_date<Sys.Date()-3 & acquisition_date>lastadd_date) %>%
+  filter(acquisition_date>lastadd_date[1] & acquisition_date<lastadd_date[2]) %>%
   left_join(starters %>%
               filter(week==week_sel)) %>%
   select(franchise_name,player_name,team,pos,player_score) %>%

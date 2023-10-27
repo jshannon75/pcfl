@@ -1,5 +1,5 @@
 ---
-title: '**PCFL 2023: Week 6 wrap-up**'
+title: '**PCFL 2023: Week 7 wrap-up**'
 output:
   html_document:
     toc: true
@@ -25,15 +25,15 @@ library(showtext)
 #font_add_google("IBM Plex Sans", "ibm")
 extrafont::loadfonts()
 
-week_sel<-6
+week_sel<-7
 
 source("scripts/league_data.R")
 
 ```
 
-Week 6 is a wrap!
+Week 7 is a wrap!
 
-The bye weeks have arrived y'all. Check your lineups!!
+The bye weeks are ongoing y'all. Check your lineups!!
 
 ## Last week's games
 
@@ -42,7 +42,7 @@ kable(lastweek_results)%>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-Hangry Hobbits has the tough luck loss, while Jumpin' Jaheims had a lucky win.
+The Peanuts, Hobbits, Sharks, Captain, and Sasquatch all in the Winners column. The Captain and Jaheims only got one point in the standings this week, while the other winners got two.
 
 ## Best performances
 
@@ -55,7 +55,7 @@ kable(top_n(starters_10,10,Points) %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-Rahemm Mostert leading the pack, and Adam Thielen among top performaners. Who knew?
+Jordan Addison had some great catches this week if you haven't seen them.
 
 ### Best players per team
 Here's last week's top players **on each team.**
@@ -84,7 +84,7 @@ kable(starter_benchteam_all %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-Not to brag, but I've got a sizable lead built up here.
+Bye weeks hurt my Peanuts this week, but we still have a comfortable lead. Sharks are lurking as always, though.
 
 ### Best optimized lineups
 I compared the actual starting lineups for each team to the hypothetical _best_ starting lineup the owner could have started. The table below shows the actual points the team scored, the top score they could have had, and an "optimization" percentage that compares to the two.
@@ -109,13 +109,11 @@ ggplot(actualpoints_season %>%
   theme(text=element_text(family="Source Sans Pro",size = 12))
 ```
 
-If only I knew how to maximize my lineup.
-
 ### Point distribution by position
 
-**NEW THIS WEEK!** Here's a breakdown of point contribution by position by team so far this season. For example, The GOAT has something like 25% of his points from QB, while Team Sasquatch is more like 10%. More on this as we go forward.
+Here's a breakdown of point contribution by position by team so far this season. 
 
-```{r}
+```{r, echo=FALSE}
 ggplot(starters_pct,aes(y=points_pct,
                         x=franchise_name,
                         fill=franchise_name))+
@@ -128,6 +126,11 @@ ggplot(starters_pct,aes(y=points_pct,
    labs(fill = "Franchise name")
 ```
 
+Fun facts: 
+
+* Richard is the only owner to have more than 10% of his points from the kicker position.
+* Brian has gotten 13 TOTAL points from his DST position ALL SEASON.
+* Robbie is having his usual resurgence, but is virtually tied with me for lowest points from the QB position (11.4%).
 
 ### Best pick-ups
 There were `r nrow(newadds)` players added last week. Which was the **best pick-ups**?
@@ -136,8 +139,6 @@ There were `r nrow(newadds)` players added last week. Which was the **best pick-
 kable(newadds) %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
-
-The Hobbits made some good moves last week.
 
 ### Best team performances
 
@@ -160,17 +161,19 @@ kable(standings)%>%
 
 ```
 
-A lot of parity at the top, but right now, the Stertz sisters are 1 and 2.
+Sarah and I are now 1 and 2, but Robbie (our league champion 3 of the last 4 seasons, I believe) has inched up to third.
 
 ### If the season ended today...
 
-Seniors and Sharks are in, with Peanuts and Pigskin as the last two. Team Sasquatch barely loses by points in a tiebreaker.
+It's Sarah, me, Robbie, and Erin/Trav right now. Scott and Richard are one point off the pace.
 
-### Next week's matchups
+### This week's matchups
 
 ```{r,echo=FALSE}
 kbl(nextwk1) %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
+
+Big game for Sarah and Robbie this week.
 
 Good luck, y'all!
