@@ -31,9 +31,9 @@ source("scripts/league_data.R")
 
 ```
 
-Week 7 is a wrap!
+Week 9 is a wrap!
 
-The bye weeks are ongoing y'all. Also, this week's Sunday Europe game is Colts-Patriots, kicking off at 9:30 ET. Check your lineups!!
+The bye weeks are ongoing, y'all. Also, this week's Sunday Europe game is Colts-Patriots, kicking off at 9:30 ET. Check your lineups!!
 
 ## Last week's games
 
