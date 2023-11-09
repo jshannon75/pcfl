@@ -25,7 +25,7 @@ library(showtext)
 #font_add_google("IBM Plex Sans", "ibm")
 extrafont::loadfonts()
 
-week_sel<-7
+week_sel<-9
 
 source("scripts/league_data.R")
 
@@ -33,7 +33,7 @@ source("scripts/league_data.R")
 
 Week 7 is a wrap!
 
-The bye weeks are ongoing y'all. Check your lineups!!
+The bye weeks are ongoing y'all. Also, this week's Sunday Europe game is Colts-Patriots, kicking off at 9:30 ET. Check your lineups!!
 
 ## Last week's games
 
@@ -42,7 +42,7 @@ kable(lastweek_results)%>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-The Peanuts, Hobbits, Sharks, Captain, and Sasquatch all in the Winners column. The Captain and Jaheims only got one point in the standings this week, while the other winners got two.
+Top scorer this week was Jacob's GOAT with 122 points. Six of our ten teams scored between 86 and 90 points. #parity
 
 ## Best performances
 
@@ -55,7 +55,7 @@ kable(top_n(starters_10,10,Points) %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-Jordan Addison had some great catches this week if you haven't seen them.
+Check out the Chargers defense this week!
 
 ### Best players per team
 Here's last week's top players **on each team.**
@@ -64,6 +64,8 @@ Here's last week's top players **on each team.**
 kable(starter_team)%>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
+
+I benched CJ Stroud, thinking his rookie mojo had run out. Then he scores 42. Sigh. Relately, Tank Dell scored nearly 30 on Robbie's bench.
 
 ### Best bench
 Who won the **best scoring bench** award last week?
@@ -84,7 +86,7 @@ kable(starter_benchteam_all %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-Bye weeks hurt my Peanuts this week, but we still have a comfortable lead. Sharks are lurking as always, though.
+I've got a comfortable lead at this point. Evan and Robbie are the only ones within 100 points.
 
 ### Best optimized lineups
 I compared the actual starting lineups for each team to the hypothetical _best_ starting lineup the owner could have started. The table below shows the actual points the team scored, the top score they could have had, and an "optimization" percentage that compares to the two.
@@ -95,6 +97,8 @@ kable(actualpoints %>%
         select(-Week)) %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
+
+Robbie could have had a 151 point week! 
 
 For the *whole season*, here's a graph of actual points scored vs. optimized points given the roster. 
 
@@ -128,9 +132,9 @@ ggplot(starters_pct,aes(y=points_pct,
 
 Fun facts: 
 
-* Richard is the only owner to have more than 10% of his points from the kicker position.
-* Brian has gotten 13 TOTAL points from his DST position ALL SEASON.
-* Robbie is having his usual resurgence, but is virtually tied with me for lowest points from the QB position (11.4%).
+* The GOAT is tops in percentage of points from the QB position (24%) but last in WR points (17%).
+* Brian has now gotten **29 TOTAL POINTS** from his DST position ALL SEASON. The Chargers defense scored 26 LAST WEEK.
+* The Gophers are the only team with 10% or more of points coming from their kicker.
 
 ### Best pick-ups
 There were `r nrow(newadds)` players added last week. Which was the **best pick-ups**?
@@ -149,7 +153,7 @@ kable(arrange(toppoints,-Score))%>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-Scott still hanging tight at the top.
+Team Sasquatch had a monster week last week. That one will be hard to top.
 
 ## Looking ahead
 
@@ -161,11 +165,11 @@ kable(standings)%>%
 
 ```
 
-Sarah and I are now 1 and 2, but Robbie (our league champion 3 of the last 4 seasons, I believe) has inched up to third.
+And even with the loss last week, Robbie still sits as the number one seed going into week 10. Brian's got the lead for the toilet trophy.
 
 ### If the season ended today...
 
-It's Sarah, me, Robbie, and Erin/Trav right now. Scott and Richard are one point off the pace.
+It's Robbie, me, Scott, and Erin/Trav right now. Sarah is tied with Erin on team points, but the Sharks have scored about 70 fewer points. 
 
 ### This week's matchups
 
@@ -174,6 +178,6 @@ kbl(nextwk1) %>%
   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
 ```
 
-Big game for Sarah and Robbie this week.
+It's #1 and #2 this week as I take on Robbie. 
 
 Good luck, y'all!

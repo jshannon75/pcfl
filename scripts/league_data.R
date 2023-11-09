@@ -144,7 +144,7 @@ getlastdate <- function(day,pos) {
   dates[wday(dates, label=T)==day]
 }
 
-lastadd_date<-getlastdate("Tue",3)
+lastadd_date<-getlastdate("Tue",1)
 
 newadds<-roster %>%
   filter(acquisition_date>lastadd_date[1] & acquisition_date<lastadd_date[2]) %>%
