@@ -1,187 +1,218 @@
-#install.packages("ffscrapr")
-#Instructions for ESPN here: https://ffscrapr.ffverse.com/articles/espn_basics.html
-
-library(ffscrapr)
 library(tidyverse)
 
-pcfl <- espn_connect(season = 2023, league_id = 1403922)
-#league_info<-ff_league(pcfl)
-teams<-read_csv("data/teams22.csv")
-  
-roster<-ff_rosters(pcfl) %>%
-  select(-franchise_name) %>%
+#remotes::install_github("k5cents/fflr")
+library(fflr)
+
+ffl_id(leagueId = "1403922")
+league_info()
+week_sel=4
+
+teams<-league_teams()
+teams<-read_csv("data/teams22.csv") %>%
+  rename(teamId=franchise_id)
+
+roster_get<-function(week_sel){
+  roster_sel<-team_roster(scoringPeriodId=week_sel)
+  bind_rows(roster_sel)
+}
+
+roster_all<-map_df(1:week_sel,roster_get) %>%
   left_join(teams)
-schedule<-ff_schedule(pcfl)
+
+roster<-roster_all %>%
+  filter(scoringPeriodId==week_sel)
+
+schedule<-tidy_scores()
+
+lastweek_winners<-schedule %>%
+  filter(matchupPeriodId==week_sel&isWinner==TRUE) %>%
+  left_join(teams) %>%
+  select(matchupId,franchise_name,totalPoints) %>%
+  rename(Winner=franchise_name,
+         franchise_score=totalPoints) 
+
 
 lastweek_results<-schedule %>%
-  filter(week==week_sel & result=="W") %>%
-  select(-result) %>%
+  filter(matchupPeriodId==week_sel&isWinner==FALSE) %>%
   left_join(teams) %>%
-  rename(Winner=franchise_name) %>%
-  select(-franchise_id,-week) %>%
-  rename(franchise_id=opponent_id,
-         `Winner's score`=franchise_score,
-         `Loser's score`=opponent_score) %>%
-  left_join(teams %>% select(franchise_id,franchise_name)) %>%
-  rename(Loser=franchise_name) %>%
-  select(Winner,`Winner's score`,Loser,`Loser's score`)
+  select(matchupId,franchise_name,totalPoints) %>%
+  rename(Loser=franchise_name,
+         opponent_score=totalPoints)   %>%
+  left_join(lastweek_winners) %>%
+  select(Winner,franchise_score,Loser,opponent_score) %>%
+  rename(`Winner's score`=franchise_score,
+         `Loser's score`=opponent_score)
 
 #Best starters
-starters<-ff_starters(pcfl)  %>%
-  select(-franchise_name) %>%
-  left_join(teams)
-  #mutate(franchise_name=if_else(franchise_name=="The Juniors","The Seniors",franchise_name))
-
-starters_10<-starters %>%
-  filter(week==week_sel & lineup_slot!="BE") %>%
-  rename(Player=player_name,Position=lineup_slot,
-         Points=player_score,`PCFL Team`=franchise_name,
-         `NFL Team`=team) %>%
+starters<-roster_all  %>%
+  filter(scoringPeriodId==week_sel) %>%
+  left_join(teams) %>%
+  mutate(Player=paste(firstName,lastName),
+         Position=as.character(lineupSlot)) %>%
+  rename(Points=actualScore,
+         `PCFL Team`=franchise_name,
+         `NFL Team`=proTeam) %>%
   select(Player,Position,`NFL Team`,Points,`PCFL Team`)
 
-#Points contribution
-starters_pct<-starters %>%
-  filter(!lineup_slot %in% c("BE","IR")) %>%
-  group_by(franchise_name,lineup_slot) %>%
-  summarise(points=sum(player_score)) %>%
-  group_by(franchise_name) %>%
-  mutate(totpoints=sum(points),
-         points_pct=points/totpoints*100)
+# #Points contribution
+# starters_pct<-starters %>%
+#   filter(!lineup_slot %in% c("BE","IR")) %>%
+#   group_by(franchise_name,lineup_slot) %>%
+#   summarise(points=sum(player_score)) %>%
+#   group_by(franchise_name) %>%
+#   mutate(totpoints=sum(points),
+#          points_pct=points/totpoints*100)
 
-#Optimal lineups each week
-bestline_qb<-starters %>%
-  filter(pos=="QB") %>%
-  group_by(franchise_name,week) %>%
-  filter(player_score==max(player_score))
-
-bestline_rb<-starters %>%
-  filter(pos=="RB") %>%
-  group_by(franchise_name,week) %>%
-  top_n(wt=player_score,2)
-
-bestline_wr<-starters %>%
-  filter(pos=="WR") %>%
-  group_by(franchise_name,week) %>%
-  top_n(wt=player_score,2)
-
-bestline_te<-starters %>%
-  filter(pos=="TE") %>%
-  group_by(franchise_name,week) %>%
-  top_n(wt=player_score,1)
-
-bestline_k<-starters %>%
-  filter(pos=="K") %>%
-  group_by(franchise_name,week) %>%
-  top_n(wt=player_score,1)
-
-bestline_d<-starters %>%
-  filter(pos=="DST") %>%
-  group_by(franchise_name,week) %>%
-  top_n(wt=player_score,1)
-
-bestline_temp<-bind_rows(bestline_qb,bestline_rb,bestline_wr,bestline_k,bestline_d,bestline_te) 
-bestline_flex<-starters %>%
-  anti_join(bestline_temp) %>%
-  filter(pos %in% c("RB","WR","TE")) %>%
-  group_by(franchise_name,week) %>%
-  top_n(wt=player_score,1)
-
-bestline_all<-bind_rows(bestline_temp,bestline_flex) %>%
-  ungroup() %>%
-  group_by(franchise_name,week) %>%
-  summarise(bestline_points=sum(player_score))
-
-actualpoints<-starters %>%
-  filter(lineup_slot!="BE") %>%
-  group_by(franchise_name,week) %>%
-  summarise(actual_points=sum(player_score)) %>%
-  left_join(bestline_all) %>%
-  mutate(optimize_pct=round(actual_points/bestline_points*100,0)) %>%
-  arrange(-optimize_pct) %>%
-  mutate(`Optimization rate`=paste(optimize_pct,"%",sep="")) %>%
-  rename(`PCFL Team`=franchise_name,
-         Week=week,
-         `Actual points`=actual_points,
-         `Best lineup`=bestline_points) %>%
-    select(-optimize_pct)
-
-actualpoints_season<-actualpoints %>%
-  group_by(`PCFL Team`) %>%
-  summarise(`Actual points`=sum(`Actual points`),
-            `Optimized points`=sum(`Best lineup`)) %>%
-  arrange(-`Actual points`) %>%
-  mutate(rank=row_number()) %>%
-  pivot_longer(`Actual points`:`Optimized points`,names_to="Type",values_to="Points")
+# #Optimal lineups each week
+# bestline_qb<-starters %>%
+#   filter(Position=="QB") %>%
+#   group_by(franchise_name,week) %>%
+#   filter(player_score==max(player_score))
+# 
+# bestline_rb<-starters %>%
+#   filter(pos=="RB") %>%
+#   group_by(franchise_name,week) %>%
+#   top_n(wt=player_score,2)
+# 
+# bestline_wr<-starters %>%
+#   filter(pos=="WR") %>%
+#   group_by(franchise_name,week) %>%
+#   top_n(wt=player_score,2)
+# 
+# bestline_te<-starters %>%
+#   filter(pos=="TE") %>%
+#   group_by(franchise_name,week) %>%
+#   top_n(wt=player_score,1)
+# 
+# bestline_k<-starters %>%
+#   filter(pos=="K") %>%
+#   group_by(franchise_name,week) %>%
+#   top_n(wt=player_score,1)
+# 
+# bestline_d<-starters %>%
+#   filter(pos=="DST") %>%
+#   group_by(franchise_name,week) %>%
+#   top_n(wt=player_score,1)
+# 
+# bestline_temp<-bind_rows(bestline_qb,bestline_rb,bestline_wr,bestline_k,bestline_d,bestline_te) 
+# bestline_flex<-starters %>%
+#   anti_join(bestline_temp) %>%
+#   filter(pos %in% c("RB","WR","TE")) %>%
+#   group_by(franchise_name,week) %>%
+#   top_n(wt=player_score,1)
+# 
+# bestline_all<-bind_rows(bestline_temp,bestline_flex) %>%
+#   ungroup() %>%
+#   group_by(franchise_name,week) %>%
+#   summarise(bestline_points=sum(player_score))
+# 
+# actualpoints<-starters %>%
+#   filter(lineup_slot!="BE") %>%
+#   group_by(franchise_name,week) %>%
+#   summarise(actual_points=sum(player_score)) %>%
+#   left_join(bestline_all) %>%
+#   mutate(optimize_pct=round(actual_points/bestline_points*100,0)) %>%
+#   arrange(-optimize_pct) %>%
+#   mutate(`Optimization rate`=paste(optimize_pct,"%",sep="")) %>%
+#   rename(`PCFL Team`=franchise_name,
+#          Week=week,
+#          `Actual points`=actual_points,
+#          `Best lineup`=bestline_points) %>%
+#     select(-optimize_pct)
+# 
+# actualpoints_season<-actualpoints %>%
+#   group_by(`PCFL Team`) %>%
+#   summarise(`Actual points`=sum(`Actual points`),
+#             `Optimized points`=sum(`Best lineup`)) %>%
+#   arrange(-`Actual points`) %>%
+#   mutate(rank=row_number()) %>%
+#   pivot_longer(`Actual points`:`Optimized points`,names_to="Type",values_to="Points")
 
 #Best player per team
 starter_team <-starters %>%
-  filter(week==week_sel) %>%
-  group_by(franchise_name) %>%
-  filter(player_score==max(player_score)) %>%
-  rename(Player=player_name,Position=lineup_slot,
-         Points=player_score,`PCFL Team`=franchise_name,
-         `NFL Team`=team) %>%
-  select(Player,Position,`NFL Team`,Points,`PCFL Team`) %>%
+  filter(Position!="BE") %>%
+  group_by(`PCFL Team`) %>%
+  filter(Points==max(Points)) %>%
   arrange(`PCFL Team`)
 
 #Best bench
-
 starter_benchteam <-starters %>%
-  filter(week==week_sel & lineup_slot=="BE") %>%
-  group_by(franchise_name) %>%
-  summarise(`Bench points`=sum(player_score))
+  filter(Position=="BE") %>%
+  group_by(`PCFL Team`) %>%
+  summarise(`Bench points`=sum(Points))
 
-starter_benchteam_all <-starters %>%
-  filter(lineup_slot=="BE") %>%
+starter_benchteam_all <-roster_all%>%
+  filter(lineupSlot=="BE") %>%
   group_by(franchise_name) %>%
-  summarise(`Bench points`=sum(player_score))
+  summarise(`Bench points`=sum(actualScore))
 
 #New adds
-library(lubridate)
+activity<-recent_activity(scoringPeriodId = week_sel) %>%
+  filter(type=="FREEAGENT")
+activity_info<-bind_rows(activity$items) %>%
+  filter(type=="ADD") %>%
+  left_join(roster %>% dplyr::select(playerId,firstName,lastName,lineupSlot,proTeam)) %>%
+  filter(is.na(firstName)==FALSE) %>%
+  left_join(roster %>% select(playerId,actualScore))%>%
+  rename(teamId=toTeamId) %>%
+  left_join(teams %>% select(teamId,franchise_name)) %>%
+  mutate(name=paste(firstName,lastName,sep=" ")) %>%
+  select(franchise_name,name,proTeam,lineupSlot,actualScore)
 
-getlastdate <- function(day,pos) {
-  dates <- seq((Sys.Date()-10), (Sys.Date()-pos), by="days")
-  dates[wday(dates, label=T)==day]
-}
+names(activity_info)<-c("PCFL Team","Player","NFL Team","Position","Points")
 
-lastadd_date<-getlastdate("Tue",1)
 
-newadds<-roster %>%
-  filter(acquisition_date>lastadd_date[1] & acquisition_date<lastadd_date[2]) %>%
-  left_join(starters %>%
-              filter(week==week_sel)) %>%
-  select(franchise_name,player_name,team,pos,player_score) %>%
-    arrange(-player_score)
+# library(lubridate)
+# 
+# getlastdate <- function(day,pos) {
+#   dates <- seq((Sys.Date()-10), (Sys.Date()-pos), by="days")
+#   dates[wday(dates, label=T)==day]
+# }
+# 
+# lastadd_date<-getlastdate("Tue",1)
+# 
+# newadds<-roster %>%
+#   filter(acquisition_date>lastadd_date[1] & acquisition_date<lastadd_date[2]) %>%
+#   left_join(starters %>%
+#               filter(week==week_sel)) %>%
+#   select(franchise_name,player_name,team,pos,player_score) %>%
+#     arrange(-player_score)
 
-names(newadds)<-c("PCFL Team","Player","NFL Team","Position","Points")
 
 #Standings
-team_points<-schedule %>%
+team_points<- schedule %>%
+  rename(week=matchupPeriodId,
+         franchise_score=totalPoints) %>%
   filter(week <= week_sel) %>%
   group_by(week) %>%
-  mutate(team_points=case_when(franchise_score > median(franchise_score) & result=="W"~2,
+  mutate(team_points=case_when(franchise_score > median(franchise_score) & isWinner==TRUE~2,
                                franchise_score > median(franchise_score)~1,
-                               franchise_score < median(franchise_score) & result=="W"~1,
+                               franchise_score < median(franchise_score) & isWinner==TRUE~1,
                                franchise_score < median(franchise_score) ~ 0)) %>%
-  group_by(franchise_id) %>%
+  group_by(teamId) %>%
   summarise(`Team points`=sum(team_points))
 
 last3avg<-schedule %>%
+  rename(week=matchupPeriodId,
+         franchise_score=totalPoints) %>%
   filter(week <= week_sel & week>week_sel-3) %>%
-  group_by(franchise_id) %>%
+  group_by(teamId) %>%
   summarise(weeks=max(row_number()),
             `Avg last 3`=round(sum(franchise_score)/weeks,2)) %>%
   select(-weeks)
 
 standings<-schedule %>%
+  rename(week=matchupPeriodId,
+         franchise_score=totalPoints) %>%
+  mutate(result=if_else(isWinner==TRUE,"W","L")) %>%
   filter(week <= week_sel) %>%
-  count(franchise_id,result)%>% 
-  left_join(teams %>% select(franchise_id,franchise_name,Division)) %>%
+  count(teamId,result)%>% 
+  left_join(teams %>% select(teamId,franchise_name,Division)) %>%
   pivot_wider(names_from=result,values_from=n,values_fill=0) %>%
   left_join(schedule %>%
-              filter(week <= week_sel) %>%
-              group_by(franchise_id) %>%
-              summarise(`Points scored`=sum(franchise_score))) %>%
+              filter(matchupPeriodId <= week_sel) %>%
+              group_by(teamId) %>%
+              summarise(`Points scored`=sum(totalPoints))) %>%
   mutate(`Avg points`=round(`Points scored`/(W+L),2)) %>%
   left_join(last3avg) %>%
   left_join(team_points) %>%
@@ -189,77 +220,84 @@ standings<-schedule %>%
   select(franchise_name,Division,`Points scored`,`Avg points`,`Avg last 3`,W,L,`Team points`) %>%
   rename(`PCFL Team`=franchise_name)
 
+stargazer::stargazer(standings,type="text",summary=F)
 
 # #hist<-ff_playerscores(pcfl)
 # starters<-ff_starters(pcfl)
 
 #Info on NFL players
-nfl<-nflfastr_rosters(seasons = 2022) %>%
-  mutate(player_id=as.integer(espn_id)) %>%
-  rename(nflteam=team) %>%
-  select(-week)
-
-nfl_top10<-starters %>%
-  filter(week==week_sel) %>%
-  count(team) %>%
-  top_n(10) %>%
-  arrange(-n) %>%
-  rename(`NFL Team`=team,`# of players`=n)
-
-college<-starters %>%
-  left_join(nfl) %>%
-  filter(is.na(college)==FALSE) %>%
-  count(college) %>%
-  top_n(10) %>%
-  arrange(-n) %>%
-  rename(`College Team`=college,`# of players`=n)
-
-exp<-starters %>%
-  left_join(nfl) %>%
-  filter(is.na(years_exp)==FALSE) %>%
-  group_by(franchise_id) %>%
-  summarise(`Mean NFL experience`=round(mean(years_exp),2)) %>%
-  arrange(-`Mean NFL experience`) %>%
-  left_join(teams) %>%
-  select(franchise_name,`Mean NFL experience`) %>%
-  rename(Team=franchise_name)
+# nfl<-nflfastr_rosters(seasons = 2022) %>%
+#   mutate(player_id=as.integer(espn_id)) %>%
+#   rename(nflteam=team) %>%
+#   select(-week)
+# 
+# nfl_top10<-starters %>%
+#   filter(week==week_sel) %>%
+#   count(team) %>%
+#   top_n(10) %>%
+#   arrange(-n) %>%
+#   rename(`NFL Team`=team,`# of players`=n)
+# 
+# college<-starters %>%
+#   left_join(nfl) %>%
+#   filter(is.na(college)==FALSE) %>%
+#   count(college) %>%
+#   top_n(10) %>%
+#   arrange(-n) %>%
+#   rename(`College Team`=college,`# of players`=n)
+# 
+# exp<-starters %>%
+#   left_join(nfl) %>%
+#   filter(is.na(years_exp)==FALSE) %>%
+#   group_by(franchise_id) %>%
+#   summarise(`Mean NFL experience`=round(mean(years_exp),2)) %>%
+#   arrange(-`Mean NFL experience`) %>%
+#   left_join(teams) %>%
+#   select(franchise_name,`Mean NFL experience`) %>%
+#   rename(Team=franchise_name)
 
 
 #Next week 
 
 nextwk<-schedule %>% 
-  filter(week==week_sel+1)
+  filter(matchupPeriodId==week_sel+1)
 
 nextwk1<-nextwk %>%
-  left_join(teams %>% select(franchise_id,franchise_name)) %>%
-  select(-franchise_id) %>%
-  rename(TeamA=franchise_name,
-         franchise_id=opponent_id) %>%
-  left_join(teams %>% select(franchise_id,franchise_name)) %>%
-  rename(TeamB=franchise_name) %>%
-  select(TeamA,TeamB) %>%
-  mutate(matchup=row_number()) %>%
-  pivot_longer(TeamA:TeamB,names_to="team",values_to="team_name") %>%
-  group_by(team_name) %>%
-  summarise(matchup=min(matchup)) %>%
-  group_by(matchup) %>%
-  mutate(team=paste("Team",row_number(),sep=" ")) %>%
+  left_join(teams) %>%
+  left_join(teams %>% select(teamId,franchise_name)) %>%
+  select(-teamId) %>%
+  # rename(TeamA=franchise_name,
+  #        franchise_id=opponent_id) %>%
+  # left_join(teams %>% select(franchise_id,franchise_name)) %>%
+  # rename(TeamB=franchise_name) %>%
+  # select(TeamA,TeamB) %>%
+  # mutate(matchup=row_number()) %>%
+  #pivot_longer(TeamA:TeamB,names_to="team",values_to="team_name") %>%
+  #group_by(team_name) %>%
+  #summarise(matchup=min(matchup)) %>%
+  #group_by(matchup) %>%
+  #mutate(team=paste("Team",row_number(),sep=" ")) %>%
   left_join(standings %>%
-              rename(team_name=`PCFL Team`) %>%
-              select(team_name,`Avg last 3`)) %>%
-  mutate(team_points=paste(team_name," (Avg. last 3: ",round(`Avg last 3`,2),")",sep="")) %>%
-  select(-team_name,-`Avg last 3`) %>%
-  pivot_wider(names_from=team,values_from=team_points) %>%
+              rename(franchise_name=`PCFL Team`) %>%
+              select(franchise_name,`Avg last 3`)) %>%
+  mutate(team_points=paste(franchise_name," (Avg. last 3: ",round(`Avg last 3`,2),")",sep="")) %>%
+  select(matchupId,team_points) %>%
+  group_by(matchupId) %>%
+  mutate(rownum=row_number()) %>%
+  pivot_wider(names_from=rownum,values_from=team_points) %>%
   ungroup() %>%
-  select(-matchup)
+  select(-matchupId) 
+
+names(nextwk1)<-c("Team 1","Team 2")
 
 toppoints<-schedule %>%
-  top_n(5,franchise_score) %>%
+  top_n(5,totalPoints) %>%
   left_join(teams) %>%
-  select(franchise_name,week,franchise_score,result) %>%
+  mutate(result=if_else(isWinner==TRUE,"W","L")) %>%
+  select(franchise_name,matchupPeriodId,totalPoints,result) %>%
   rename(`PCFL Team`=franchise_name,
-         Week=week,
-         Score=franchise_score,
+         Week=matchupPeriodId,
+         Score=totalPoints,
          Result=result)
 
 # starters_nfl<-starters %>%
