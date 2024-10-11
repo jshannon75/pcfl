@@ -5,7 +5,7 @@ library(fflr)
 
 ffl_id(leagueId = "1403922")
 league_info()
-week_sel=4
+week_sel=5
 
 teams<-league_teams()
 teams<-read_csv("data/teams22.csv") %>%
@@ -139,12 +139,12 @@ starter_team <-starters %>%
 starter_benchteam <-starters %>%
   filter(Position=="BE") %>%
   group_by(`PCFL Team`) %>%
-  summarise(`Bench points`=sum(Points))
+  summarise(`Bench points`=sum(Points,na.rm=TRUE))
 
 starter_benchteam_all <-roster_all%>%
   filter(lineupSlot=="BE") %>%
   group_by(franchise_name) %>%
-  summarise(`Bench points`=sum(actualScore))
+  summarise(`Bench points`=sum(actualScore,na.rm=TRUE))
 
 #New adds
 activity<-recent_activity(scoringPeriodId = week_sel) %>%
