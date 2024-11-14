@@ -5,7 +5,6 @@ library(fflr)
 
 ffl_id(leagueId = "1403922")
 league_info()
-week_sel=7
 
 teams<-league_teams()
 teams<-read_csv("data/teams22.csv") %>%
