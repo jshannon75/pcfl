@@ -31,7 +31,7 @@ source("scripts/league_data.R")
 
 ```
 
-Just two weeks left in the regular season!
+The playoffs have arrived!
 
 ## Last week's games
 
