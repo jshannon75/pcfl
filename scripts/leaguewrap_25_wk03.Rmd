@@ -1,0 +1,148 @@
+---
+title: '**PCFL 2025: Week 3 wrap-up**'
+output:
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: true
+      smooth_scroll: true
+    toc_depth: 4
+    theme: united
+    css: |
+      .tocify {
+        width: 250px !important;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .tocify-header {
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .tocify-subheader {
+        font-size: 12px;
+        padding-left: 15px;
+      }
+  github_document:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(svglite)
+library(kableExtra)
+library(hrbrthemes)
+library(showtext)
+
+setwd(here::here())
+
+#font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+week_sel=3
+
+source("scripts/league_data.R")
+
+```
+
+Lots of travel last week, so the weekly update didn't make it out. But here's where we stand for week 3.
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+The Hangry Hobbits (Scott) had a great week, and Team Sasquatch (Robbie) definitely did not. 
+
+## Best performances
+
+### Best players overall
+Here's last week's **10 best performing starters.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+The Vikings defense, lol.
+
+### Best players per team
+Here's last week's top players **on each team.**
+
+```{r,echo=FALSE}
+kable(starter_team)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=`PCFL Team`))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+ Here's the season's bench standings:
+
+```{r,echo=FALSE}
+ kable(starter_benchteam_all %>%
+         arrange(-`Bench points`) %>%
+ rename(Team=name))%>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+A very close race!
+
+### Best pick-ups
+There were `r nrow(activity_info)` players added last week. Which was the **best pick-ups**?
+
+```{r,echo=FALSE}
+ kable(activity_info %>% arrange(-Points)) %>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best team performances 
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+ kable(arrange(toppoints,-Score))%>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+## Looking ahead
+
+### League standings
+
+For new folks, our league standings are a little unusual. We rank teams based on points, kinda like hockey. There are two ways to get points:
+
+* Win your weekly matchup (1 point)
+* Finish in the top six point scorers (1 point)
+
+So this week, Evan got two points because he won and had a lot of points. But Robbie (Sasquatch) only got one point. He was in the top six point scorers, but he lost his game.
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+### If the season ended today...
+
+Our playoff teams would be the Broncos, Sharks, Jaheims, and the Henry's (using a tiebreaker of total points scored). Two of our newbies in the top 4!
+
+### This week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Good luck, y'all!

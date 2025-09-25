@@ -15,8 +15,6 @@ roster_get<-function(week_sel){
   bind_rows(roster_sel)
 }
 
-week_sel<-1
-
 roster_all<-map_df(1:week_sel,roster_get) %>%
   left_join(teams)
 
