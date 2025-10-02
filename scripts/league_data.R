@@ -6,9 +6,12 @@ library(fflr)
 ffl_id(leagueId = "1403922")
 league_info()
 
+
 # teams<-league_teams(leagueId = "1403922")
 # write_csv(teams,"data/teams25.csv")
 teams<-read_csv("data/teams25.csv")
+
+draft<-draft_recap()
 
 roster_get<-function(week_sel){
   roster_sel<-team_roster(scoringPeriodId=week_sel)
@@ -17,6 +20,18 @@ roster_get<-function(week_sel){
 
 roster_all<-map_df(1:week_sel,roster_get) %>%
   left_join(teams)
+
+roster_draft<-roster_all %>%
+  inner_join(draft %>% select(teamId,playerId)) %>%
+  filter(lineupSlot!="BE") %>%
+  group_by(abbrev,name) %>%
+  summarise(draftpoints=sum(actualScore))
+
+roster_pickup<-roster_all %>%
+  anti_join(draft %>% select(teamId,playerId)) %>%
+  filter(lineupSlot!="BE") %>%
+  group_by(abbrev,name) %>%
+  summarise(draftpoints=sum(actualScore))
 
 roster<-roster_all %>%
   filter(scoringPeriodId==week_sel)
