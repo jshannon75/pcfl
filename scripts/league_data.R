@@ -199,12 +199,12 @@ team_points<- schedule %>%
          franchise_score=totalPoints) %>%
   filter(week <= week_sel) %>%
   group_by(week) %>%
-  mutate(team_points=case_when(franchise_score > median(franchise_score) & isWinner==TRUE~2,
-                               franchise_score > median(franchise_score)~1,
-                               franchise_score < median(franchise_score) & isWinner==TRUE~1,
-                               franchise_score < median(franchise_score) ~ 0)) %>%
+  mutate(team_points=case_when(franchise_score > median(franchise_score)-0.1 & isWinner==TRUE~2,
+                               franchise_score > median(franchise_score)-0.1~1,
+                               franchise_score < median(franchise_score)-0.1 & isWinner==TRUE~1,
+                               franchise_score < median(franchise_score)-0.1 ~ 0)) %>%
   group_by(teamId) %>%
-  summarise(`Team points`=sum(team_points))
+  summarise(`Team points`=sum(team_points,na.rm=T))
 
 last3avg<-schedule %>%
   rename(week=matchupPeriodId,
