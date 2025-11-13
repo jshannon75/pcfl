@@ -31,7 +31,10 @@ roster_pickup<-roster_all %>%
   anti_join(draft %>% select(teamId,playerId)) %>%
   filter(lineupSlot!="BE") %>%
   group_by(abbrev,name) %>%
-  summarise(draftpoints=sum(actualScore,na.rm=T))
+  summarise(draftpoints=sum(actualScore,na.rm=T),
+            draft_num=n()) %>%
+  full_join(roster_all %>% distinct(abbrev,name)) %>%
+  replace_na(list(draftpoints=0,draft_num=0))
 
 roster<-roster_all %>%
   filter(scoringPeriodId==week_sel)
