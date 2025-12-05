@@ -1,0 +1,181 @@
+---
+title: "**PCFL 2025: Week 13 wrap-up**"
+output:
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: true
+      smooth_scroll: true
+    toc_depth: 4
+    theme: united
+  github_document: default
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(svglite)
+library(kableExtra)
+#library(hrbrthemes)
+library(showtext)
+
+setwd(here::here())
+
+#font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+week_sel=13
+
+source("scripts/league_data.R")
+
+```
+
+Let's see where we check in with just TWO WEEKS left in the regular season.
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Captain Clairvoyant (Brian) had another strong week, but suffered from bad matchup luck. Team Sasquatch (Robbie) had the third lowest score, but still got the W.
+
+## Best performances
+
+### Best players overall
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Check out the Seattle defense!
+
+<!-- ### Best players per team -->
+<!-- Here's last week's top players **on each team.** -->
+
+<!-- ```{r,echo=FALSE} -->
+<!-- kable(starter_team)%>% -->
+<!--   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left") -->
+<!-- ``` -->
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=`PCFL Team`))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Here's the season's bench standings:
+
+```{r,echo=FALSE}
+ kable(starter_benchteam_all %>%
+         arrange(-`Bench points`) %>%
+ rename(Team=name))%>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Henry's Gonna Cook (Ted) is pulling away on this one.
+
+### Best pick-ups
+There were `r nrow(activity_info)` players added last week. Which was the **best pick-ups**?
+
+```{r,echo=FALSE}
+kable(activity_info %>% arrange(-Points)) %>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Brenton Strange is today's "he plays in the NFL?" waiver leader.
+
+### Waiver masters
+
+I've tallied the players picked up by each team since the draft and the points they've contributed as starters. Here's where those stand.
+
+```{r,echo=FALSE}
+kable(roster_pickup %>%
+        select(-abbrev) %>%
+        rename(Team=name,Points=draftpoints,
+               Transactions=draft_num) %>%
+        arrange(-Points)) %>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Robbie's got this one pretty much sown up.
+
+### Recapping the draft
+Here's the amount of points drafted players have contributed to each team as starters.
+
+```{r,echo=FALSE}
+kable(roster_draft %>% 
+         select(-abbrev) %>%
+        rename(Team=name,Points=draftpoints) %>% 
+        arrange(-Points)) %>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best team performances 
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        arrange(-Score))%>%
+   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+No changes to see here.
+
+## Looking ahead
+
+### League standings
+
+Our league standings are a little unusual. We rank teams based on points, kinda like hockey. There are two ways to get points:
+
+* Win your weekly matchup (1 point)
+* Finish in the top six point scorers (1 point)
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+There's two weeks left, so time to get a little more serious on the standings. Henry's Gonna Cook (Ted) and Southern Sharks (Sarah) have a 5 or 4 point lead respectively over the next team behind them. So Ted's in--no team can score more than 4 points. Sarah's also practically in, since she's scored 150 more points than the Broncos (Will), who could theoretically catch her.
+
+Where it gets interesting is the next two teams. Right now, there are six teams with between 14-16 team points, so any of them could make it mathematically. 
+
+Team Sasquatch has the lowest game points scored by at least 50, so winning a tiebreaker would be tough. Richard is at the other end, with almost 70 more points than any other in this group. 
+
+The Peanuts (me) and Jaheims (Evan) are two points behind Will and one behind Richard, Jacob, and Robbie, so we'd need some help to get in. 
+
+All that said, I'd probably say Will and Richard have the best position at this point. But that's also not accounting for strength of schedule, which gets too complicated for me. More next week!
+
+
+### If the season ended today...
+
+Our playoff teams would be the Henry's, Sharks, Broncos and Pigskin. 
+
+### This week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Biggest games of the week: Sasquatch vs. the Sharks and Pigskin vs the Peanuts. Both with significant playoff implications.
+
+Good luck, y'all!
