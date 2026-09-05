@@ -15,9 +15,23 @@
       --accent: #3b82f6;
       --my-team: #059669;
       --my-team-bg: #064e3b;
-      --other-drafted: #334155;
+      --other-drafted: #1e293b;
       --favorite: #eab308;
       --border: #334155;
+
+      /* Tier Colors */
+      --tier-1-bg: rgba(245, 158, 11, 0.12);
+      --tier-1-border: #f59e0b;
+      --tier-2-bg: rgba(168, 85, 247, 0.12);
+      --tier-2-border: #a855f7;
+      --tier-3-bg: rgba(59, 130, 246, 0.12);
+      --tier-3-border: #3b82f6;
+      --tier-4-bg: rgba(16, 185, 129, 0.12);
+      --tier-4-border: #10b981;
+      --tier-5-bg: rgba(236, 72, 153, 0.12);
+      --tier-5-border: #ec4899;
+      --tier-6-bg: rgba(100, 116, 139, 0.12);
+      --tier-6-border: #64748b;
     }
     
     body {
@@ -29,7 +43,7 @@
     }
 
     .container {
-      max-width: 1300px;
+      max-width: 1350px;
       margin: 0 auto;
     }
 
@@ -47,7 +61,7 @@
       font-size: 0.9rem;
     }
 
-    /* Team Summary Dashboard */
+    /* Dashboard */
     .dashboard {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -123,17 +137,22 @@
       padding: 15px;
       border-radius: 8px;
       border: 1px solid var(--border);
+      align-items: center;
     }
 
-    input[type="text"] {
-      flex: 1;
-      min-width: 200px;
+    input[type="text"], select {
       background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 8px 12px;
       border-radius: 6px;
       outline: none;
+      font-size: 0.9rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      min-width: 200px;
     }
 
     .btn-group {
@@ -173,7 +192,7 @@
       color: #fff;
     }
 
-    /* Table Styling */
+    /* Table */
     .table-container {
       overflow-x: auto;
     }
@@ -201,10 +220,26 @@
       letter-spacing: 0.05em;
     }
 
-    /* Status Rows */
+    /* Tier Styling */
+    tr.tier-1 { background-color: var(--tier-1-bg); border-left: 4px solid var(--tier-1-border); }
+    tr.tier-2 { background-color: var(--tier-2-bg); border-left: 4px solid var(--tier-2-border); }
+    tr.tier-3 { background-color: var(--tier-3-bg); border-left: 4px solid var(--tier-3-border); }
+    tr.tier-4 { background-color: var(--tier-4-bg); border-left: 4px solid var(--tier-4-border); }
+    tr.tier-5 { background-color: var(--tier-5-bg); border-left: 4px solid var(--tier-5-border); }
+    tr.tier-6 { background-color: var(--tier-6-bg); border-left: 4px solid var(--tier-6-border); }
+
+    .badge-tier-1 { background: var(--tier-1-border); color: #000; }
+    .badge-tier-2 { background: var(--tier-2-border); color: #fff; }
+    .badge-tier-3 { background: var(--tier-3-border); color: #fff; }
+    .badge-tier-4 { background: var(--tier-4-border); color: #000; }
+    .badge-tier-5 { background: var(--tier-5-border); color: #fff; }
+    .badge-tier-6 { background: var(--tier-6-border); color: #fff; }
+
+    /* Draft States */
     tr.drafted-other {
-      background-color: var(--other-drafted);
-      opacity: 0.4;
+      background-color: var(--other-drafted) !important;
+      opacity: 0.35;
+      border-left: 4px solid #475569 !important;
     }
 
     tr.drafted-other .player-name {
@@ -212,8 +247,8 @@
     }
 
     tr.drafted-me {
-      background-color: #064e3b;
-      border-left: 4px solid var(--my-team);
+      background-color: #064e3b !important;
+      border-left: 4px solid var(--my-team) !important;
     }
 
     .star {
@@ -227,7 +262,6 @@
       color: var(--favorite);
     }
 
-    /* Action buttons in row */
     .action-cell {
       display: flex;
       gap: 5px;
@@ -264,11 +298,10 @@
 
     .badge {
       display: inline-block;
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: 4px;
       font-size: 0.75rem;
       font-weight: bold;
-      background: var(--bg);
     }
 
     #loading {
@@ -297,7 +330,7 @@
 
   <div id="errorBox" class="error-msg"></div>
 
-  <!-- Roster Dashboard -->
+  <!-- Dashboard -->
   <div class="dashboard">
     <div class="roster-card">
       <h3>
@@ -319,6 +352,16 @@
   <div class="controls">
     <input type="text" id="searchInput" placeholder="Search player, team, or position..." oninput="renderTable()">
     
+    <select id="tierFilter" onchange="renderTable()">
+      <option value="ALL">All Tiers</option>
+      <option value="1">Tier 1</option>
+      <option value="2">Tier 2</option>
+      <option value="3">Tier 3</option>
+      <option value="4">Tier 4</option>
+      <option value="5">Tier 5</option>
+      <option value="6">Tier 6+</option>
+    </select>
+
     <div class="btn-group" id="posFilters">
       <button class="active" onclick="setPosFilter('ALL')">All</button>
       <button onclick="setPosFilter('RB')">RB</button>
@@ -436,7 +479,7 @@
   function draftToMyTeam(rk) {
     if (!myTeam.includes(rk)) {
       myTeam.push(rk);
-      otherDrafted = otherDrafted.filter(id => id !== rk); // Ensure not in other
+      otherDrafted = otherDrafted.filter(id => id !== rk);
       localStorage.setItem('my_team_players', JSON.stringify(myTeam));
       localStorage.setItem('other_drafted_players', JSON.stringify(otherDrafted));
     }
@@ -446,7 +489,7 @@
   function draftToOther(rk) {
     if (!otherDrafted.includes(rk)) {
       otherDrafted.push(rk);
-      myTeam = myTeam.filter(id => id !== rk); // Ensure not in my team
+      myTeam = myTeam.filter(id => id !== rk);
       localStorage.setItem('other_drafted_players', JSON.stringify(otherDrafted));
       localStorage.setItem('my_team_players', JSON.stringify(myTeam));
     }
@@ -475,11 +518,8 @@
 
   function updateDashboard() {
     const myPlayers = rawData.filter(p => myTeam.includes(p.rk));
-    
-    // Total count
     document.getElementById('totalMyTeamCount').innerText = `${myPlayers.length} Players`;
 
-    // Position breakdown
     const counts = { QB: 0, RB: 0, WR: 0, TE: 0 };
     myPlayers.forEach(p => {
       if (counts[p.posGroup] !== undefined) counts[p.posGroup]++;
@@ -490,7 +530,6 @@
     document.getElementById('countWR').innerText = counts.WR;
     document.getElementById('countTE').innerText = counts.TE;
 
-    // Roster Chips
     const chipContainer = document.getElementById('myTeamChips');
     if (myPlayers.length === 0) {
       chipContainer.innerHTML = `<span style="color: var(--muted); font-size: 0.85rem;">No players drafted to your team yet.</span>`;
@@ -508,6 +547,7 @@
     updateDashboard();
 
     const searchVal = document.getElementById('searchInput').value.toLowerCase();
+    const tierVal = document.getElementById('tierFilter').value;
     const tbody = document.getElementById('playerTable');
     tbody.innerHTML = '';
 
@@ -526,7 +566,9 @@
       else if (currentPosFilter === 'AVAIL') matchesPos = (!isMyTeam && !isOther);
       else matchesPos = (p.posGroup === currentPosFilter);
 
-      return matchesSearch && matchesPos;
+      let matchesTier = (tierVal === 'ALL' || p.tier === tierVal);
+
+      return matchesSearch && matchesPos && matchesTier;
     });
 
     filtered.forEach(p => {
@@ -535,14 +577,18 @@
       const isOther = otherDrafted.includes(p.rk);
       
       const tr = document.createElement('tr');
+
+      // Tier Class (caps at tier 6 for styling)
+      const tierNum = parseInt(p.tier) || 6;
+      const tierClass = `tier-${Math.min(tierNum, 6)}`;
+      tr.classList.add(tierClass);
+
       if (isMyTeam) tr.classList.add('drafted-me');
       if (isOther) tr.classList.add('drafted-other');
 
       let actionButtons = '';
       if (isMyTeam || isOther) {
-        actionButtons = `
-          <button class="btn-undo" onclick="undraftPlayer('${p.rk}')">Undo</button>
-        `;
+        actionButtons = `<button class="btn-undo" onclick="undraftPlayer('${p.rk}')">Undo</button>`;
       } else {
         actionButtons = `
           <button class="btn-my-team" onclick="draftToMyTeam('${p.rk}')">+ My Team</button>
@@ -553,7 +599,7 @@
       tr.innerHTML = `
         <td><span class="star ${isFav ? 'active' : ''}" onclick="toggleFav('${p.rk}')">★</span></td>
         <td>${p.rk}</td>
-        <td><span class="badge">T${p.tier}</span></td>
+        <td><span class="badge badge-${tierClass}">T${p.tier}</span></td>
         <td class="player-name"><strong>${p.name}</strong></td>
         <td>${p.team}</td>
         <td>${p.pos}</td>
