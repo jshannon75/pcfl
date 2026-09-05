@@ -19,7 +19,7 @@
       --favorite: #eab308;
       --border: #334155;
 
-      /* Tier Colors */
+      /* Tier Themes */
       --tier-1-bg: rgba(245, 158, 11, 0.12);
       --tier-1-border: #f59e0b;
       --tier-2-bg: rgba(168, 85, 247, 0.12);
@@ -64,7 +64,7 @@
     /* Dashboard */
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 15px;
       margin-bottom: 20px;
     }
@@ -125,6 +125,36 @@
       cursor: pointer;
       font-weight: bold;
       color: #ef4444;
+    }
+
+    /* Remaining Tier Matrix */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 5px;
+    }
+
+    .matrix-table th, .matrix-table td {
+      padding: 4px 8px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .matrix-table th {
+      background: var(--bg);
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .matrix-table td.has-players {
+      font-weight: bold;
+      color: #f8fafc;
+      background: rgba(59, 130, 246, 0.15);
+    }
+
+    .matrix-table td.zero-players {
+      color: #475569;
     }
 
     /* Controls */
@@ -220,20 +250,20 @@
       letter-spacing: 0.05em;
     }
 
-    /* Tier Styling */
-    tr.tier-1 { background-color: var(--tier-1-bg); border-left: 4px solid var(--tier-1-border); }
-    tr.tier-2 { background-color: var(--tier-2-bg); border-left: 4px solid var(--tier-2-border); }
-    tr.tier-3 { background-color: var(--tier-3-bg); border-left: 4px solid var(--tier-3-border); }
-    tr.tier-4 { background-color: var(--tier-4-bg); border-left: 4px solid var(--tier-4-border); }
-    tr.tier-5 { background-color: var(--tier-5-bg); border-left: 4px solid var(--tier-5-border); }
-    tr.tier-6 { background-color: var(--tier-6-bg); border-left: 4px solid var(--tier-6-border); }
+    /* Cyclic Tier Styling */
+    tr.tier-theme-1 { background-color: var(--tier-1-bg); border-left: 4px solid var(--tier-1-border); }
+    tr.tier-theme-2 { background-color: var(--tier-2-bg); border-left: 4px solid var(--tier-2-border); }
+    tr.tier-theme-3 { background-color: var(--tier-3-bg); border-left: 4px solid var(--tier-3-border); }
+    tr.tier-theme-4 { background-color: var(--tier-4-bg); border-left: 4px solid var(--tier-4-border); }
+    tr.tier-theme-5 { background-color: var(--tier-5-bg); border-left: 4px solid var(--tier-5-border); }
+    tr.tier-theme-0 { background-color: var(--tier-6-bg); border-left: 4px solid var(--tier-6-border); }
 
-    .badge-tier-1 { background: var(--tier-1-border); color: #000; }
-    .badge-tier-2 { background: var(--tier-2-border); color: #fff; }
-    .badge-tier-3 { background: var(--tier-3-border); color: #fff; }
-    .badge-tier-4 { background: var(--tier-4-border); color: #000; }
-    .badge-tier-5 { background: var(--tier-5-border); color: #fff; }
-    .badge-tier-6 { background: var(--tier-6-border); color: #fff; }
+    .badge-tier-theme-1 { background: var(--tier-1-border); color: #000; }
+    .badge-tier-theme-2 { background: var(--tier-2-border); color: #fff; }
+    .badge-tier-theme-3 { background: var(--tier-3-border); color: #fff; }
+    .badge-tier-theme-4 { background: var(--tier-4-border); color: #000; }
+    .badge-tier-theme-5 { background: var(--tier-5-border); color: #fff; }
+    .badge-tier-theme-0 { background: var(--tier-6-border); color: #fff; }
 
     /* Draft States */
     tr.drafted-other {
@@ -347,6 +377,28 @@
         <span style="color: var(--muted); font-size: 0.85rem;">No players drafted to your team yet.</span>
       </div>
     </div>
+
+    <div class="roster-card">
+      <h3 style="color: #3b82f6;">
+        Remaining Players by Tier
+        <span id="totalAvailableCount">0 Available</span>
+      </h3>
+      <div style="overflow-x: auto; max-height: 130px;">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>QB</th>
+              <th>RB</th>
+              <th>WR</th>
+              <th>TE</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="tierMatrixBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <div class="controls">
@@ -354,12 +406,6 @@
     
     <select id="tierFilter" onchange="renderTable()">
       <option value="ALL">All Tiers</option>
-      <option value="1">Tier 1</option>
-      <option value="2">Tier 2</option>
-      <option value="3">Tier 3</option>
-      <option value="4">Tier 4</option>
-      <option value="5">Tier 5</option>
-      <option value="6">Tier 6+</option>
     </select>
 
     <div class="btn-group" id="posFilters">
@@ -443,6 +489,7 @@
         };
       });
 
+      populateTierFilterOptions();
       renderTable();
     },
     error: function(err) {
@@ -456,6 +503,18 @@
   function cleanRating(str) {
     if (!str) return '-';
     return str.replace(/\s*out of\s*/gi, '/').replace(/\s*stars?/gi, '').trim();
+  }
+
+  function populateTierFilterOptions() {
+    const tierSelect = document.getElementById('tierFilter');
+    const uniqueTiers = [...new Set(rawData.map(p => parseInt(p.tier)).filter(Boolean))].sort((a,b) => a - b);
+    
+    uniqueTiers.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.toString();
+      opt.innerText = `Tier ${t}`;
+      tierSelect.appendChild(opt);
+    });
   }
 
   function setPosFilter(filter) {
@@ -517,18 +576,19 @@
   }
 
   function updateDashboard() {
+    // 1. My Team Summary
     const myPlayers = rawData.filter(p => myTeam.includes(p.rk));
     document.getElementById('totalMyTeamCount').innerText = `${myPlayers.length} Players`;
 
-    const counts = { QB: 0, RB: 0, WR: 0, TE: 0 };
+    const myCounts = { QB: 0, RB: 0, WR: 0, TE: 0 };
     myPlayers.forEach(p => {
-      if (counts[p.posGroup] !== undefined) counts[p.posGroup]++;
+      if (myCounts[p.posGroup] !== undefined) myCounts[p.posGroup]++;
     });
 
-    document.getElementById('countQB').innerText = counts.QB;
-    document.getElementById('countRB').innerText = counts.RB;
-    document.getElementById('countWR').innerText = counts.WR;
-    document.getElementById('countTE').innerText = counts.TE;
+    document.getElementById('countQB').innerText = myCounts.QB;
+    document.getElementById('countRB').innerText = myCounts.RB;
+    document.getElementById('countWR').innerText = myCounts.WR;
+    document.getElementById('countTE').innerText = myCounts.TE;
 
     const chipContainer = document.getElementById('myTeamChips');
     if (myPlayers.length === 0) {
@@ -541,6 +601,39 @@
         </div>
       `).join('');
     }
+
+    // 2. Remaining Players Matrix
+    const availablePlayers = rawData.filter(p => !myTeam.includes(p.rk) && !otherDrafted.includes(p.rk));
+    document.getElementById('totalAvailableCount').innerText = `${availablePlayers.length} Available`;
+
+    const matrix = {};
+    availablePlayers.forEach(p => {
+      const t = p.tier || 'Other';
+      if (!matrix[t]) matrix[t] = { QB: 0, RB: 0, WR: 0, TE: 0, total: 0 };
+      if (matrix[t][p.posGroup] !== undefined) {
+        matrix[t][p.posGroup]++;
+      }
+      matrix[t].total++;
+    });
+
+    const matrixBody = document.getElementById('tierMatrixBody');
+    matrixBody.innerHTML = '';
+
+    const sortedTiers = Object.keys(matrix).sort((a,b) => (parseInt(a) || 99) - (parseInt(b) || 99));
+
+    sortedTiers.forEach(t => {
+      const row = matrix[t];
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>T${t}</strong></td>
+        <td class="${row.QB ? 'has-players' : 'zero-players'}">${row.QB}</td>
+        <td class="${row.RB ? 'has-players' : 'zero-players'}">${row.RB}</td>
+        <td class="${row.WR ? 'has-players' : 'zero-players'}">${row.WR}</td>
+        <td class="${row.TE ? 'has-players' : 'zero-players'}">${row.TE}</td>
+        <td><strong>${row.total}</strong></td>
+      `;
+      matrixBody.appendChild(tr);
+    });
   }
 
   function renderTable() {
@@ -578,10 +671,11 @@
       
       const tr = document.createElement('tr');
 
-      // Tier Class (caps at tier 6 for styling)
+      // Cyclic tier theme (mod 6, mapping 1-6 to theme classes 1-5, 0)
       const tierNum = parseInt(p.tier) || 6;
-      const tierClass = `tier-${Math.min(tierNum, 6)}`;
-      tr.classList.add(tierClass);
+      const themeIndex = tierNum % 6;
+      const tierThemeClass = `tier-theme-${themeIndex}`;
+      tr.classList.add(tierThemeClass);
 
       if (isMyTeam) tr.classList.add('drafted-me');
       if (isOther) tr.classList.add('drafted-other');
@@ -599,7 +693,7 @@
       tr.innerHTML = `
         <td><span class="star ${isFav ? 'active' : ''}" onclick="toggleFav('${p.rk}')">★</span></td>
         <td>${p.rk}</td>
-        <td><span class="badge badge-${tierClass}">T${p.tier}</span></td>
+        <td><span class="badge badge-${tierThemeClass}">T${p.tier}</span></td>
         <td class="player-name"><strong>${p.name}</strong></td>
         <td>${p.team}</td>
         <td>${p.pos}</td>
