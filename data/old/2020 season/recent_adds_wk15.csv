@@ -1,0 +1,10 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division,stay
+2020-12-10,Jalen Hurts,19.28,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,5
+2020-12-10,Cam Akers,20.400000000000002,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,5
+2020-12-11,Washington D/ST,23,16,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,4
+2020-12-10,Corey Davis,2.9000000000000004,4,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,5
+2020-12-10,Giovani Bernard,1.8,23,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,5
+2020-12-10,Graham Gano,1,17,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,5
+2020-12-11,Mike Davis,23.8,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,4
+2020-12-13,Cordarrelle Patterson,2.6,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,2
+2020-12-13,Chase Claypool,3,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,2

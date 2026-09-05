@@ -1,0 +1,20 @@
+add_date,name,points,slot,bench,teamId1,abbrev,teamId,location,nickname,owners,fullname,division,stay
+2021-10-20,J.D. McKissic,7.6000000000000005,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-10-20,Tua Tagovailoa,26.54,0,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-10-20,Daniel Carlson,9,17,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-10-20,Rams D/ST,3,16,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-10-24,Darnell Mooney,4.9,23,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,2
+2021-10-20,Hunter Henry,9.3,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-10-20,Randy Bullock,11,17,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-10-20,Giants D/ST,17,16,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-10-22,Sam Darnold,2.4400000000000004,0,0,5,GOAt,5,The,G.O.A.T.,NA,The G.O.A.T.,Grits,4
+2021-10-22,Robert Tonyan,14.3,23,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish,4
+2021-10-20,A.J. Green,8.100000000000001,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,6
+2021-10-20,Packers D/ST,10,16,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,6
+2021-10-20,Saints D/ST,10,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-10-20,D'Ernest Johnson,23.8,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-10-21,Tyler Bass,0,17,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,5
+2021-10-22,Cowboys D/ST,0,16,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,4
+2021-10-24,Dante Pettis,13.040000000000001,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,2
+2021-10-22,Ricky Seals-Jones,8.100000000000001,6,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,4
+2021-10-23,Miles Sanders,3.2,2,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,3

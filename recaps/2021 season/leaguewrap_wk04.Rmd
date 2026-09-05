@@ -1,0 +1,162 @@
+---
+title: 'PCFL 2021: Week 4 wrap-up'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(lubridate)
+
+weeks<-read_csv("data/week_dates.csv") %>%
+  filter(mdy(Date) < today()) %>%
+  filter(mdy(Date)==max(mdy(Date)))
+week_sel<-weeks$Week
+
+
+#knitr::opts_knit$set(root.dir = "C:/Users/jshannon/Dropbox/Jschool/Other/pcfl2020")
+schedule<-read_csv("data/leaguesched.csv")
+team_list<-read_csv("data/teaminfo1.csv")
+players<-read_csv(paste("data/players_wk",week_sel,".csv",sep=""))
+recent_adds<-read_csv(paste("data/recent_adds_wk",week_sel,".csv",sep=""))
+last_week<-read_csv(paste("data/wk",week_sel,".csv",sep=""))
+benchpoints<-read_csv(paste("data/benchpoints_wk",week_sel,".csv",sep=""))
+stand_tbl<-read_csv(paste("data/stand_tbl_wk",week_sel,".csv",sep=""))
+toppoints<-read_csv(paste("data/toppoints_wk",week_sel,".csv",sep=""))
+results<-read_csv(paste("data/results_wk",week_sel,".csv",sep=""))
+nextweek<-read_csv(paste("data/nextweek_wk",week_sel,".csv",sep=""))
+```
+
+### Last week's games
+
+```{r, echo=FALSE}
+kable(last_week %>%
+        rename(Away=away_team,
+               `Away points`=awaypoints,
+               Home=home_team,
+               `Home points`=homepoints))
+```
+
+Two undefeateds meeting for an early showdown, and it wasn't even close. The Sophomores took their place at the head of the class, besting Pigskin on the Gridiron by more than 50 points. The G.O.A.T. and the Southern Sharks both notched their first wins of the season against Team Sasquatch and the Hangry Hobbits respectively. The Sharks/Hobbit game came down to just 1.3 points. My Peanuts buried the Gophers, and Captain Clairvoyant should have seen his defeat coming, scoring just 54 points against the Jumpin' Jaheims.
+
+
+#### Best performing players
+
+Here's last week's **10 best performing players.** 
+
+```{r,echo=FALSE}
+kable(top_n(players %>% 
+              select(name,points,fullname),10,points) %>%
+        rename(Player=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+The Sophomores had a great points week, but only one great individual performance--Tyreek Hill with a monster 43.1 points. Cordarrelle Patterson may have made his career in special teams, but he's been an offensive star this year. The Sasquatch got a great two touchdown performance from Deebo Samuel. Lastly, the G.O.A.T was the only team with three players in the top ten, showing impressive depth this week.
+
+#### Best addition and top bench
+There were `r nrow(recent_adds)` players added last week. Which was the **best new addition**?
+
+```{r echo=FALSE}
+kable(recent_adds %>% 
+        select(add_date,name,points,fullname) %>%
+        rename(`Date added`=add_date,
+               Name=name,
+               Points=points,
+               Team=fullname) %>%
+        arrange(-Points))
+```
+
+Sam Darnold had an awesome week sitting on my bench. Jared Cook may have single-handedly won the Sharks their first game, but Kirk Cousins (the son of one of my childhood pastors!) was an underwhelming bench QB. I mean, he is playing for the Vikings, so we only expect so much.
+
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(benchpoints %>% arrange(-points)%>%
+  rename(Team=fullname,Points=points)) 
+```
+
+Richard, Scott, and Erin/Trav top the bench points this week.
+
+### League standings and season stats
+Here's a look at the current standings.
+
+```{r, echo=FALSE}
+kable(stand_tbl %>%
+        rename(Team=fullname,
+               Division=division,
+               `Points scored`=points_scored,
+               `Points allowed`=points_allowed,
+               `Points rank`=points_rank,
+               `Playoff rank`=playoff_rank))
+```
+
+Here's our current awards leaders from these standings:
+
+* Yellow shirt (most points): Pigskin on the Gridiron (despite the defeat)
+* D-FENCE (least points allowed): The Sophomores *_new_*
+* Tough luck (points rank - playoff rank): Middle Earth Hangry Hobbits AND Team Sasquatch *_new_*--third and fourth in points, but only sixth and seventh in the rankings.
+* Lucky ducks (playoff rank - points rank): The Georgia Peanuts *_new_*--fourth in playoff rankings but ninth (ouch!) in points
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(toppoints %>%
+        rename(Team=fullname,
+               Week=week,
+               `Points scored`=points_scored,
+               Result=result))
+```
+
+We have two new leaders at the top of our board! Both Erin/Trav and Jacob had stellar weeks.
+
+### Here's a look at the **points trendline** for each team.
+
+```{r echo=FALSE, message=FALSE}
+teamtrend<-results %>%
+  select(awayteam,awaypoints,week) %>%
+  rename(teamId=awayteam,
+         points=awaypoints) %>%
+  bind_rows(results %>%
+              select(hometeam,homepoints,week) %>%
+              rename(teamId=hometeam,
+                     points=homepoints)) %>%
+  mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14))) %>%
+  left_join(team_list %>%
+              select(teamId,fullname))
+
+ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+  geom_line()+
+  geom_point(col="red")+
+  #geom_smooth()+
+  facet_wrap(~fullname)
+```
+
+Big jumps this week for the GOAT and Sophomores. Nice improvements for Team Sasquatch and the Sharks. Big drop for Captain Clairvoyant.
+
+### If the season ended today...
+
+Our playoff teams would be Erin/Trav, Richard, Evan, and me. Our last place finisher would be Jacob. But it's still early!
+
+### Next week's preview
+
+```{r,echo=FALSE}
+nextweek1<-nextweek %>% select(away_team:range) %>%
+  mutate(Favored=if_else(away_points>home_points,
+                         paste(away_team," (+",round(range,2),")",sep=""),
+                         paste(home_team," (+",round(range,2),")",sep=""))) %>%
+  select(-range)
+names(nextweek1)<-c("Away team","Last 3 wks (away)","Home team","Last 3 wks (home)",
+                   "Line")
+kable(nextweek1)
+```
+
+Changing this up a bit this week--showing just the points scored the last three weeks for each team and who would be favored just based on that.  The biggest mismatch of the week would appear to be played at an underground stadium--the KC Gophers vs. the Hobbits. The closest matchup is Team Sasquatch vs. the Jumpin' Jaheims. The family battle of the week is Richard vs. Jacob, while I try to knock off our last undefeated team, The Sophomores. Lastly, the Sharks try to show Captain Clairvoyant that it's never safe to wade back into the water.
+
+Good luck, y'all!

@@ -1,0 +1,12 @@
+name: ugageog_internships
+title: ugageog_internships
+username: comapuga
+account: comapuga
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15708941
+bundleId: 11013308
+url: https://comapuga.shinyapps.io/ugageog_internships/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

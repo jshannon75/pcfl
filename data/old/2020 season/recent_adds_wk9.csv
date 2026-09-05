@@ -1,0 +1,14 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division,stay
+2020-10-28,Justin Jefferson,4.1,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-10-28,Carlos Hyde,0,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-10-28,Tua Tagovailoa,5.720000000000001,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-10-28,Saints D/ST,7,16,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish,6
+2020-10-28,Chargers D/ST,2,16,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-10-30,Giovani Bernard,21.3,23,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,4
+2020-10-29,A.J. Green,2.9000000000000004,23,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits,5
+2020-10-29,Brandon Aiyuk,19.1,23,1,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish,5
+2020-10-30,Patriots D/ST,3,16,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,4
+2020-10-31,Jason Sanders,4,17,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,3
+2020-11-01,Dallas Goedert,2,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,2
+2020-10-30,Brandon McManus,7,17,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits,4
+2020-10-28,Joey Slye,5,17,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,6

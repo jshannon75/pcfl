@@ -1,0 +1,180 @@
+---
+title: '**PCFL 2022: Week 14 wrap-up**'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    theme: united
+  github_document:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(kableExtra)
+library(hrbrthemes)
+library(extrafont)
+library(showtext)
+
+#font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+
+week_sel<-14
+
+source("scripts/league_data.R")
+
+```
+
+Hey all! This is the **LAST WEEK** of the regular season..
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Scott, Robbie, and Erin/Trav continued their hot streaks, and Scott's really been on a tear all season. Jacob put a serious dent in my playoff hopes. Conversely, Brian really hurt his chances for the coveted toilet trophy.
+
+## Best performances
+
+### Best players overall
+Here's last week's **10 best performing starters.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters_10,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Evan frickin' Engram. Sealed my fate. Also check out both Trevor Lawrence and Jalen Hurts--young QBs making their mark.
+
+### Best players per team
+Here's last week's top players **on each team.**
+
+```{r,echo=FALSE}
+kable(starter_team)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Here's the season's bench standings:
+
+```{r,echo=FALSE}
+kable(starter_benchteam_all %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+Crissy might be running away with this award at the end.
+
+### Best optimized lineups
+I compared the actual starting lineups for each team to the hypothetical _best_ starting lineup the owner could have started. The table below shows the actual points the team scored, the top score they could have had, and an "optimization" percentage that compares to the two.
+
+```{r,echo=FALSE}
+kable(actualpoints %>% 
+        filter(Week==week_sel) %>% 
+        select(-Week)) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+So, um, something's off with the code for Brian on this one...
+
+
+For the *whole season*, here's a table of actual points scored vs. optimized points given the roster. 
+
+```{r,echo=FALSE, include=FALSE}
+
+kable(actualpoints_season %>%
+        pivot_wider(names_from=Type,values_from=Points) %>%
+        mutate(Optimization=paste(round(`Actual points`/`Optimized points`*100,0),
+                                          "%",sep="")) %>%
+        select(-rank) %>%
+        arrange(desc(Optimization)))   %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+
+# ggplot(actualpoints_season %>% 
+#          mutate(`PCFL Team` = fct_reorder(`PCFL Team`, desc(rank))),
+#        aes(x=Points,y=`PCFL Team`))+
+#   geom_line(aes(x=Points,y=`PCFL Team`,group=`PCFL Team`))+
+#   geom_point(aes(color=Type),size=3.1)+
+#   theme_minimal()+
+#   scale_color_manual(values=c( "#E69F00","#999999"))+
+#   theme(text=element_text(family="Source Sans Pro",size = 12))
+```
+
+Robbie and Brian have done the best job of maximizing their rosters.
+
+### Best additions
+There were `r nrow(newadds)` players added last week. Which was the **best new addition**?
+
+```{r,echo=FALSE}
+kable(newadds) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+A very quiet week.
+
+### Best team performances
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+
+kable(arrange(toppoints,-Score))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Unchanged from last week.
+
+## Looking ahead
+
+### League standings
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+Scott continues to run away with this thing--now leading by four team points. Robbie's leapfrogged Evan for second place, and fourth place remains up for grabs.
+
+Sarah has now clinched last place.
+
+### If the season ended today...
+
+Here's our playoff picture right now: 
+* Division winners: Robbie (18 points, Grits), and Scott (22 points, Hot Dish). 
+* Wild cards: Evan (17 points) and Jacob (14 points, tie breaker on points with Erin/Trav)
+
+With two weeks left, Scott, Evan, and Robbie have all clinched playoff spots, though the Grits division winner remains in doubt. 
+
+That last playoff spot is still up for grabs between me, Jacob, Crissy, and Erin/Trav. Jacob has the edge in points scored within that group.
+
+### Next week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+In terms of playoff matchups, Robbie will need a victory against Scott to win the Grits championship bowl over Evan, which might be a tall order. Both have been hot. Crissy and Jacob have a cruicial matchup for that final playoff spot. Erin/Travmy take on Evan while my hopes are based on an unlikely win against Brian. 
+
+Good luck, y'all!

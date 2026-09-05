@@ -1,0 +1,12 @@
+add_date,name,points,slot,bench,teamId,abbrev,id,location,nickname,owners,fullname,division,stay
+2021-09-15,Elijah Mitchell,6.300000000000001,23,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-09-15,Deonte Harris,9.3,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-09-15,Latavius Murray,9.6,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-09-15,Saints D/ST,5,16,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-09-16,Jameis Winston,8.34,20,1,6,HOWE,6,KC,Gophers,NA,KC Gophers,Hot Dish,5
+2021-09-19,Emmanuel Sanders,5.800000000000001,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,2
+2021-09-15,Rob Gronkowski,17.9,6,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-09-15,Justin Fields,3.5,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-09-16,Henry Ruggs III,22.1,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,5
+2021-09-16,Tyrod Taylor,16.5,20,1,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,5
+2021-09-16,Cardinals D/ST,-2,16,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,5

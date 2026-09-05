@@ -1,0 +1,165 @@
+---
+title: '**PCFL 2022: Week 13 wrap-up**'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    theme: united
+  github_document:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(kableExtra)
+library(hrbrthemes)
+library(extrafont)
+library(showtext)
+
+#font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+
+week_sel<-13
+
+source("scripts/league_data.R")
+
+```
+
+Hey all! This is the **penultimate week** of the regular season..
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Lots of high scoring last week--both Erin/Trav and Robbie topped 140 points, and 6 teams eclipsed the century mark. The biggest upset of the week was Robbie topping Evan, who's been consistently in the lead all season long. Evan was our *low* scorer this week.
+
+## Best performances
+
+### Best players overall
+Here's last week's **10 best performing starters.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters_10,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Check out the Browns' defense!
+
+### Best players per team
+Here's last week's top players **on each team.**
+
+```{r,echo=FALSE}
+kable(starter_team)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Here's the season's bench standings:
+
+```{r,echo=FALSE}
+kable(starter_benchteam_all %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+This race is REALLY coming down to the wire. Crissy and Evan are separated by just one point, and Scott and Jacob aren't too far behind.
+
+### Best optimized lineups
+I compared the actual starting lineups for each team to the hypothetical _best_ starting lineup the owner could have started. The table below shows the actual points the team scored, the top score they could have had, and an "optimization" percentage that compares to the two.
+
+```{r,echo=FALSE}
+kable(actualpoints %>% 
+        filter(Week==week_sel) %>% 
+        select(-Week)) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Gophers definitely left points on the table last week.
+
+```{r,echo=FALSE, include=FALSE}
+#For the *whole season*, here's a graph of actual points scored vs. optimized points given the roster. 
+
+ggplot(actualpoints_season %>% 
+         mutate(`PCFL Team` = fct_reorder(`PCFL Team`, desc(rank))),
+       aes(x=Points,y=`PCFL Team`))+
+  geom_line(aes(x=Points,y=`PCFL Team`,group=`PCFL Team`))+
+  geom_point(aes(color=Type),size=3.1)+
+  theme_minimal()+
+  scale_color_manual(values=c( "#E69F00","#999999"))+
+  theme(text=element_text(family="Source Sans Pro",size = 12))
+```
+
+### Best additions
+There were `r nrow(newadds)` players added last week. Which was the **best new addition**?
+
+```{r,echo=FALSE}
+kable(newadds) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best team performances
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+
+kable(arrange(toppoints,-Score))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Robbie and Sarah remain at the top of this list.
+
+## Looking ahead
+
+### League standings
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+Scott's really pulling away here toward the end of the season.
+
+### If the season ended today...
+
+Here's our playoff pictureright now: 
+* Division winners: Evan (17 points, Grits), and Scott (20 points, Hot Dish). 
+* Wild cards: Robbie (16 points) and me (13 points, tie breaker on points with Jacob)
+
+With two weeks left, Scott and Evan have both clinched playoff spots. Theoretically, Jacob and I could leapfrog Evan, but we play each other this week, so someone will have to lose. Robbie hasn't clinched, but is in good position.
+
+That last playoff spot is up for grabs between me, Jacob, Crissy, and Erin/Trav. Jacob and I play this week, and Jacob and Crissy face off next week, so those games will be key. We all need wins and point scorers down the stretch.
+
+The ESPN version at this point is similar, but Crissy would take the last playoff spot over me. She's tied with Erin/Trav on record but wions the points tie-breaker.
+
+### Next week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+The biggest matchup this week is me vs. Jacob, as the winner will likely claim the last playoff spot. We also have  a playoff preview with Scott taking on Evan. Robbie's been our hottest scoring team the last three weeks, so Crissy may need to win a shootout to stay playoff relevant. Richard's also been hot recently, so Erin/Trav might have their hands full in their playoff hunt. Lastly, we have a toilet bowl matchup of Brian vs. Sarah.  
+
+Good luck, y'all!

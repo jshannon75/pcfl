@@ -1,0 +1,183 @@
+---
+title: '**PCFL 2022: Week 1 wrap-up**'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    theme: united
+  github_document:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(kableExtra)
+
+source("scripts/league_data.R")
+
+```
+
+It's the first week of the new season! Great to be back playing with you all.
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+It was a good week for some not-so-usual suspects! Past champions (me, Richard, Brian) were in the loser's column while some of the top drafting teams (Scott, Crissy, Jacob) notched their first wins. Shout out to Scott specifically, as the Hobbits showed their power this week.
+
+## Best performing players
+
+### Best players overall
+Here's last week's **10 best performing starters.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters_10,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+# kable(top_n(players %>% 
+#               select(name,points,fullname),10,points) %>%
+#         rename(Player=name,
+#                Points=points,
+#                Team=fullname) %>%
+#         arrange(-Points))
+```
+
+Not a lot of surprises on this list, as the non QBs were mostly first or second rounders in our draft. Saquon Barkley had a nice game in what Jacob hopes is a bounce-back season. 
+
+### Best players per team
+Here's last week's top players **on each team.**
+
+```{r,echo=FALSE}
+kable(starter_team)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+This is a new stat this week: the top performing players by team. The listed position here is where they were in that team's lineup. So, for example, Team Sasquatch's top performance was from Patrick Mahomes, but he was sitting on the bench. The Junior's also could have used Carson Wentz's points.
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+In a shocker, the Southern Sharks/Sarah actually came in *last* for bench scoring this week. Jacob and Evan headed up the list.
+
+
+### Best additions
+(We'll get to this later on in the season)
+
+```{r eval=FALSE,echo=FALSE}
+# There were r nrow(recent_adds) players added last week. Which was the **best new addition**?
+
+# kable(recent_adds %>% 
+#         select(add_date,name,points,fullname) %>%
+#         rename(`Date added`=add_date,
+#                Name=name,
+#                Points=points,
+#                Team=fullname) %>%
+#         arrange(-Points))
+```
+
+## Other league facts
+
+I'm using a different system for collecting our league data this year, and it includes a database with more player information. So as we start the season, here's a few random facts about our rosters.
+
+**Top 10 *NFL* teams with the most players in our league:**
+
+```{r,echo=FALSE}
+#kable(nfl_top10, format = "html", table.attr = "style='width:30%;'")
+
+kbl(nfl_top10) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+**Top *college* teams with the most alumni in our league:**
+
+```{r,echo=FALSE}
+#kable(college, format = "html", table.attr = "style='width:30%;'")
+
+kbl(college) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+**Average years of NFL experience by PCFL team:**
+
+```{r,echo=FALSE}
+#kable(exp, format = "html", table.attr = "style='width:30%;'")
+
+kbl(exp) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+## Looking ahead
+
+### League standings
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+Based on discussions at the end of last season, I've added a new column to the standings: Team points. Teams get one point for a win and another point for being in the top 5 in scoring. In most cases, these coincide (see the Scott, Jacob, Robbie, and Evan this week). But Richard had a tough luck loss--top 5 scoring but facing Evan--so he gets just the one point. The opposite was true for Crissy.
+
+We'll see how this goes, and I'll add in playoff rankings based on both wins and those team points later in the season.
+
+```{r, echo=FALSE}
+# Here's a list of the **top five scoring performances** so far this season.
+
+# kable(toppoints %>%
+#         rename(Team=fullname,
+#                Week=week,
+#                `Points scored`=points_scored,
+#                Result=result))
+```
+
+
+```{r eval=FALSE, echo=FALSE, message=FALSE}
+#Lastly, here's a look at the **points trendline** for each team.
+
+# teamtrend<-results %>%
+#   select(awayteam,awaypoints,week) %>%
+#   rename(teamId=awayteam,
+#          points=awaypoints) %>%
+#   bind_rows(results %>%
+#               select(hometeam,homepoints,week) %>%
+#               rename(teamId=hometeam,
+#                      points=homepoints)) %>%
+#   mutate(week=factor(week,levels=c(1,2,3,4,5,6,7,8,9,10,11, 12,13,14))) %>%
+#   left_join(team_list %>%
+#               select(teamId,fullname))
+# 
+# ggplot(teamtrend,aes(x=week,y=points,group=fullname))+
+#   geom_line()+
+#   geom_point(col="red")+
+#   #geom_smooth()+
+#   facet_wrap(~fullname)
+```
+
+### If the season ended today...
+
+Only week 1, but the playoff lineup would be Scott, Jacob, Robbie, and Evan if things ended today.
+
+### Next week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+This week's game of the week is Evan versus Jacob--two top scoring teams from last week in an early season showdown. Sarah versus Erin/Trav is another early matchup with implications for the toilet trophy. Good luck all!

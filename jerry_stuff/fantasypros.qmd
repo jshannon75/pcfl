@@ -1,0 +1,221 @@
+---
+title: "Jerry Fantasy Pros"
+format: html
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+Fantasy Pros API key: JEKXmltF561k7aEeZh6FX4oc8QZEXaI91pmA9LZz
+
+```{r}
+library(tidyverse)
+library(httr2)
+
+# Set your API key in your session or .Renviron (e.g., FANTASYPROS_API_KEY="your_key")
+Sys.setenv(FANTASYPROS_API_KEY = "JEKXmltF561k7aEeZh6FX4oc8QZEXaI91pmA9LZz")
+
+# Core Request Helper
+fp_request <- function(endpoint, query_params = list()) {
+  api_key <- Sys.getenv("FANTASYPROS_API_KEY")
+  if (api_key == "") {
+    stop("API Key not found. Please set `Sys.setenv(FANTASYPROS_API_KEY = 'your_key')`.")
+  }
+  
+  req <- request("https://api.fantasypros.com/public/v2/json") %>%
+    req_url_path_append(endpoint) %>%
+    req_headers(`x-api-key` = api_key) %>%
+    req_url_query(!!!query_params) %>%
+    req_user_agent("R_FantasyPros_Client/1.0") %>%
+    # Automatically handle HTTP 429 and 5xx errors
+    req_retry(
+      max_tries = 5,
+      backoff = ~ 2^.x # Waits 2s, 4s, 8s, 16s on retries
+    )
+  
+  res <- req %>%
+    req_perform() %>%
+    resp_body_json(simplifyVector = TRUE)
+  
+  return(res)
+}
+```
+
+Endpoint Wrappers
+1. Expert Consensus Rankings (ECR)
+
+Retrieves aggregated consensus rankings filtered by sport, season, position, and scoring system (e.g., PPR, HALF, STD).
+
+```{r}
+get_fp_consensus_rankings <- function(
+    sport = "nfl",
+    season = 2026,
+    position = "RB",
+    scoring = "HALF",
+    limit = 100
+) {
+
+  endpoint <- sprintf(
+    "%s/%s/consensus-rankings",
+    sport,
+    season
+  )
+
+  params <- list(
+    position = position,
+    scoring = scoring,
+    limit = limit
+  )
+
+  response <- fp_request(
+    endpoint,
+    query_params = params
+  )
+
+  as_tibble(response$players) |>
+    janitor::clean_names()
+}
+
+get_fp_consensus_rankings_all <- function(
+    sport = "nfl",
+    season = 2026,
+    position = "RB",
+    scoring = "HALF",
+    page_size = 10,
+    sleep_sec = 5
+) {
+
+  endpoint <- sprintf(
+    "%s/%s/consensus-rankings",
+    sport,
+    season
+  )
+
+  all_players <- list()
+  offset <- 0
+
+  repeat {
+
+    message(
+      "Fetching ", position,
+      " rankings: offset = ", offset
+    )
+
+    params <- list(
+      position = position,
+      scoring = scoring,
+      limit = page_size,
+      offset = offset
+    )
+
+    response <- fp_request(
+      endpoint,
+      query_params = params
+    )
+
+    players <- response$players
+
+    if (is.null(players) || length(players) == 0) {
+      break
+    }
+
+    players <- as_tibble(players)
+
+    message(
+      "  Received ",
+      nrow(players),
+      " players"
+    )
+
+    all_players[[length(all_players) + 1]] <- players
+
+    # Stop when fewer than requested are returned
+    if (sum(sapply(all_players, nrow)) >= 20) {
+      break
+    }
+
+    offset <- offset + nrow(players)
+
+    # Additional delay on top of fp_request's rate limiter
+    Sys.sleep(sleep_sec)
+  }
+
+  message("Number of pages: ", length(all_players))
+  message("Rows by page: ", paste(sapply(all_players, nrow), collapse = ", "))
+  
+  result <- bind_rows(all_players)
+
+  message("Total rows after bind_rows: ", nrow(result))
+  
+  bind_rows(all_players) |>
+    janitor::clean_names()
+}
+# Example Usage:
+ rb_rankings <- get_fp_consensus_rankings_all(position = "RB", scoring = "HALF")
+ 
+#  test <- fp_request(
+#   "nfl/2026/consensus-rankings",
+#   query_params = list(
+#     position = "RB",
+#     scoring = "HALF",
+#     limit = 10,
+#     offset = 0
+#   )
+# )
+
+names(test)
+```
+
+
+```{r}
+test1 <- fp_request(
+  "nfl/2026/consensus-rankings",
+  query_params = list(
+    position = "RB",
+    scoring = "HALF",
+    limit = 10,
+    offset = 0
+  )
+)
+
+test2 <- fp_request(
+  "nfl/2026/consensus-rankings",
+  query_params = list(
+    position = "RB",
+    scoring = "HALF",
+    limit = 10,
+    page = 2
+  )
+)
+
+names(test1$players)
+test2$players
+```
+
+
+```{r}
+get_fp_projections <- function(sport = "nfl", 
+                               season = 2026, 
+                               position = "QB", 
+                               week = "0") {  # 0 for season-long, 1-18 for weekly
+  
+  endpoint <- sprintf("%s/%s/projections", sport, season)
+  params <- list(position = position, week = week)
+  
+  response <- fp_request(endpoint, query_params = params)
+  
+  projections_df <- as_tibble(response$players) %>%
+    janitor::clean_names()
+  
+  return(projections_df)
+}
+
+fetch_all_projections <- function(positions = c("QB", "RB", "WR", "TE"), season = 2026) {
+  positions %>%
+    set_names() %>%
+    map_dfr(~ get_fp_projections(season = season, position = .x), .id = "position_requested")
+}
+
+all_projections<-fetch_all_projections()
+```
+

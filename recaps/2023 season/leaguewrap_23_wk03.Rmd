@@ -1,0 +1,170 @@
+---
+title: '**PCFL 2023: Week 3 wrap-up**'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    theme: united
+  github_document:
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(kableExtra)
+library(hrbrthemes)
+library(extrafont)
+library(showtext)
+
+#font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+
+week_sel<-3
+
+source("scripts/league_data.R")
+
+```
+
+Week 3 is a wrap!
+
+Commissioner's reminder at the outset: last year we moved to a different system of ranking for teams. Each week, your team will receive up to two points. One is awarded for a win, and the other is awarded if you finish in the top 5 in scoring. 
+
+This is to recognize that you as an owner have no control over your opponent's scoring, and so it provides a little bonus for what you can control, which is scoring points. This week, for example, Crissy took the L, but was still top 5 in scoring. So she still gets some credit for that. 
+
+Side note #2: Guillotine League update--Brian and I survived another week!
+
+## Last week's games
+
+```{r, echo=FALSE}
+kable(lastweek_results)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Stertz women ruled the league this week, with Erin/Trav and Sarah coming in as the top two scorers. Everybody had a good offensive week, though.
+
+## Best performances
+
+### Best players overall
+Here's last week's **10 best performing starters.** 
+
+```{r,echo=FALSE}
+kable(top_n(starters_10,10,Points) %>%
+        arrange(-Points))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Get ALL the Dolphins players! Seriously, Raheem Mostert and the Dolphins offense had a heck of a week.
+
+### Best players per team
+Here's last week's top players **on each team.**
+
+```{r,echo=FALSE}
+kable(starter_team)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+### Best bench
+Who won the **best scoring bench** award last week?
+
+```{r,echo=FALSE}
+kable(starter_benchteam %>% 
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Erin and Trav were the top scorers in actual points AND bench points.
+
+Here's the season's bench standings:
+
+```{r,echo=FALSE}
+kable(starter_benchteam_all %>%
+        arrange(-`Bench points`) %>%
+  rename(Team=franchise_name))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Sarah, as expected, STILL has the early lead for bench points.
+
+### Best optimized lineups
+I compared the actual starting lineups for each team to the hypothetical _best_ starting lineup the owner could have started. The table below shows the actual points the team scored, the top score they could have had, and an "optimization" percentage that compares to the two.
+
+```{r,echo=FALSE}
+kable(actualpoints %>% 
+        filter(Week==week_sel) %>% 
+        select(-Week)) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+For the *whole season*, here's a graph of actual points scored vs. optimized points given the roster. 
+
+```{r,echo=FALSE, include=FALSE}
+# kable(actualpoints_season %>%
+#         pivot_wider(names_from=Type,values_from=Points) %>%
+#         mutate(Optimization=paste(round(`Actual points`/`Optimized points`*100,0),
+#                                           "%",sep="")) %>%
+#         select(-rank) %>%
+#         arrange(desc(Optimization)))   %>%
+#   kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+# 
+ggplot(actualpoints_season %>%
+         mutate(`PCFL Team` = fct_reorder(`PCFL Team`, desc(rank))),
+       aes(x=Points,y=`PCFL Team`))+
+  geom_line(aes(x=Points,y=`PCFL Team`,group=`PCFL Team`))+
+  geom_point(aes(color=Type),size=3.1)+
+  theme_minimal()+
+  scale_color_manual(values=c( "#E69F00","#999999"))+
+  theme(text=element_text(family="Source Sans Pro",size = 12))
+```
+
+### Best pick-ups
+There were `r nrow(newadds)` players added last week. Which was the **best pick-ups**?
+
+```{r,echo=FALSE}
+kable(newadds) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Is there a better name for a football player than Tank?
+
+### Best team performances
+
+Here's a list of the **top five scoring performances** so far this season.
+
+```{r, echo=FALSE}
+kable(arrange(toppoints,-Score))%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Sarah, Erin/Trav, and Scott jumped on the list for this week.
+
+## Looking ahead
+
+### League standings
+
+```{r, echo=FALSE}
+kable(standings)%>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+
+```
+
+Still so, so early. At least everyone has at least one point! Erin and Trav are the only team that's been perfect thus far.
+
+### If the season ended today...
+
+Really? It's just week three. We'll come back to this.
+
+### Next week's matchups
+
+```{r,echo=FALSE}
+kbl(nextwk1) %>%
+  kable_styling(bootstrap_options = c("striped","hover"), full_width = F, position = "left")
+```
+
+Good luck, y'all!

@@ -1,0 +1,21 @@
+add_date,name,points,slot,bench,teamId1,abbrev,teamId,location,nickname,owners,fullname,division,stay
+2021-10-13,Kadarius Toney,5.1,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-10-13,Khalil Herbert,18.200000000000003,2,0,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,6
+2021-10-15,AJ Dillon,5.9,20,1,1,PEA,1,Georgia,Peanuts,NA,Georgia Peanuts,Hot Dish,4
+2021-10-16,Jaylen Waddle,25.9,20,1,2,HH,2,Middle Earth,Hangry Hobbits,NA,Middle Earth Hangry Hobbits,Hot Dish,3
+2021-10-13,Greg Zuerlein,12,17,0,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,6
+2021-10-16,Latavius Murray,12.600000000000001,20,1,4,SHAR,4,Southern,Sharks,NA,Southern Sharks,Hot Dish,3
+2021-10-14,Matt Prater,15,17,0,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,5
+2021-10-14,Matt Ryan,0,20,1,7,CapC,7,Captain,Clairvoyant,NA,Captain Clairvoyant,Grits,5
+2021-10-13,Darrel Williams,22.4,2,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-10-13,Chase Claypool,2.7,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-10-13,Nick Folk,3,17,0,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-10-13,Zach Ertz,10.9,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,6
+2021-10-14,Miles Sanders,7.6000000000000005,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,5
+2021-10-16,Chris Boswell,13,20,1,8,SASQ,8,Athens,Team Sasquatch,NA,Athens Team Sasquatch,Grits,3
+2021-10-13,Taylor Heinicke,9.280000000000001,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,6
+2021-10-14,Alexander Mattison,1,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,5
+2021-10-14,Kenneth Gainwell,0.6,20,1,9,PG,10,Pigskin on,the Gridiron,NA,Pigskin on  the Gridiron,Grits,5
+2021-10-17,Alex Collins,16.3,2,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,2
+2021-10-17,Jared Cook,10.5,6,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,2
+2021-10-17,Carson Wentz,17.02,0,0,10,JAH,12,Jumpin',Jaheims,NA,Jumpin' Jaheims,Grits,2

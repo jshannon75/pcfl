@@ -1,0 +1,19 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division,stay
+2020-12-03,James Conner,0,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-12-04,Ito Smith,3.8999999999999995,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,5
+2020-12-04,Allen Lazard,6.5,20,1,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,5
+2020-12-06,Noah Fant,7.7,6,0,2,HH,2,Middle Earth,Hangry Hobbits,Middle Earth Hangry Hobbits,Hot Dish,3
+2020-12-03,Matt Ryan,12.92,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-12-03,Myles Gaskin,13.100000000000001,2,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-12-04,Kyle Rudolph,0,20,1,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,5
+2020-12-04,Jason Myers,4,17,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits,5
+2020-12-06,Keke Coutee,23.700000000000003,23,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits,3
+2020-12-05,Chiefs D/ST,5,16,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish,4
+2020-12-04,Benny Snell Jr.,2,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,5
+2020-12-04,Devontae Booker,5.6,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,5
+2020-12-04,J.K. Dobbins,13.100000000000001,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,5
+2020-12-06,Kirk Cousins,21.4,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,3
+2020-12-04,Seahawks D/ST,11,16,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits,5
+2020-12-07,Deebo Samuel,10.600000000000001,23,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,2
+2020-12-07,J.D. McKissic,12.8,2,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,2
+2020-12-07,Robbie Gould,7,17,0,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,2

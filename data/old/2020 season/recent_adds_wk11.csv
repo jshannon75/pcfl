@@ -1,0 +1,14 @@
+add_date,name,points,slot,bench,rowid,abbrev,teamId,location,nickname,fullname,division,stay
+2020-11-11,Graham Gano,10,17,0,1,PEA,1,Georgia,Peanuts,Georgia Peanuts,Hot Dish,6
+2020-11-11,Zack Moss,2.2,2,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-11-11,Packers D/ST,7,16,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,6
+2020-11-12,Dallas Goedert,5.300000000000001,6,0,4,SHAR,4,Southern,Sharks,Southern Sharks,Hot Dish,5
+2020-11-14,Jimmy Graham,0,6,0,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits,3
+2020-11-14,Curtis Samuel,2.7,20,1,5,GOAt,5,The,G.O.A.T.,The G.O.A.T.,Grits,3
+2020-11-12,Austin Hooper,1.6,6,0,6,HOWE,6,KC,Gophers,KC Gophers,Hot Dish,5
+2020-11-11,Dolphins D/ST,8,16,0,7,CapC,7,Captain,Clairvoyant,Captain Clairvoyant,Grits,6
+2020-11-11,J.D. McKissic,14.399999999999999,2,0,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,6
+2020-11-11,Mason Crosby,6,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,6
+2020-11-12,Giovani Bernard,6.7,20,1,8,SASQ,8,Athens,Team Sasquatch,Athens Team Sasquatch,Grits,5
+2020-11-11,Eagles D/ST,2,16,0,9,PG,10,Pigskin on,the Gridiron,Pigskin on  the Gridiron,Grits,6
+2020-11-11,Jakobi Meyers,13.36,20,1,10,JAH,12,Jumpin',Jaheims,Jumpin' Jaheims,Grits,6

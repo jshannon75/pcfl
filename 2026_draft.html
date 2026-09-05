@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fantasy Football Draft Board 2026</title>
+  <!-- PapaParse for CSV fetching and parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+      --drafted: #334155;
+      --favorite: #eab308;
+      --border: #334155;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1250px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 5px 0;
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .reset-btn {
+      margin-left: auto;
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    .reset-btn:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: #0f172a;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tr.drafted {
+      background-color: var(--drafted);
+      opacity: 0.4;
+    }
+
+    tr.drafted .player-name {
+      text-decoration: line-through;
+    }
+
+    .star {
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .star.active {
+      color: var(--favorite);
+    }
+
+    .draft-btn {
+      padding: 4px 10px;
+      font-size: 0.8rem;
+    }
+
+    .draft-btn.is-drafted {
+      background: #475569;
+      border-color: #475569;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      background: var(--bg);
+    }
+
+    #loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .error-msg {
+      color: #ef4444;
+      background: #451a1a;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Draft Assistant Board</h1>
+    <div class="subtitle">Data source: <code>FantasyPros_2026.csv</code></div>
+  </header>
+
+  <div id="errorBox" class="error-msg"></div>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search player, team, or position..." oninput="renderTable()">
+    
+    <div class="btn-group" id="posFilters">
+      <button class="active" onclick="setPosFilter('ALL')">All</button>
+      <button onclick="setPosFilter('RB')">RB</button>
+      <button onclick="setPosFilter('WR')">WR</button>
+      <button onclick="setPosFilter('TE')">TE</button>
+      <button onclick="setPosFilter('QB')">QB</button>
+      <button onclick="setPosFilter('FAV')">★ Favs</button>
+      <button onclick="setPosFilter('AVAIL')">Available</button>
+    </div>
+
+    <button class="reset-btn" onclick="resetDraft()">Reset Board</button>
+  </div>
+
+  <div class="table-container">
+    <div id="loading">Loading player data...</div>
+    <table id="mainTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>Fav</th>
+          <th>RK</th>
+          <th>Tier</th>
+          <th>Player</th>
+          <th>Team</th>
+          <th>Pos</th>
+          <th>Bye</th>
+          <th>Upside</th>
+          <th>Bust</th>
+          <th>SOS</th>
+          <th>ECR vs ADP</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="playerTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  let rawData = [];
+  let currentPosFilter = 'ALL';
+  let favorites = JSON.parse(localStorage.getItem('fav_players')) || [];
+  let drafted = JSON.parse(localStorage.getItem('drafted_players')) || [];
+
+  // Parse CSV file automatically
+  Papa.parse('FantasyPros_2026.csv', {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('mainTable').style.display = 'table';
+
+      rawData = results.data.map(row => {
+        // Safe key lookup helper (handles variations in CSV column headers)
+        const getVal = (keys) => {
+          for (let k of keys) {
+            const matched = Object.keys(row).find(header => header.trim().toLowerCase() === k.toLowerCase());
+            if (matched && row[matched] !== undefined) return row[matched].trim();
+          }
+          return '';
+        };
+
+        const posRaw = getVal(['POS', 'POSITION']);
+        const posGroup = posRaw.replace(/[0-9]/g, '').toUpperCase(); // Extract RB from RB1, WR from WR2, etc.
+
+        return {
+          rk: getVal(['RK', 'RANK', 'RANKING']) || row[Object.keys(row)[0]],
+          tier: getVal(['TIERS', 'TIER']),
+          name: getVal(['PLAYER NAME', 'PLAYER', 'NAME']),
+          team: getVal(['TEAM']),
+          pos: posRaw,
+          posGroup: posGroup,
+          bye: getVal(['BYE WEEK', 'BYE']),
+          upside: cleanRating(getVal(['UPSIDE'])),
+          bust: cleanRating(getVal(['BUST'])),
+          sos: cleanRating(getVal(['SOS SEASON', 'SOS'])),
+          ecrVsAdp: getVal(['ECR VS. ADP', 'ECR VS ADP'])
+        };
+      });
+
+      renderTable();
+    },
+    error: function(err) {
+      document.getElementById('loading').style.display = 'none';
+      const errorBox = document.getElementById('errorBox');
+      errorBox.style.display = 'block';
+      errorBox.innerHTML = `<strong>Error loading CSV:</strong> Ensure <code>FantasyPros_2026.csv</code> is in the root directory.`;
+    }
+  });
+
+  // Shortens "5 out of 5 stars" or "5 out of 5" down to "5/5"
+  function cleanRating(str) {
+    if (!str) return '-';
+    return str.replace(/\s*out of\s*/gi, '/').replace(/\s*stars?/gi, '').trim();
+  }
+
+  function setPosFilter(filter) {
+    currentPosFilter = filter;
+    document.querySelectorAll('#posFilters button').forEach(btn => {
+      btn.classList.toggle('active', btn.innerText.includes(filter) || (filter === 'ALL' && btn.innerText === 'All'));
+    });
+    renderTable();
+  }
+
+  function toggleFav(rk) {
+    if (favorites.includes(rk)) {
+      favorites = favorites.filter(id => id !== rk);
+    } else {
+      favorites.push(rk);
+    }
+    localStorage.setItem('fav_players', JSON.stringify(favorites));
+    renderTable();
+  }
+
+  function toggleDraft(rk) {
+    if (drafted.includes(rk)) {
+      drafted = drafted.filter(id => id !== rk);
+    } else {
+      drafted.push(rk);
+    }
+    localStorage.setItem('drafted_players', JSON.stringify(drafted));
+    renderTable();
+  }
+
+  function resetDraft() {
+    if (confirm("Reset all drafted and favorited players?")) {
+      favorites = [];
+      drafted = [];
+      localStorage.removeItem('fav_players');
+      localStorage.removeItem('drafted_players');
+      renderTable();
+    }
+  }
+
+  function renderTable() {
+    const searchVal = document.getElementById('searchInput').value.toLowerCase();
+    const tbody = document.getElementById('playerTable');
+    tbody.innerHTML = '';
+
+    const filtered = rawData.filter(p => {
+      const matchesSearch = p.name.toLowerCase().includes(searchVal) || 
+                            p.team.toLowerCase().includes(searchVal) || 
+                            p.pos.toLowerCase().includes(searchVal);
+      const isFav = favorites.includes(p.rk);
+      const isDrafted = drafted.includes(p.rk);
+
+      let matchesPos = false;
+      if (currentPosFilter === 'ALL') matchesPos = true;
+      else if (currentPosFilter === 'FAV') matchesPos = isFav;
+      else if (currentPosFilter === 'AVAIL') matchesPos = !isDrafted;
+      else matchesPos = (p.posGroup === currentPosFilter);
+
+      return matchesSearch && matchesPos;
+    });
+
+    filtered.forEach(p => {
+      const isFav = favorites.includes(p.rk);
+      const isDrafted = drafted.includes(p.rk);
+      
+      const tr = document.createElement('tr');
+      if (isDrafted) tr.classList.add('drafted');
+
+      tr.innerHTML = `
+        <td><span class="star ${isFav ? 'active' : ''}" onclick="toggleFav('${p.rk}')">★</span></td>
+        <td>${p.rk}</td>
+        <td><span class="badge">T${p.tier}</span></td>
+        <td class="player-name"><strong>${p.name}</strong></td>
+        <td>${p.team}</td>
+        <td>${p.pos}</td>
+        <td>${p.bye}</td>
+        <td>${p.upside}</td>
+        <td>${p.bust}</td>
+        <td>${p.sos}</td>
+        <td>${p.ecrVsAdp}</td>
+        <td>
+          <button class="draft-btn ${isDrafted ? 'is-drafted' : ''}" onclick="toggleDraft('${p.rk}')">
+            ${isDrafted ? 'Undo' : 'Draft'}
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+</script>
+</body>
+</html>

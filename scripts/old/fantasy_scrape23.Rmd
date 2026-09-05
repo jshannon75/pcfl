@@ -1,0 +1,143 @@
+---
+title: "Fantasy scraper"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+Update ffanalytics
+
+```{r}
+#remotes::install_github("FantasyFootballAnalytics/ffanalytics")
+library(ffanalytics)
+library(tidyverse)
+```
+
+Scoring rules
+```{r}
+scoring<-list(
+  pass = list(
+    pass_att = 0, pass_comp = 0, pass_inc = 0, pass_yds = 0.04, pass_tds = 4,
+    pass_int = -3, pass_40_yds = 0,  pass_300_yds = 0, pass_350_yds = 0,
+    pass_400_yds = 0
+  ),
+  rush = list(
+    all_pos = TRUE,
+    rush_yds = 0.1,  rush_att = 0, rush_40_yds = 0, rush_tds = 6,
+    rush_100_yds = 0, rush_150_yds = 0, rush_200_yds = 0),
+  rec = list(
+    all_pos = TRUE,
+    rec = 0.5, rec_yds = 0.1, rec_tds = 6, rec_40_yds = 0, rec_100_yds = 0,
+    rec_150_yds = 0, rec_200_yds = 0
+  ),
+  misc = list(
+    all_pos = TRUE,
+    fumbles_lost = -3, fumbles_total = 0,
+    sacks = 0, two_pts = 2
+  ),
+  kick = list(
+    xp = 1.0, fg_0019 = 3.0,  fg_2029 = 3.0, fg_3039 = 3.0, fg_4049 = 4.0,
+    fg_50 = 5.0,  fg_miss = 0.0
+  ),
+  ret = list(
+    all_pos = TRUE,
+    return_tds = 6, return_yds = 0.05
+  ),
+  idp = list(
+    all_pos = TRUE,
+    idp_solo = 1, idp_asst = 0.5, idp_sack = 2, idp_int = 3,  idp_fum_force = 3,
+    idp_fum_rec = 2,  idp_pd = 1, idp_td = 6,  idp_safety = 2
+  ),
+  dst = list(
+    dst_fum_rec = 2,  dst_int = 2, dst_safety = 2, dst_sacks = 1, dst_td = 6,
+    dst_blk = 1.5, dst_ret_yds = 0, dst_pts_allowed = 0
+  ),
+  pts_bracket = list(
+    list(threshold = 0, points = 10),
+    list(threshold = 6, points = 7),
+    list(threshold = 20, points = 4),
+    list(threshold = 34, points = 0),
+    list(threshold = 99, points = -4)
+  )
+)
+```
+
+
+Scrape the data
+
+```{r}
+my_scrape <- scrape_data(src = c("FantasyPros"), 
+                         pos = c("QB", "RB", "WR", "TE", "DST"),
+                         season = NULL, week=0) # NULL grabs the current season 
+my_projections <- projections_table(my_scrape,scoring_rules=scoring)
+
+my_projections1 <- my_projections %>% add_ecr() %>%
+  add_adp() %>% add_aav()
+
+myprojections2 <-my_projections1 %>% 
+  add_player_info() %>%
+  select(-avg_type) %>%
+  distinct() %>%
+  select(id,first_name,last_name,pos,team,age,rank,floor_rank,ceiling_rank,pos_rank,
+         overall_ecr,pos_ecr,sd_ecr,
+         adp,adp_sd,adp_diff,dropoff,aav,aav_sd)
+
+pffranks<-read_csv("data/FantasyPros_2023_Draft_ALL_Rankings.csv") %>%
+  select(RK,TIERS,`PLAYER NAME`,POS) %>%
+  rename(pff_rank=RK,pff_tiers=TIERS,name=`PLAYER NAME`,pff_posrank=POS) %>%
+  mutate(name10=substr(name,1,15))
+
+myprojections3<-myprojections2 %>%
+  mutate(name=paste(first_name,last_name),
+         name10=substr(name,1,15)) %>%
+  left_join(pffranks,by="name10")
+```
+
+Fuzzy matching with nas
+
+```{r}
+library(fuzzyjoin)
+
+pff_na<-pffranks %>%
+  anti_join(myprojections3) %>%
+  select(-name10)
+
+na<-myprojections3 %>%
+  filter(is.na(pff_rank)) %>%
+  select(-name10,-name.y) %>%
+  rename(name=name.x) %>%
+  select(-pff_rank:-pff_posrank)
+
+fuzzy_join<-stringdist_join(na, pff_na, 
+                by='name',
+                mode='left', #use left join
+                method = "jw", #use jw distance metric
+                max_dist=99, 
+                distance_col='dist')%>%
+  group_by(name.x) %>%
+  slice_min(order_by=dist, n=1)
+
+fuzzy_join_match<-fuzzy_join %>%
+  separate(name.y,into=c("Firsty","Lasty"),extra="merge",remove=FALSE) %>%
+  filter(substr(name.x,1,4)==substr(name.y,1,4) &
+           substr(last_name,1,2)==substr(Lasty,1,2)) %>%
+  ungroup() %>%
+  select(-Firsty,-Lasty,-name.x,-name.y)
+
+my_projections4<-myprojections3 %>% 
+  filter(is.na(pff_rank)==FALSE) %>%
+  select(-name10,-name.y,-name.x) %>%
+  bind_rows(fuzzy_join_match) %>%
+    mutate(name=paste(first_name,last_name))
+
+
+na1<-na %>%
+  anti_join(my_projections4,by="name")
+
+my_projections5<-my_projections4 %>%
+  bind_rows(na1)
+
+write_csv(my_projections5,"data/projections_2023a.csv",na="")
+
+```
+
