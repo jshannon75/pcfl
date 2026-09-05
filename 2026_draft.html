@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fantasy Football Draft Board 2026</title>
-  <!-- PapaParse for CSV fetching and parsing -->
+  <!-- PapaParse for CSV parsing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     :root {
@@ -13,7 +13,9 @@
       --text: #f8fafc;
       --muted: #94a3b8;
       --accent: #3b82f6;
-      --drafted: #334155;
+      --my-team: #059669;
+      --my-team-bg: #064e3b;
+      --other-drafted: #334155;
       --favorite: #eab308;
       --border: #334155;
     }
@@ -27,7 +29,7 @@
     }
 
     .container {
-      max-width: 1250px;
+      max-width: 1300px;
       margin: 0 auto;
     }
 
@@ -45,6 +47,73 @@
       font-size: 0.9rem;
     }
 
+    /* Team Summary Dashboard */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .roster-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .roster-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      color: #10b981;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pos-counts {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .pos-pill {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .my-team-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .player-chip {
+      background: var(--my-team-bg);
+      border: 1px solid var(--my-team);
+      color: #a7f3d0;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .player-chip span {
+      cursor: pointer;
+      font-weight: bold;
+      color: #ef4444;
+    }
+
+    /* Controls */
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -77,7 +146,7 @@
       background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
@@ -104,6 +173,7 @@
       color: #fff;
     }
 
+    /* Table Styling */
     .table-container {
       overflow-x: auto;
     }
@@ -117,27 +187,33 @@
     }
 
     th, td {
-      padding: 10px 14px;
+      padding: 10px 12px;
       text-align: left;
       border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     th {
       background: #0f172a;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
-    tr.drafted {
-      background-color: var(--drafted);
+    /* Status Rows */
+    tr.drafted-other {
+      background-color: var(--other-drafted);
       opacity: 0.4;
     }
 
-    tr.drafted .player-name {
+    tr.drafted-other .player-name {
       text-decoration: line-through;
+    }
+
+    tr.drafted-me {
+      background-color: #064e3b;
+      border-left: 4px solid var(--my-team);
     }
 
     .star {
@@ -151,14 +227,39 @@
       color: var(--favorite);
     }
 
-    .draft-btn {
-      padding: 4px 10px;
-      font-size: 0.8rem;
+    /* Action buttons in row */
+    .action-cell {
+      display: flex;
+      gap: 5px;
     }
 
-    .draft-btn.is-drafted {
+    .btn-my-team {
+      background: #047857;
+      border-color: #059669;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+    }
+
+    .btn-my-team:hover {
+      background: #059669;
+    }
+
+    .btn-other {
       background: #475569;
-      border-color: #475569;
+      border-color: #64748b;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+    }
+
+    .btn-other:hover {
+      background: #64748b;
+    }
+
+    .btn-undo {
+      background: #b91c1c;
+      border-color: #ef4444;
+      font-size: 0.75rem;
+      padding: 4px 8px;
     }
 
     .badge {
@@ -196,6 +297,25 @@
 
   <div id="errorBox" class="error-msg"></div>
 
+  <!-- Roster Dashboard -->
+  <div class="dashboard">
+    <div class="roster-card">
+      <h3>
+        My Team Summary
+        <span id="totalMyTeamCount">0 Players</span>
+      </h3>
+      <div class="pos-counts">
+        <span class="pos-pill">QB: <span id="countQB">0</span></span>
+        <span class="pos-pill">RB: <span id="countRB">0</span></span>
+        <span class="pos-pill">WR: <span id="countWR">0</span></span>
+        <span class="pos-pill">TE: <span id="countTE">0</span></span>
+      </div>
+      <div class="my-team-list" id="myTeamChips">
+        <span style="color: var(--muted); font-size: 0.85rem;">No players drafted to your team yet.</span>
+      </div>
+    </div>
+  </div>
+
   <div class="controls">
     <input type="text" id="searchInput" placeholder="Search player, team, or position..." oninput="renderTable()">
     
@@ -206,6 +326,7 @@
       <button onclick="setPosFilter('TE')">TE</button>
       <button onclick="setPosFilter('QB')">QB</button>
       <button onclick="setPosFilter('FAV')">★ Favs</button>
+      <button onclick="setPosFilter('MY_TEAM')">My Team</button>
       <button onclick="setPosFilter('AVAIL')">Available</button>
     </div>
 
@@ -228,7 +349,7 @@
           <th>Bust</th>
           <th>SOS</th>
           <th>ECR vs ADP</th>
-          <th>Action</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="playerTable"></tbody>
@@ -240,9 +361,10 @@
   let rawData = [];
   let currentPosFilter = 'ALL';
   let favorites = JSON.parse(localStorage.getItem('fav_players')) || [];
-  let drafted = JSON.parse(localStorage.getItem('drafted_players')) || [];
+  let myTeam = JSON.parse(localStorage.getItem('my_team_players')) || [];
+  let otherDrafted = JSON.parse(localStorage.getItem('other_drafted_players')) || [];
 
-  // Parse CSV file automatically
+  // Parse CSV
   Papa.parse('FantasyPros_2026.csv', {
     download: true,
     header: true,
@@ -252,7 +374,6 @@
       document.getElementById('mainTable').style.display = 'table';
 
       rawData = results.data.map(row => {
-        // Safe key lookup helper (handles variations in CSV column headers)
         const getVal = (keys) => {
           for (let k of keys) {
             const matched = Object.keys(row).find(header => header.trim().toLowerCase() === k.toLowerCase());
@@ -262,7 +383,7 @@
         };
 
         const posRaw = getVal(['POS', 'POSITION']);
-        const posGroup = posRaw.replace(/[0-9]/g, '').toUpperCase(); // Extract RB from RB1, WR from WR2, etc.
+        const posGroup = posRaw.replace(/[0-9]/g, '').toUpperCase();
 
         return {
           rk: getVal(['RK', 'RANK', 'RANKING']) || row[Object.keys(row)[0]],
@@ -289,7 +410,6 @@
     }
   });
 
-  // Shortens "5 out of 5 stars" or "5 out of 5" down to "5/5"
   function cleanRating(str) {
     if (!str) return '-';
     return str.replace(/\s*out of\s*/gi, '/').replace(/\s*stars?/gi, '').trim();
@@ -313,27 +433,80 @@
     renderTable();
   }
 
-  function toggleDraft(rk) {
-    if (drafted.includes(rk)) {
-      drafted = drafted.filter(id => id !== rk);
-    } else {
-      drafted.push(rk);
+  function draftToMyTeam(rk) {
+    if (!myTeam.includes(rk)) {
+      myTeam.push(rk);
+      otherDrafted = otherDrafted.filter(id => id !== rk); // Ensure not in other
+      localStorage.setItem('my_team_players', JSON.stringify(myTeam));
+      localStorage.setItem('other_drafted_players', JSON.stringify(otherDrafted));
     }
-    localStorage.setItem('drafted_players', JSON.stringify(drafted));
+    renderTable();
+  }
+
+  function draftToOther(rk) {
+    if (!otherDrafted.includes(rk)) {
+      otherDrafted.push(rk);
+      myTeam = myTeam.filter(id => id !== rk); // Ensure not in my team
+      localStorage.setItem('other_drafted_players', JSON.stringify(otherDrafted));
+      localStorage.setItem('my_team_players', JSON.stringify(myTeam));
+    }
+    renderTable();
+  }
+
+  function undraftPlayer(rk) {
+    myTeam = myTeam.filter(id => id !== rk);
+    otherDrafted = otherDrafted.filter(id => id !== rk);
+    localStorage.setItem('my_team_players', JSON.stringify(myTeam));
+    localStorage.setItem('other_drafted_players', JSON.stringify(otherDrafted));
     renderTable();
   }
 
   function resetDraft() {
-    if (confirm("Reset all drafted and favorited players?")) {
+    if (confirm("Reset all drafted players and favorites?")) {
       favorites = [];
-      drafted = [];
+      myTeam = [];
+      otherDrafted = [];
       localStorage.removeItem('fav_players');
-      localStorage.removeItem('drafted_players');
+      localStorage.removeItem('my_team_players');
+      localStorage.removeItem('other_drafted_players');
       renderTable();
     }
   }
 
+  function updateDashboard() {
+    const myPlayers = rawData.filter(p => myTeam.includes(p.rk));
+    
+    // Total count
+    document.getElementById('totalMyTeamCount').innerText = `${myPlayers.length} Players`;
+
+    // Position breakdown
+    const counts = { QB: 0, RB: 0, WR: 0, TE: 0 };
+    myPlayers.forEach(p => {
+      if (counts[p.posGroup] !== undefined) counts[p.posGroup]++;
+    });
+
+    document.getElementById('countQB').innerText = counts.QB;
+    document.getElementById('countRB').innerText = counts.RB;
+    document.getElementById('countWR').innerText = counts.WR;
+    document.getElementById('countTE').innerText = counts.TE;
+
+    // Roster Chips
+    const chipContainer = document.getElementById('myTeamChips');
+    if (myPlayers.length === 0) {
+      chipContainer.innerHTML = `<span style="color: var(--muted); font-size: 0.85rem;">No players drafted to your team yet.</span>`;
+    } else {
+      chipContainer.innerHTML = myPlayers.map(p => `
+        <div class="player-chip">
+          <strong>${p.pos}</strong> ${p.name}
+          <span onclick="undraftPlayer('${p.rk}')" title="Remove player">×</span>
+        </div>
+      `).join('');
+    }
+  }
+
   function renderTable() {
+    updateDashboard();
+
     const searchVal = document.getElementById('searchInput').value.toLowerCase();
     const tbody = document.getElementById('playerTable');
     tbody.innerHTML = '';
@@ -343,12 +516,14 @@
                             p.team.toLowerCase().includes(searchVal) || 
                             p.pos.toLowerCase().includes(searchVal);
       const isFav = favorites.includes(p.rk);
-      const isDrafted = drafted.includes(p.rk);
+      const isMyTeam = myTeam.includes(p.rk);
+      const isOther = otherDrafted.includes(p.rk);
 
       let matchesPos = false;
       if (currentPosFilter === 'ALL') matchesPos = true;
       else if (currentPosFilter === 'FAV') matchesPos = isFav;
-      else if (currentPosFilter === 'AVAIL') matchesPos = !isDrafted;
+      else if (currentPosFilter === 'MY_TEAM') matchesPos = isMyTeam;
+      else if (currentPosFilter === 'AVAIL') matchesPos = (!isMyTeam && !isOther);
       else matchesPos = (p.posGroup === currentPosFilter);
 
       return matchesSearch && matchesPos;
@@ -356,10 +531,24 @@
 
     filtered.forEach(p => {
       const isFav = favorites.includes(p.rk);
-      const isDrafted = drafted.includes(p.rk);
+      const isMyTeam = myTeam.includes(p.rk);
+      const isOther = otherDrafted.includes(p.rk);
       
       const tr = document.createElement('tr');
-      if (isDrafted) tr.classList.add('drafted');
+      if (isMyTeam) tr.classList.add('drafted-me');
+      if (isOther) tr.classList.add('drafted-other');
+
+      let actionButtons = '';
+      if (isMyTeam || isOther) {
+        actionButtons = `
+          <button class="btn-undo" onclick="undraftPlayer('${p.rk}')">Undo</button>
+        `;
+      } else {
+        actionButtons = `
+          <button class="btn-my-team" onclick="draftToMyTeam('${p.rk}')">+ My Team</button>
+          <button class="btn-other" onclick="draftToOther('${p.rk}')">Drafted</button>
+        `;
+      }
 
       tr.innerHTML = `
         <td><span class="star ${isFav ? 'active' : ''}" onclick="toggleFav('${p.rk}')">★</span></td>
@@ -373,11 +562,7 @@
         <td>${p.bust}</td>
         <td>${p.sos}</td>
         <td>${p.ecrVsAdp}</td>
-        <td>
-          <button class="draft-btn ${isDrafted ? 'is-drafted' : ''}" onclick="toggleDraft('${p.rk}')">
-            ${isDrafted ? 'Undo' : 'Draft'}
-          </button>
-        </td>
+        <td class="action-cell">${actionButtons}</td>
       `;
       tbody.appendChild(tr);
     });
