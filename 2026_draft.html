@@ -64,7 +64,7 @@
     /* Dashboard */
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 15px;
       margin-bottom: 20px;
     }
@@ -105,7 +105,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      max-height: 120px;
+      max-height: 140px;
       overflow-y: auto;
     }
 
@@ -127,7 +127,7 @@
       color: #ef4444;
     }
 
-    /* Remaining Tier Matrix */
+    /* Remaining Tier Matrix & Draft Tracker */
     .matrix-table {
       width: 100%;
       border-collapse: collapse;
@@ -155,6 +155,21 @@
 
     .matrix-table td.zero-players {
       color: #475569;
+    }
+
+    .drafted-summary-box {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .drafted-summary-title {
+      font-size: 0.85rem;
+      color: #f59e0b;
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
     }
 
     /* Controls */
@@ -383,7 +398,7 @@
         Remaining Players by Tier
         <span id="totalAvailableCount">0 Available</span>
       </h3>
-      <div style="overflow-x: auto; max-height: 130px;">
+      <div style="overflow-x: auto; max-height: 110px;">
         <table class="matrix-table">
           <thead>
             <tr>
@@ -397,6 +412,20 @@
           </thead>
           <tbody id="tierMatrixBody"></tbody>
         </table>
+      </div>
+
+      <!-- Total Drafted Summary -->
+      <div class="drafted-summary-box">
+        <div class="drafted-summary-title">
+          <span>Total Players Drafted (League-Wide)</span>
+          <span id="totalDraftedLeagueCount">0 Taken</span>
+        </div>
+        <div class="pos-counts" style="margin-bottom: 0;">
+          <span class="pos-pill">QB: <span id="draftedQB">0</span></span>
+          <span class="pos-pill">RB: <span id="draftedRB">0</span></span>
+          <span class="pos-pill">WR: <span id="draftedWR">0</span></span>
+          <span class="pos-pill">TE: <span id="draftedTE">0</span></span>
+        </div>
       </div>
     </div>
   </div>
@@ -634,6 +663,20 @@
       `;
       matrixBody.appendChild(tr);
     });
+
+    // 3. Total Drafted League-Wide Tracker
+    const allDraftedPlayers = rawData.filter(p => myTeam.includes(p.rk) || otherDrafted.includes(p.rk));
+    document.getElementById('totalDraftedLeagueCount').innerText = `${allDraftedPlayers.length} Taken`;
+
+    const draftedCounts = { QB: 0, RB: 0, WR: 0, TE: 0 };
+    allDraftedPlayers.forEach(p => {
+      if (draftedCounts[p.posGroup] !== undefined) draftedCounts[p.posGroup]++;
+    });
+
+    document.getElementById('draftedQB').innerText = draftedCounts.QB;
+    document.getElementById('draftedRB').innerText = draftedCounts.RB;
+    document.getElementById('draftedWR').innerText = draftedCounts.WR;
+    document.getElementById('draftedTE').innerText = draftedCounts.TE;
   }
 
   function renderTable() {
@@ -671,7 +714,6 @@
       
       const tr = document.createElement('tr');
 
-      // Cyclic tier theme (mod 6, mapping 1-6 to theme classes 1-5, 0)
       const tierNum = parseInt(p.tier) || 6;
       const themeIndex = tierNum % 6;
       const tierThemeClass = `tier-theme-${themeIndex}`;
