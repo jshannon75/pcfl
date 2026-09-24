@@ -6,10 +6,11 @@ library(fflr)
 ffl_id(leagueId = "1403922")
 league_info()
 
+#week_sel=2
 
 # teams<-league_teams(leagueId = "1403922")
-# write_csv(teams,"data/teams25.csv")
-teams<-read_csv("data/teams25.csv")
+# write_csv(teams,"data/teams26.csv")
+teams<-read_csv("data/teams26.csv")
 
 draft<-draft_recap()
 
