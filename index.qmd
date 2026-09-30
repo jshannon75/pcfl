@@ -1,0 +1,13 @@
+---
+title: "Pan Continental Football League"
+format:
+  html:
+    theme: united
+---
+
+![](pcfl_image_slim.jpg)
+
+## 2026 Weekly recaps
+
+* Week 2: [Link to the recap](https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week02_wrapup.html)
+* Week 3: [Link to the recap](https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week03_wrapup.html)

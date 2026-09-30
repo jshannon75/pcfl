@@ -33,6 +33,8 @@ week_sel=3
 source("scripts/league_data.R")
 ```
 
+[See all the recaps for the 2026 season](https://jshannon75.github.io/pcfl/)
+
 ## Last week's games
 
 ```{r}
