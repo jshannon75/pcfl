@@ -11,4 +11,5 @@ format:
 
 * Week 2: [Link to the recap](https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week02_wrapup.html)
 * Week 3: [Link to the recap](https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week03_wrapup.html)
-* Week 5: [Link to the recap](https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week03_wrapup.html)
+* Week 5: [Link to the recap](https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week05_wrapup.html)
+* Week 6: [Link to the recap](https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week06_wrapup.html)

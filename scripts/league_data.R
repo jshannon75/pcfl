@@ -146,7 +146,8 @@ starters<-roster_all  %>%
 #   mutate(rank=row_number()) %>%
 #   pivot_longer(`Actual points`:`Optimized points`,names_to="Type",values_to="Points")
 
-#Best player per team
+
+# Best player per team
 starter_team <-starters %>%
   filter(Position!="BE") %>%
   group_by(`PCFL Team`) %>%
@@ -321,3 +322,104 @@ toppoints<-schedule %>%
 # starters_nfl<-starters %>%
 #   left_join(nfl,by="player_id")
 
+# ---- Playoff odds ----------------------------------------------------------
+# Place AFTER `team_points` and `standings` are created.
+n_playoff     <- 4      # playoff spots
+last_reg_week <- 14     # <- set to your final regular-season matchup period
+nsims         <- 10000   # vectorized, so this is fast; 100 is too noisy
+drift_sd      <- 6      # weekly random-walk change in a team's true mean
+t_df          <- 8      # df for fat-tailed weekly scores
+
+played <- schedule %>%
+  filter(matchupPeriodId <= week_sel)
+
+league_avg <- mean(played$totalPoints)
+
+strength <- played %>%
+  group_by(teamId) %>%
+  summarise(n = n(),
+            mean_pts = mean(totalPoints),
+            var_pts  = var(totalPoints),
+            .groups = "drop")
+
+sigma2 <- sum((strength$n - 1) * strength$var_pts, na.rm = TRUE) /
+  sum(strength$n - 1)                                  # pooled within-team variance
+if (!is.finite(sigma2)) sigma2 <- var(played$totalPoints)
+
+# Between-team "true talent" variance
+tau2 <- max(var(strength$mean_pts) - sigma2 / mean(strength$n), 1)
+
+strength <- strength %>%
+  mutate(w        = tau2 / (tau2 + sigma2 / n),
+         mu       = w * mean_pts + (1 - w) * league_avg,
+         mu_se    = sqrt(1 / (1 / tau2 + n / sigma2)),
+         sd_score = sqrt(sigma2)) %>%
+  select(teamId, mu, mu_se, sd_score)
+
+cat("Weekly SD:", round(sqrt(sigma2), 1),
+    "| Between-team SD:", round(sqrt(tau2), 1), "\n")
+
+# Current standing state
+current <- team_points %>%
+  left_join(played %>%
+              group_by(teamId) %>%
+              summarise(pf0 = sum(totalPoints), .groups = "drop"),
+            by = "teamId") %>%
+  rename(pts0 = `Team points`)
+
+# Remaining regular-season games
+future_games <- schedule %>%
+  filter(matchupPeriodId > week_sel, matchupPeriodId <= last_reg_week) %>%
+  select(matchupPeriodId, matchupId, teamId)
+
+# Vectorized simulation: all sims at once
+set.seed(123)
+
+team_draws <- strength %>%
+  tidyr::crossing(sim = seq_len(nsims)) %>%
+  mutate(mu_sim = rnorm(n(), mu, mu_se))
+
+sims <- future_games %>%
+  tidyr::crossing(sim = seq_len(nsims)) %>%
+  left_join(team_draws, by = c("teamId", "sim")) %>%
+  arrange(sim, teamId, matchupPeriodId) %>%
+  group_by(sim, teamId) %>%
+  mutate(mu_wk = mu_sim + cumsum(rnorm(n(), 0, drift_sd))) %>%   # random-walk strength
+  ungroup() %>%
+  mutate(score = mu_wk + sd_score * sqrt((t_df - 2) / t_df) * rt(n(), t_df)) %>%
+  group_by(sim, matchupPeriodId) %>%
+  mutate(bonus = as.numeric(score >= median(score))) %>%
+  group_by(sim, matchupPeriodId, matchupId) %>%
+  mutate(win = as.numeric(score == max(score))) %>%
+  ungroup()
+
+# Final standings per sim, with points-scored tiebreaker
+final <- sims %>%
+  group_by(sim, teamId) %>%
+  summarise(add_pts = sum(win + bonus),
+            add_pf  = sum(score),
+            .groups = "drop") %>%
+  left_join(current, by = "teamId") %>%
+  mutate(pts = pts0 + add_pts,
+         pf  = pf0 + add_pf) %>%
+  group_by(sim) %>%
+  arrange(desc(pts), desc(pf), .by_group = TRUE) %>%
+  mutate(seed = row_number()) %>%
+  ungroup()
+
+playoff_odds <- final %>%
+  group_by(teamId) %>%
+  summarise(PlayoffOdds = mean(seed <= n_playoff),
+            TopSeed     = mean(seed == 1),
+            AvgSeed     = mean(seed),
+            ExpPoints   = mean(pts),
+            .groups = "drop") %>%
+  left_join(teams %>% select(teamId, name), by = "teamId") %>%
+  arrange(desc(PlayoffOdds))
+
+playoff_odds %>%
+  mutate(Odds    = scales::percent(PlayoffOdds, accuracy = 0.1),
+         TopSeed = scales::percent(TopSeed, accuracy = 0.1),
+         AvgSeed = round(AvgSeed, 2),
+         ExpPoints = round(ExpPoints, 1)) %>%
+  select(Team = name, Odds, TopSeed, AvgSeed, ExpPoints)
