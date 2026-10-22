@@ -1,0 +1,23 @@
+project:
+  type: website
+  render:
+    - "*.qmd"
+    - "!data/"
+    - "!2020 season/"
+    - "!2021 season/"
+    - "!2022 season/"
+    - "!2023 season/"
+    - "!2024 season/"
+    - "!2025 season/"
+  
+website:
+  title: "Pan Continental Football League"
+  navbar:
+    background: primary   # picks up united's orange
+    left:
+      - href: index.qmd
+        text: Home
+
+format:
+  html:
+    theme: united
