@@ -10,6 +10,7 @@ project:
     - "!2023 season/"
     - "!2024 season/"
     - "!2025 season/"
+    - "!jerry_stuff/"
   
 website:
   title: "Pan Continental Football League"

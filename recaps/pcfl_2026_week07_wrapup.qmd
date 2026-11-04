@@ -1,5 +1,5 @@
 ---
-title: "**PCFL 2026: Week 7 wrap-up**"
+title: "**PCFL 2026: Week 8 wrap-up**"
 format:
   html:
     toc: true
@@ -28,7 +28,7 @@ setwd(here::here())
 
 #font_add_google("IBM Plex Sans", "ibm")
 extrafont::loadfonts()
-week_sel=7
+week_sel=8
 
 pretty_table <- function(x){
   kable(x) %>%
@@ -46,10 +46,10 @@ source("scripts/league_data.R")
 
 ## Week `r week_sel` Headlines
 
-* Clairvoyant is transcendent (but his bench is not)
-* The Hobbits' bench almost outscores the starters
-* Pigskin on the Gridiron has a top 5 week
-* Jaheims vs Sharks: this week's prime matchup
+* The Captain capsizes!
+* The Sharks continue their offensive blitz
+* Pigskin on the Gridiron getting hot
+* Pigskin vs the Captain: this week's prime matchup
 
 ## Last week's games
 
@@ -58,9 +58,9 @@ source("scripts/league_data.R")
 pretty_table(lastweek_results)
 ```
 
-The marquee matchup was Brian vs. Ted/Elaine. Scoring was relatively modest, but in the end, as ESPN's AI (roughly) put it, in a "Monday Night Miracle," "CeeDee Lamb showed his love for Captain Clairvoyant." Congratulations to our only unbeaten team, who's now at the top of our league standings.
+And then there were none. The headline story this week is that Captain Clairvoyant was the last unbeaten team...until they faced the Georgia Peanuts! My scrappy upstarts managed to pull off the upset.
 
-Tough week for mythical creatures: both the Hobbits and Sasquatch lost in blowouts.
+In other games, the Henry's had an impressive week, but not as much as the Southern Sharks. Sarah's team now has the top three scoring performances in league history.
 
 ## Best performances
 
@@ -73,7 +73,7 @@ pretty_table(top_n(starters,10,Points) %>%
         arrange(-Points))
 ```
 
-Look at you, Tony Pollard. Also, JSN is really good at football.
+It's not often that tight ends make this list, but Brock Bowers is special.  Also, Bhayshul Tuten is a great name.
 
 ### Best bench
 Who won the **best scoring bench** award last week?
@@ -85,8 +85,6 @@ pretty_table(starter_benchteam %>%
   rename(Team=`PCFL Team`))
 ```
 
-Brian may be unbeaten, but he won this week with only 2.8 points on his bench. It's a thin margin!
-
 #### Season bench standings
 
 ```{r}
@@ -96,6 +94,8 @@ pretty_table(starter_benchteam_all %>%
          arrange(-`Bench points`) %>%
  rename(Team=name))
 ```
+
+The Hobbits take the lead in the all-important bench standings!
 
 ### Waiver masters
 
@@ -121,6 +121,8 @@ pretty_table(roster_draft %>%
         arrange(-Points))
 ```
 
+No surprise that our top teams are those that drafted best--Sarah and Ted/Elaine had a good draft night.
+
 ### Best team performances 
 
 Here's a list of the **top five scoring performances** so far this season.
@@ -131,7 +133,7 @@ pretty_table(toppoints %>%
         arrange(-Score))
 ```
 
-Nice week for Richard and the Pigskin on the Gridiron crew.
+Both Sarah and Ted/Elaine jumped on the list this week. And those two weeks at 190+ points are 2 and 3 in league history. The Sharks are doing very, very, VERY well.
 
 ## Looking ahead
 
@@ -147,7 +149,7 @@ Our league standings are a little unusual. We rank teams based on points, kinda 
 pretty_table(standings)
 ```
 
-Still a clear top 4 here, with Brian on top. Richard, Erin/Trav, and Robbie are lurking, though.
+Sarah and the Sharks are now our league leaders, with the Henry's and Captain close behind. Richard is lurking behind Evan for that last playoff spot.
 
 ### Playoff Odds
 
@@ -165,9 +167,7 @@ pretty_table(playoff_odds %>%
   select(Team = name, Odds, TopSeed, AvgSeed, ExpPoints))
 ```
 
-Despite the unbeaten record, Sarah has a **slightly** better chance for the playoffs. 
-
-Not looking good for the Hobbits, the GOAT, and my Peanuts.
+The algorithm still really likes those top 4.
 
 ### This week's matchups
 
@@ -176,6 +176,6 @@ Not looking good for the Hobbits, the GOAT, and my Peanuts.
 pretty_table(nextwk1)
 ```
 
-It's my turn to take a crack at Brian's team. Evan and Sarah also face off in a clash of league leaders.
+Classic rivalry: Richard (Pigskin) vs. Brian (Captain). They have a long history, and so there's no surprises. May the best team win.
 
 Good luck, y'all. Check your injuries and byes!
