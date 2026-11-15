@@ -322,44 +322,72 @@ toppoints<-schedule %>%
 # starters_nfl<-starters %>%
 #   left_join(nfl,by="player_id")
 
-# ---- Playoff odds ----------------------------------------------------------
+# ---- Playoff odds (Kalman / local-level strength) --------------------------
 # Place AFTER `team_points` and `standings` are created.
-n_playoff     <- 4      # playoff spots
-last_reg_week <- 14     # <- set to your final regular-season matchup period
-nsims         <- 10000   # vectorized, so this is fast; 100 is too noisy
-drift_sd      <- 6      # weekly random-walk change in a team's true mean
-t_df          <- 8      # df for fat-tailed weekly scores
+n_playoff     <- 4       # playoff spots
+last_reg_week <- 14      # <- set to your final regular-season matchup period
+nsims         <- 10000   # vectorized, so this is fast
+drift_sd      <- 6       # weekly random-walk change in a team's true mean
+# (also controls how fast old weeks fade in the filter)
+t_df          <- 8       # df for fat-tailed weekly scores
 
 played <- schedule %>%
   filter(matchupPeriodId <= week_sel)
 
 league_avg <- mean(played$totalPoints)
 
-strength <- played %>%
+# ---- Variance components ----------------------------------------------------
+team_summ <- played %>%
   group_by(teamId) %>%
   summarise(n = n(),
             mean_pts = mean(totalPoints),
             var_pts  = var(totalPoints),
             .groups = "drop")
 
-sigma2 <- sum((strength$n - 1) * strength$var_pts, na.rm = TRUE) /
-  sum(strength$n - 1)                                  # pooled within-team variance
+sigma2 <- sum((team_summ$n - 1) * team_summ$var_pts, na.rm = TRUE) /
+  sum(team_summ$n - 1)                                 # pooled within-team variance
 if (!is.finite(sigma2)) sigma2 <- var(played$totalPoints)
 
-# Between-team "true talent" variance
-tau2 <- max(var(strength$mean_pts) - sigma2 / mean(strength$n), 1)
+# Between-team "true talent" variance (prior variance for each team's starting level)
+tau2 <- max(var(team_summ$mean_pts) - sigma2 / mean(team_summ$n), 1)
 
-strength <- strength %>%
-  mutate(w        = tau2 / (tau2 + sigma2 / n),
-         mu       = w * mean_pts + (1 - w) * league_avg,
-         mu_se    = sqrt(1 / (1 / tau2 + n / sigma2)),
-         sd_score = sqrt(sigma2)) %>%
-  select(teamId, mu, mu_se, sd_score)
+sd_score <- sqrt(sigma2)
 
-cat("Weekly SD:", round(sqrt(sigma2), 1),
-    "| Between-team SD:", round(sqrt(tau2), 1), "\n")
+# ---- Kalman filter: local-level model per team --------------------------------
+# state:        mu_t = mu_{t-1} + N(0, drift_sd^2)
+# observation:  y_t  = mu_t + N(0, sigma2)
+kalman_team <- function(y, sigma2, drift_sd, mu0, P0) {
+  m <- mu0
+  P <- P0
+  for (obs in y) {
+    P <- P + drift_sd^2          # predict: strength drifts
+    K <- P / (P + sigma2)        # Kalman gain
+    m <- m + K * (obs - m)       # update toward observed score
+    P <- (1 - K) * P             # posterior variance
+  }
+  c(mu = m, mu_se = sqrt(P))
+}
 
-# Current standing state
+strength <- played %>%
+  arrange(teamId, matchupPeriodId) %>%
+  group_by(teamId) %>%
+  summarise(res = list(kalman_team(totalPoints, sigma2, drift_sd,
+                                   mu0 = league_avg, P0 = tau2)),
+            .groups = "drop") %>%
+  mutate(mu    = purrr::map_dbl(res, "mu"),
+         mu_se = purrr::map_dbl(res, "mu_se")) %>%
+  select(teamId, mu, mu_se)
+
+# Sanity check: how fast does the filter forget old weeks?
+q                 <- drift_sd^2 / sigma2
+alpha             <- (-q + sqrt(q^2 + 4 * q)) / 2     # steady-state Kalman gain
+half_life_implied <- log(0.5) / log(1 - alpha)
+
+cat("Weekly SD:", round(sd_score, 1),
+    "| Between-team SD:", round(sqrt(tau2), 1),
+    "| Implied half-life (weeks):", round(half_life_implied, 1), "\n")
+
+# ---- Current standing state ---------------------------------------------------
 current <- team_points %>%
   left_join(played %>%
               group_by(teamId) %>%
@@ -367,14 +395,15 @@ current <- team_points %>%
             by = "teamId") %>%
   rename(pts0 = `Team points`)
 
-# Remaining regular-season games
+# ---- Remaining regular-season games ---------------------------------------------
 future_games <- schedule %>%
   filter(matchupPeriodId > week_sel, matchupPeriodId <= last_reg_week) %>%
   select(matchupPeriodId, matchupId, teamId)
 
-# Vectorized simulation: all sims at once
+# ---- Vectorized simulation: all sims at once ----------------------------------------
 set.seed(123)
 
+# Parameter uncertainty: draw each team's current strength from its posterior
 team_draws <- strength %>%
   tidyr::crossing(sim = seq_len(nsims)) %>%
   mutate(mu_sim = rnorm(n(), mu, mu_se))
@@ -384,7 +413,7 @@ sims <- future_games %>%
   left_join(team_draws, by = c("teamId", "sim")) %>%
   arrange(sim, teamId, matchupPeriodId) %>%
   group_by(sim, teamId) %>%
-  mutate(mu_wk = mu_sim + cumsum(rnorm(n(), 0, drift_sd))) %>%   # random-walk strength
+  mutate(mu_wk = mu_sim + cumsum(rnorm(n(), 0, drift_sd))) %>%   # same drift as the filter
   ungroup() %>%
   mutate(score = mu_wk + sd_score * sqrt((t_df - 2) / t_df) * rt(n(), t_df)) %>%
   group_by(sim, matchupPeriodId) %>%
@@ -393,7 +422,7 @@ sims <- future_games %>%
   mutate(win = as.numeric(score == max(score))) %>%
   ungroup()
 
-# Final standings per sim, with points-scored tiebreaker
+# ---- Final standings per sim, with points-scored tiebreaker -------------------------------
 final <- sims %>%
   group_by(sim, teamId) %>%
   summarise(add_pts = sum(win + bonus),
@@ -418,8 +447,8 @@ playoff_odds <- final %>%
   arrange(desc(PlayoffOdds))
 
 playoff_odds %>%
-  mutate(Odds    = scales::percent(PlayoffOdds, accuracy = 0.1),
-         TopSeed = scales::percent(TopSeed, accuracy = 0.1),
-         AvgSeed = round(AvgSeed, 2),
+  mutate(Odds      = scales::percent(PlayoffOdds, accuracy = 0.1),
+         TopSeed   = scales::percent(TopSeed, accuracy = 0.1),
+         AvgSeed   = round(AvgSeed, 2),
          ExpPoints = round(ExpPoints, 1)) %>%
   select(Team = name, Odds, TopSeed, AvgSeed, ExpPoints)
