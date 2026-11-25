@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Pan Continental Football League</title>
+<title>PCFL 2026: Week 11 wrap-up</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -112,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Pan Continental Football League</h1>
+<h1 class="title"><strong>PCFL 2026: Week 11 wrap-up</strong></h1>
 </div>
 
 
@@ -141,9 +141,141 @@ ul.task-list li input[type="checkbox"] {
 <li>Week 8: <a href="https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week08_wrapup.html">Link to the recap</a></li>
 <li>Week 9: <a href="https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week09_wrapup.html">Link to the recap</a></li>
 <li>Week 10: <a href="https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week10_wrapup.html">Link to the recap</a></li>
+<li>Week 11: <a href="https://jshannon75.github.io/pcfl/recaps/pcfl_2026_week11_wrapup.html">Link to the recap</a></li>
 </ul>
 
 
+<pre class="{r setup}"><code>#| include: false
+library(tidyverse)
+library(knitr)
+library(lubridate)
+library(svglite)
+library(kableExtra)
+library(showtext)
+
+setwd(here::here())
+
+#font_add_google("IBM Plex Sans", "ibm")
+extrafont::loadfonts()
+week_sel=11
+
+pretty_table &lt;- function(x){
+  kable(x) %&gt;%
+    kable_styling(
+      bootstrap_options = c("striped","hover"),
+      full_width = FALSE,
+      position = "left"
+    )
+}
+
+source("scripts/league_data.R")</code></pre>
+<p><a href="https://jshannon75.github.io/pcfl/">See all the recaps for the 2026 season</a></p>
+<p>It’s hard to believe, y’all, but there are only FOUR more weeks left in the regular season.</p>
+</section>
+<section id="week-r-week_sel-headlines" class="level2">
+<h2 class="anchored" data-anchor-id="week-r-week_sel-headlines">Week <code>r week_sel</code> Headlines</h2>
+<ul>
+<li>Another week, another shootout! (But the result is flipped.)</li>
+<li>The last playoff spot is officially up for grabs</li>
+<li>Can the Sharks sink the Seniors’ hot streak?</li>
+</ul>
+</section>
+<section id="last-weeks-games" class="level2">
+<h2 class="anchored" data-anchor-id="last-weeks-games">Last week’s games</h2>
+<pre class="{r}"><code>#| echo: false
+pretty_table(lastweek_results)</code></pre>
+<p>It wasn’t in the cards last week, but the Henry’s (Ted/Elaine) managed to score just enough in ANOTHER shootour with the Jaheims (Evan) to get the W this week. Thankfully, the GOAT (Jacob) was just underwhelming enough to keep me from taking the week’s lowest score.</p>
+</section>
+<section id="best-performances" class="level2">
+<h2 class="anchored" data-anchor-id="best-performances">Best performances</h2>
+<section id="best-players-overall" class="level3">
+<h3 class="anchored" data-anchor-id="best-players-overall">Best players overall</h3>
+<p>Here’s last week’s <strong>10 best performing players.</strong></p>
+<pre class="{r}"><code>#| echo: false
+pretty_table(top_n(starters,10,Points) %&gt;%
+        arrange(-Points))</code></pre>
+<p>Dak Prescott with 36 points. On the bench.</p>
+</section>
+<section id="best-bench" class="level3">
+<h3 class="anchored" data-anchor-id="best-bench">Best bench</h3>
+<p>Who won the <strong>best scoring bench</strong> award last week?</p>
+<pre class="{r}"><code>#| echo: false
+pretty_table(starter_benchteam %&gt;% 
+        arrange(-`Bench points`) %&gt;%
+  rename(Team=`PCFL Team`))</code></pre>
+<section id="season-bench-standings" class="level4">
+<h4 class="anchored" data-anchor-id="season-bench-standings">Season bench standings</h4>
+<pre class="{r}"><code>#| eval: true
+#| echo: false
+pretty_table(starter_benchteam_all %&gt;%
+         arrange(-`Bench points`) %&gt;%
+ rename(Team=name))</code></pre>
+<p>The Sharks (Sarah) are pulling away again. This award should just have her name on it.</p>
+</section>
+</section>
+<section id="waiver-masters" class="level3">
+<h3 class="anchored" data-anchor-id="waiver-masters">Waiver masters</h3>
+<p>I’ve tallied the players picked up by each team since the draft and the points they’ve contributed as starters. Here’s where those stand.</p>
+<pre class="{r}"><code>#| echo: false
+pretty_table(roster_pickup %&gt;%
+        select(-abbrev) %&gt;%
+        rename(Team=name,Points=draftpoints,
+               Transactions=draft_num) %&gt;%
+        mutate(`Points/transaction`=round(Points/Transactions,1)) %&gt;%
+
+        arrange(-Points)) </code></pre>
+</section>
+<section id="recapping-the-draft" class="level3">
+<h3 class="anchored" data-anchor-id="recapping-the-draft">Recapping the draft</h3>
+<p>Here’s the amount of points drafted players have contributed to each team as starters.</p>
+<pre class="{r}"><code>#| echo: false
+pretty_table(roster_draft %&gt;% 
+         select(-abbrev) %&gt;%
+        rename(Team=name,Points=draftpoints) %&gt;% 
+        arrange(-Points))</code></pre>
+<p>At this point, the Sharks and Henry’s are really the class of the league. The draft is everything, it turns out.</p>
+</section>
+<section id="best-team-performances" class="level3">
+<h3 class="anchored" data-anchor-id="best-team-performances">Best team performances</h3>
+<p>Here’s a list of the <strong>top five scoring performances</strong> so far this season.</p>
+<pre class="{r}"><code>#| echo: false
+pretty_table(toppoints %&gt;%
+        arrange(-Score))</code></pre>
+</section>
+</section>
+<section id="looking-ahead" class="level2">
+<h2 class="anchored" data-anchor-id="looking-ahead">Looking ahead</h2>
+<section id="league-standings" class="level3">
+<h3 class="anchored" data-anchor-id="league-standings">League standings</h3>
+<p>Our league standings are a little unusual. We rank teams based on points, kinda like hockey. There are two ways to get points:</p>
+<ul>
+<li>Win your weekly matchup (1 point)</li>
+<li>Finish in the top six point scorers (1 point)</li>
+</ul>
+<pre class="{r}"><code>#| echo: false
+pretty_table(standings)</code></pre>
+<p>With four games left, it’s too early to talk in definites, but that last playoff spot is now definitely up for grabs. The Jaheims, Seniors, Pigskin, and Sasquatch all with a shot. The Seniors specifically are on a hot streak.</p>
+</section>
+<section id="playoff-odds" class="level3">
+<h3 class="anchored" data-anchor-id="playoff-odds">Playoff Odds</h3>
+<p>I’ve created 10,000 simulations of the remaining matchups based on teams’ performances so far. Here’s what playoff odds look like based on those results:</p>
+<pre class="{r}"><code>#| echo: false
+pretty_table(playoff_odds %&gt;%
+  mutate(
+    Odds      = scales::percent(PlayoffOdds, accuracy = 0.1),
+    TopSeed   = scales::percent(TopSeed, accuracy = 0.1),
+    AvgSeed   = round(AvgSeed, 2),
+    ExpPoints = round(ExpPoints, 1)
+  ) %&gt;%
+  select(Team = name, Odds, TopSeed, AvgSeed, ExpPoints))</code></pre>
+</section>
+<section id="this-weeks-matchups" class="level3">
+<h3 class="anchored" data-anchor-id="this-weeks-matchups">This week’s matchups</h3>
+<pre class="{r}"><code>#| echo: false
+pretty_table(nextwk1)</code></pre>
+<p>We’ll see if the Sharks can take out their sisterly vegeance on the Seniors this week. Pigskin vs.&nbsp;Sasquatch is another game with major playoff ramifications.</p>
+<p>Good luck, y’all. Check your injuries and byes!</p>
+</section>
 </section>
 
 </main> <!-- /main -->

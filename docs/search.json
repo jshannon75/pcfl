@@ -37,9 +37,9 @@
   {
     "objectID": "index.html#weekly-recaps",
     "href": "index.html#weekly-recaps",
-    "title": "Pan Continental Football League",
+    "title": "PCFL 2026: Week 11 wrap-up",
     "section": "2026 Weekly recaps",
-    "text": "2026 Weekly recaps\n\nWeek 2: Link to the recap\nWeek 3: Link to the recap\nWeek 5: Link to the recap\nWeek 6: Link to the recap\nWeek 7: Link to the recap\nWeek 8: Link to the recap\nWeek 9: Link to the recap\nWeek 10: Link to the recap"
+    "text": "2026 Weekly recaps\n\nWeek 2: Link to the recap\nWeek 3: Link to the recap\nWeek 5: Link to the recap\nWeek 6: Link to the recap\nWeek 7: Link to the recap\nWeek 8: Link to the recap\nWeek 9: Link to the recap\nWeek 10: Link to the recap\nWeek 11: Link to the recap\n\n\n\n#| include: false\nlibrary(tidyverse)\nlibrary(knitr)\nlibrary(lubridate)\nlibrary(svglite)\nlibrary(kableExtra)\nlibrary(showtext)\n\nsetwd(here::here())\n\n#font_add_google(\"IBM Plex Sans\", \"ibm\")\nextrafont::loadfonts()\nweek_sel=11\n\npretty_table &lt;- function(x){\n  kable(x) %&gt;%\n    kable_styling(\n      bootstrap_options = c(\"striped\",\"hover\"),\n      full_width = FALSE,\n      position = \"left\"\n    )\n}\n\nsource(\"scripts/league_data.R\")\nSee all the recaps for the 2026 season\nIt’s hard to believe, y’all, but there are only FOUR more weeks left in the regular season."
   },
   {
     "objectID": "recaps/pcfl_2026_week10_wrapup.html",
@@ -75,5 +75,33 @@
     "title": "PCFL 2026: Week 10 wrap-up",
     "section": "Looking ahead",
     "text": "Looking ahead\n\nLeague standings\nOur league standings are a little unusual. We rank teams based on points, kinda like hockey. There are two ways to get points:\n\nWin your weekly matchup (1 point)\nFinish in the top six point scorers (1 point)\n\n\n\n\n\n\nPCFL Team\nPoints scored\nAvg points\nAvg last 3\nW\nL\nTeam points\n\n\n\n\nCaptain Clairvoyant\n1279.98\n128.00\n116.57\n9\n1\n16\n\n\nSouthern Sharks\n1456.24\n145.62\n158.53\n6\n4\n15\n\n\nHenry's Gonna Cook...Again!\n1403.44\n140.34\n147.67\n6\n4\n13\n\n\nJumpin' Jaheims\n1390.08\n139.01\n141.45\n5\n5\n12\n\n\nPigskin on the Gridiron\n1225.17\n122.52\n131.50\n5\n5\n10\n\n\nThe Super Seniors\n1185.15\n118.52\n130.13\n6\n4\n10\n\n\nAthens Team Sasquatch\n1069.19\n106.92\n107.15\n5\n5\n9\n\n\nGeorgia Peanuts\n1103.04\n110.30\n124.78\n4\n6\n8\n\n\nMiddle Earth Hangry Hobbits\n1003.49\n100.35\n97.26\n2\n8\n4\n\n\nThe G.O.A.T.\n1082.76\n108.28\n100.39\n2\n8\n3\n\n\n\n\n\nWell, this is interesting. The top 4 stays the same, but the last two spots look a little more up for grabs, with Pigskin (Richard) and the Seniors (Erin/Trav) lurking.\n\n\nPlayoff Odds\nI’ve created 10,000 simulations of the remaining matchups based on teams’ performances so far. Here’s what playoff odds look like based on those results:\n\n\n\n\n\nTeam\nOdds\nTopSeed\nAvgSeed\nExpPoints\n\n\n\n\nSouthern Sharks\n99.3%\n62.3%\n1.57\n21.1\n\n\nCaptain Clairvoyant\n96.2%\n26.4%\n2.33\n20.3\n\n\nHenry's Gonna Cook...Again!\n90.0%\n8.7%\n3.02\n18.4\n\n\nJumpin' Jaheims\n79.5%\n2.6%\n3.64\n17.3\n\n\nPigskin on the Gridiron\n20.4%\n0.0%\n5.37\n14.6\n\n\nThe Super Seniors\n13.4%\n0.0%\n5.60\n14.4\n\n\nGeorgia Peanuts\n0.6%\n0.0%\n7.28\n11.1\n\n\nAthens Team Sasquatch\n0.6%\n0.0%\n7.36\n11.2\n\n\nMiddle Earth Hangry Hobbits\n0.0%\n0.0%\n9.50\n5.8\n\n\nThe G.O.A.T.\n0.0%\n0.0%\n9.33\n5.8\n\n\n\n\n\n\n\nThis week’s matchups\n\n\n\n\n\nTeam 1\nTeam 2\n\n\n\n\nHenry's Gonna Cook...Again! (Avg. last 3: 147.67)\nJumpin' Jaheims (Avg. last 3: 141.45)\n\n\nSouthern Sharks (Avg. last 3: 158.53)\nGeorgia Peanuts (Avg. last 3: 124.78)\n\n\nThe G.O.A.T. (Avg. last 3: 100.39)\nPigskin on the Gridiron (Avg. last 3: 131.5)\n\n\nThe Super Seniors (Avg. last 3: 130.13)\nMiddle Earth Hangry Hobbits (Avg. last 3: 97.26)\n\n\nCaptain Clairvoyant (Avg. last 3: 116.57)\nAthens Team Sasquatch (Avg. last 3: 107.15)\n\n\n\n\n\nTop matchup this week, with playoff implications, is the Henry’s vs the Jaheims.\nGood luck, y’all. Check your injuries and byes!"
+  },
+  {
+    "objectID": "index.html#week-r-week_sel-headlines",
+    "href": "index.html#week-r-week_sel-headlines",
+    "title": "PCFL 2026: Week 11 wrap-up",
+    "section": "Week r week_sel Headlines",
+    "text": "Week r week_sel Headlines\n\nAnother week, another shootout! (But the result is flipped.)\nThe last playoff spot is officially up for grabs\nCan the Sharks sink the Seniors’ hot streak?"
+  },
+  {
+    "objectID": "index.html#last-weeks-games",
+    "href": "index.html#last-weeks-games",
+    "title": "PCFL 2026: Week 11 wrap-up",
+    "section": "Last week’s games",
+    "text": "Last week’s games\n#| echo: false\npretty_table(lastweek_results)\nIt wasn’t in the cards last week, but the Henry’s (Ted/Elaine) managed to score just enough in ANOTHER shootour with the Jaheims (Evan) to get the W this week. Thankfully, the GOAT (Jacob) was just underwhelming enough to keep me from taking the week’s lowest score."
+  },
+  {
+    "objectID": "index.html#best-performances",
+    "href": "index.html#best-performances",
+    "title": "PCFL 2026: Week 11 wrap-up",
+    "section": "Best performances",
+    "text": "Best performances\n\nBest players overall\nHere’s last week’s 10 best performing players.\n#| echo: false\npretty_table(top_n(starters,10,Points) %&gt;%\n        arrange(-Points))\nDak Prescott with 36 points. On the bench.\n\n\nBest bench\nWho won the best scoring bench award last week?\n#| echo: false\npretty_table(starter_benchteam %&gt;% \n        arrange(-`Bench points`) %&gt;%\n  rename(Team=`PCFL Team`))\n\nSeason bench standings\n#| eval: true\n#| echo: false\npretty_table(starter_benchteam_all %&gt;%\n         arrange(-`Bench points`) %&gt;%\n rename(Team=name))\nThe Sharks (Sarah) are pulling away again. This award should just have her name on it.\n\n\n\nWaiver masters\nI’ve tallied the players picked up by each team since the draft and the points they’ve contributed as starters. Here’s where those stand.\n#| echo: false\npretty_table(roster_pickup %&gt;%\n        select(-abbrev) %&gt;%\n        rename(Team=name,Points=draftpoints,\n               Transactions=draft_num) %&gt;%\n        mutate(`Points/transaction`=round(Points/Transactions,1)) %&gt;%\n\n        arrange(-Points)) \n\n\nRecapping the draft\nHere’s the amount of points drafted players have contributed to each team as starters.\n#| echo: false\npretty_table(roster_draft %&gt;% \n         select(-abbrev) %&gt;%\n        rename(Team=name,Points=draftpoints) %&gt;% \n        arrange(-Points))\nAt this point, the Sharks and Henry’s are really the class of the league. The draft is everything, it turns out.\n\n\nBest team performances\nHere’s a list of the top five scoring performances so far this season.\n#| echo: false\npretty_table(toppoints %&gt;%\n        arrange(-Score))"
+  },
+  {
+    "objectID": "index.html#looking-ahead",
+    "href": "index.html#looking-ahead",
+    "title": "PCFL 2026: Week 11 wrap-up",
+    "section": "Looking ahead",
+    "text": "Looking ahead\n\nLeague standings\nOur league standings are a little unusual. We rank teams based on points, kinda like hockey. There are two ways to get points:\n\nWin your weekly matchup (1 point)\nFinish in the top six point scorers (1 point)\n\n#| echo: false\npretty_table(standings)\nWith four games left, it’s too early to talk in definites, but that last playoff spot is now definitely up for grabs. The Jaheims, Seniors, Pigskin, and Sasquatch all with a shot. The Seniors specifically are on a hot streak.\n\n\nPlayoff Odds\nI’ve created 10,000 simulations of the remaining matchups based on teams’ performances so far. Here’s what playoff odds look like based on those results:\n#| echo: false\npretty_table(playoff_odds %&gt;%\n  mutate(\n    Odds      = scales::percent(PlayoffOdds, accuracy = 0.1),\n    TopSeed   = scales::percent(TopSeed, accuracy = 0.1),\n    AvgSeed   = round(AvgSeed, 2),\n    ExpPoints = round(ExpPoints, 1)\n  ) %&gt;%\n  select(Team = name, Odds, TopSeed, AvgSeed, ExpPoints))\n\n\nThis week’s matchups\n#| echo: false\npretty_table(nextwk1)\nWe’ll see if the Sharks can take out their sisterly vegeance on the Seniors this week. Pigskin vs. Sasquatch is another game with major playoff ramifications.\nGood luck, y’all. Check your injuries and byes!"
   }
 ]
